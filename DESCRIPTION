@@ -1,0 +1,24 @@
+Package: QPot
+Version: 0.1
+Date: 2015-07-27
+Title: Quasi-potential analysis for stochastic differential equation
+Authors@R: c(
+person("Christopher", "Moore", role = c("aut", "cre"), email = ""),
+person("Christopher", "Stieha", role = c("aut", "cre"), email = "stieha@hotmail.com"),
+person("Ben", "Nolting", role = c("aut", "cre"), email = ""),
+person("Maria", "Cameron", role = c("aut"), email = ""),
+person("Karen", "Abbott", role = c("aut"), email = ""),
+)
+#TODO: needs updated once we understand what it needs
+#Below is an example from the R guide
+Author: Joe Developer [aut, cre],
+Pat Developer [aut],
+A. User [ctb]
+Maintainer: Joe Developer <Joe.Developer@some.domain.net>
+Depends: R (>= 3.1.0), nlme
+Suggests: MASS
+Description: A (one paragraph) description of what
+the package does and why it may be useful.
+License: GPL (>= 2)
+URL: http://www.r-project.org, http://www.another.url
+BugReports: http://qpot.bugtracker.url
