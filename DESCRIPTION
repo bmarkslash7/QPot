@@ -1,24 +1,17 @@
 Package: QPot
 Version: 0.1
 Date: 2015-07-27
-Title: Quasi-potential analysis for stochastic differential equation
+Title: Quasi-potential analysis for stochastic differential equations
 Authors@R: c(
 person("Christopher", "Moore", role = c("aut", "cre"), email = ""),
 person("Christopher", "Stieha", role = c("aut", "cre"), email = "stieha@hotmail.com"),
-person("Ben", "Nolting", role = c("aut", "cre"), email = ""),
-person("Maria", "Cameron", role = c("aut"), email = ""),
-person("Karen", "Abbott", role = c("aut"), email = ""),
+person("Ben", "Nolting", role = c("aut", "ctb"), email = ""),
+person("Maria", "Cameron", role = c("aut", "ctb"), email = ""),
+person("Karen", "Abbott", role = c("ctb"), email = ""),
 )
-#TODO: needs updated once we understand what it needs
-#Below is an example from the R guide
-Author: Joe Developer [aut, cre],
-Pat Developer [aut],
-A. User [ctb]
-Maintainer: Joe Developer <Joe.Developer@some.domain.net>
-Depends: R (>= 3.1.0), nlme
-Suggests: MASS
-Description: A (one paragraph) description of what
-the package does and why it may be useful.
-License: GPL (>= 2)
-URL: http://www.r-project.org, http://www.another.url
-BugReports: http://qpot.bugtracker.url
+Depends: R (>= 3.0.2)
+Suggests: None
+Description: Compared to their deterministic brethren, stochastic differential equations require novel tools to describe the stability of their equilibria.  One tool is the quasi-potential, computed using the ordered-upwind method, which is implemented in the QPot package.  QPot also includes a collection of tools to simulate and visualize the results of stochastic differential equations.    
+License: NEED TO DECIDE
+URL: http://www.r-project.org, https://github.com/bmarkslash7/QPot
+BugReports: https://github.com/bmarkslash7/QPot/issues
