@@ -9,8 +9,8 @@ Uses the matheval library from http://www.gnu.org/software/libmatheval/, license
 
 
 File Structure:
-#all of these are not needed;  if empty, remove
-#https://cran.r-project.org/doc/manuals/R-exts.html#Package-structure
+all of these are not needed;  if empty, remove
+https://cran.r-project.org/doc/manuals/R-exts.html#Package-structure
 ./configure	configure instructions for win, linux, mac
 ./data		data files
 ./demo		R scripts that show functionality of package, so examples from journal article(?);
