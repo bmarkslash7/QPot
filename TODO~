@@ -1,0 +1,14 @@
+./configure 
+set up configure figure for windows
+
+
+Ccode
+confirm that abort or exit is not used.
+check to make sure long type isn't used.
+should not write to stdout or stderr
+do not call C rand, but use R rand
+run "nm -pg mypkg.so" and look for unsatisfied entry points(?) check "if any of the symbols marked U is unexpected."
+maybe change variable names
+"It is not portable to call compiled code in R or other packages via .Internal, .C, .Fortran, .Call or .External, since such interfaces are subject to change without notice and will probably result in your code terminating the R process. " Then how do you call them?
+ 
+
