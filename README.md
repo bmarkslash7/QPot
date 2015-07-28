@@ -30,6 +30,8 @@ NAMESPACE	lists what is imported (from other libraries) and exported (made avail
 NEWS		file containing updates and news
 README.md	file containing basic information on the package
 TODO		list of things to add; can also be incorporated into the issue tracker.
+loadall.R	R script to load all files not as a package
+READMEN-chris.txt		stieha todo file with notes - delete by 1 sept 2015
 ```
 
 

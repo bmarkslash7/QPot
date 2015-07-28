@@ -1,0 +1,28 @@
+R CMD REMOVE QPot
+R CMD build QPot
+#copy tar.gz to /home to install
+#can't install across partitions
+R CMD INSTALL QPot
+
+
+R CMD INSTALL /storage/current-work/QPot
+
+* installing to library ‘/home/stieha/R/x86_64-pc-linux-gnu-library/3.0’
+* installing *source* package ‘QPot’ ...
+** libs
+gcc -std=gnu99 -I/usr/share/R/include -DNDEBUG -Ilibmatheval     -fpic  -O3 -pipe  -g  -c upwindorderedMATHEVALv4.c -o upwindorderedMATHEVALv4.o
+gcc -std=gnu99 -shared -o QPot.so upwindorderedMATHEVALv4.o -Llibmatheval -lmatheval -L/usr/lib/R/lib -lR
+installing to /home/stieha/R/x86_64-pc-linux-gnu-library/3.0/QPot/libs
+** R
+** preparing package for lazy loading
+** help
+No man pages found in package  ‘QPot’ 
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+Error in library.dynam(lib, package, package.lib) : 
+  shared object ‘matheval.so’ not found
+Error: loading failed
+Execution halted
+ERROR: loading failed
+* removing ‘/home/stieha/R/x86_64-pc-linux-gnu-library/3.0/QPot’

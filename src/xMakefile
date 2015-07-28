@@ -1,0 +1,15 @@
+# set parameters
+CFLAGS=-g -lsource/libmatheval/matheval -lm
+CC = gcc
+
+#begin actual choices
+all:
+	$(CC) -o libmatheval/matheval.o -c matheval.c
+	$(CC) upwindorderedMATHEVALv4.c -Wall $(CFLAGS) -o currentuwo
+	
+# this turns the warnings off and then compiles
+noerror:
+	$(CC) upwindorderedMATHEVALv4.c $(CFLAGS) -o currentuwo
+
+clean:
+	rm -f currentuwo

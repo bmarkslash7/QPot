@@ -1,4 +1,0 @@
-#https://cran.r-project.org/doc/manuals/R-exts.html#Package-namespaces
-#No variables are made available to the user
-export(FunctionNamesToBeUsedByUser)
-useDynLib(CCodeFunctionName)

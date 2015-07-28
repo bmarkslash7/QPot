@@ -1,5 +1,11 @@
 #https://cran.r-project.org/doc/manuals/R-exts.html#Package-namespaces
 #No variables are made available to the user
 #import(NoLibrariesNeeded)
-export(FunctionNamesToBeUsedByUser)
-useDynLib(CCodeFunctionName)
+
+#list libraries called, Maria's C code will be included
+#useDynLib(matheval)
+useDynLib(QPot)
+
+#define functions that can be called in R code
+export("upwindordered")
+
