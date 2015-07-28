@@ -7,7 +7,7 @@ Literature:
 
 Uses the matheval library from http://www.gnu.org/software/libmatheval/, licensed under GPL v3. 
 
-
+```
 File Structure:
 all of these are not needed;  if empty, remove
 https://cran.r-project.org/doc/manuals/R-exts.html#Package-structure
@@ -30,7 +30,7 @@ NAMESPACE	lists what is imported (from other libraries) and exported (made avail
 NEWS		file containing updates and news
 README.md	file containing basic information on the package
 TODO		list of things to add; can also be incorporated into the issue tracker.
-
+```
 
 
 
