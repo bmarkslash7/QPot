@@ -20,7 +20,7 @@ C++ with C calls: http://muparser.beltoforion.de/mup_download.html
  
 File Structure:
 ```
-all of these are not needed;  if empty, remove---or R will do it for you.
+all of these are not needed;  if empty, remove
 https://cran.r-project.org/doc/manuals/R-exts.html#Package-structure
 ./configure	configure instructions for win, linux, mac
 ./data		data files
