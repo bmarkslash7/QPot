@@ -5,11 +5,9 @@ Christopher M. Moore, Christopher Stieha, Ben C. Nolting, Maria K. Cameron, and 
 Literature:
 
 
-Uses the matheval library from http://www.gnu.org/software/libmatheval/, licensed under GPL v3. 
-
-After much work I, Chris Stieha, have determined that the libmatheval must be installed before building and installing this package.
-
-Although there are ways to compile libmatheval for different OS (such as win: http://permalink.gmane.org/gmane.comp.lib.matheval/7), it requires other programs and other work arounds.  With that, I will try another equation parser.  
+Uses the matheval library from http://www.gnu.org/software/libmatheval/, licensed under GPL v3.
+ 
+*Only use this version if you have matheval already installed on your computer.*
 
 ```
 Two possibilities:
