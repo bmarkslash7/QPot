@@ -3,9 +3,8 @@
 #import(NoLibrariesNeeded)
 
 #list libraries called, Maria's C code will be included
-#useDynLib(matheval)
 useDynLib(QPot)
 
 #define functions that can be called in R code
-export("upwindordered")
+export("QPotential")
 

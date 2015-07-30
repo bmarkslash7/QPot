@@ -2,7 +2,7 @@
 # cran.r-project.org/doc/manuals/R-exts.pdf
 # taken from http://mazamascience.com/WorkingWithData/?p=1151
  
-PKG_CFLAGS=
+PKG_CFLAGS=-I.
 PKG_CPPFLAGS=
 PKG_LIBS=-lm
 
@@ -11,6 +11,6 @@ all: $(SHLIB)
 expression_parser.o: expression_parser.c
 	$(CC) -c -fPIC expression_parser.c $(CFLAGS) -lm
 
-upwindorderedMATHEVALv4.o: upwindorderedMATHEVALv4.c expression_parser.o
-	$(CC) -c -fPIC upwindorderedMATHEVALv4.c $(CFLAGS) -lm
-	$(CC) upwindorderedMATHEVALv4.o expression_parser.o $(CFLAGS) -lm
+upwindorderedv4.o: upwindorderedv4.c expression_parser.o
+	$(CC) -c -fPIC upwindorderedv4.c $(CFLAGS) -lm
+	$(CC) upwindorderedv4.o expression_parser.o $(CFLAGS) -lm

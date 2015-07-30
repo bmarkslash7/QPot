@@ -12,7 +12,7 @@
 
 #currentupwindordered = "upwindorderedMATHEVALv4"
 
-upwindordered <- function (xrhs = 'NULL', xstart = 'NULL', xrange = 'NULL', xsteps = 'NULL', yrhs = 'NULL', ystart = 'NULL', yrange = 'NULL', ysteps = 'NULL', filename = 'NULL', savetoR = 'NULL', savetoHD = TRUE, bounce = 'd', bounceedge = 0.01)
+QPotential <- function (xrhs = 'NULL', xstart = 'NULL', xrange = 'NULL', xsteps = 'NULL', yrhs = 'NULL', ystart = 'NULL', yrange = 'NULL', ysteps = 'NULL', filename = 'NULL', savetoR = 'NULL', savetoHD = TRUE, bounce = 'd', bounceedge = 0.01)
 {
 
 #currentupwindordered = "upwindorderedMATHEVALv4"

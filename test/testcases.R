@@ -3,7 +3,7 @@
 # R CMD SHLIB -lmatheval upwindorderedMATHEVALv3.c -lm WORKS, but why?
 # R CMD SHLIB -L./libmatheval -lmatheval upwindorderedMATHEVALv3.c -lm WORKS, but is like above, which works
 
-testupwindordered <- function() {
+testQPotential <- function() {
 #dyn.load(paste(currentupwindordered, ".so", sep=""))
 xbounds = c(-5.0, 60.0)
 ybounds = c(-5.0, 60.0)
@@ -19,33 +19,33 @@ equationy = testequationy
 storage <- array(1.0, dim=c(1,(xstepnumber*ystepnumber)))
 
 #full code
-upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber)
+QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber)
 print("fullcode completed")
 #missing a function parameter
 print("no x equation")
-try(upwindordered(xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
+try(QPotential(xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
 print("no initial x")
-try(upwindordered(xrhs=equationx,xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
+try(QPotential(xrhs=equationx,xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
 print("no x bounds")
-try(upwindordered(xrhs=equationx, xstart=xinit,xsteps=xstepnumber, yrhs=equationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
+try(QPotential(xrhs=equationx, xstart=xinit,xsteps=xstepnumber, yrhs=equationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
 print("only one x bounds")
-try(upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds[1], xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
+try(QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds[1], xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
 print("more than two x bounds")
-try(upwindordered(xrhs=testequationx, xstart=xinit, xrange=c(xbounds, 4), xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
+try(QPotential(xrhs=testequationx, xstart=xinit, xrange=c(xbounds, 4), xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
 print("no x step number")
-try(upwindordered(xrhs=equationx, xstart=xinit, xrange=xbounds, yrhs=equationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
+try(QPotential(xrhs=equationx, xstart=xinit, xrange=xbounds, yrhs=equationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
 print("no y equation")
-try(upwindordered(xrhs=equationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
+try(QPotential(xrhs=equationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, ystart=yinit, yrange=ybounds, ysteps=ystepnumber))
 print("no initial y")
-try(upwindordered(xrhs=equationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, yrange=ybounds, ysteps=ystepnumber))
+try(QPotential(xrhs=equationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, yrange=ybounds, ysteps=ystepnumber))
 print("no y bounds")
-try(upwindordered(xrhs=equationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, ystart=yinit, ysteps=ystepnumber))
+try(QPotential(xrhs=equationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, ystart=yinit, ysteps=ystepnumber))
 print("no y step number")
-try(upwindordered(xrhs=equationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, ystart=yinit, yrange=ybounds))
+try(QPotential(xrhs=equationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=equationy, ystart=yinit, yrange=ybounds))
 
 print("test suite finished")
 
-} #end of upwindordered test suite
+} #end of QPotential test suite
 
 testdatawrite <- function() {
 #dyn.load(paste(currentupwindordered, ".so", sep=""))
@@ -63,23 +63,23 @@ equationy = testequationy
 storage <- array(1.0, dim=c(1,(xstepnumber*ystepnumber)))
 
 print("starting to test data writing")
-upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetest.txt', savetoR = 'NULL', savetoHD = TRUE, bounce = 'd', bounceedge = 0.01)
+QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetest.txt', savetoR = 'NULL', savetoHD = TRUE, bounce = 'd', bounceedge = 0.01)
 Vdefault <-read.table("datawritetest.txt", header=FALSE, sep="\t")
 
 print("Bounce test: Use default.  Should equal datawritetest.txt")
-upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestbounce-default.txt', savetoR = 'NULL', savetoHD = TRUE)
+QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestbounce-default.txt', savetoR = 'NULL', savetoHD = TRUE)
 V01<-read.table("datawritetestbounce-default.txt", header=FALSE, sep="\t")
 if( isTRUE(all.equal(V01, Vdefault)) ) {print("RESULT: datawritetestbounce-default.txt is equal to datawritetest.txt")}
 else {print("RESULT: datawritetestbounce-default.txt DOES NOT EQUAL datawritetest.txt")}
 
 print("Bounce test: Use bounce.  Should NOT equal datawritetest.txt")
-upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestbounce-bounce.txt', savetoR = 'NULL', savetoHD = TRUE, bounce = 'b')
+QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestbounce-bounce.txt', savetoR = 'NULL', savetoHD = TRUE, bounce = 'b')
 V01<-read.table("datawritetestbounce-bounce.txt", header=FALSE, sep="\t")
 if( isTRUE(all.equal(V01, Vdefault)) ) {print("RESULT: datawritetestbounce-bounce.txt is equal to datawritetest.txt")}
 else {print("RESULT: datawritetestbounce-bounce.txt DOES NOT EQUAL datawritetest.txt")}
 
 print("Bounce test: Use positive.  Should NOT equal datawritetest.txt")
-upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestbounce-positive.txt', savetoR = 'NULL', savetoHD = TRUE, bounce = 'b')
+QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestbounce-positive.txt', savetoR = 'NULL', savetoHD = TRUE, bounce = 'b')
 V01<-read.table("datawritetestbounce-positive.txt", header=FALSE, sep="\t")
 if( isTRUE(all.equal(V01, Vdefault)) ) {print("RESULT: datawritetestbounce-positive.txt is equal to datawritetest.txt")}
 else {print("RESULT: datawritetestbounce-positive.txt DOES NOT EQUAL datawritetest.txt")}
@@ -110,12 +110,12 @@ onlyones <- array(1.0, dim=c(1,(xstepnumber*ystepnumber)))
 print("starting to test HD writing and R writing")
 print("write HD, no write R, default listed explicitly")
 #correctly writes to HD, correctly does not write to R  -  24 July 2015 CRS
-tempdefault <- upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestALLDEFAULTSlisted.txt', savetoR = 'NULL', savetoHD = TRUE)
+tempdefault <- QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestALLDEFAULTSlisted.txt', savetoR = 'NULL', savetoHD = TRUE)
 #try(Vdefault <-read.table("datawritetestONLYHD.txt", header=FALSE, sep="\t"))
 
 print("write HD, no write R, defaults not listed") 
 #correctly writes to HD, correctly does not write to R -  24 July 2015 CRS
-temp2 <- upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestALLDEFAULTSnotlisted.txt')
+temp2 <- QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestALLDEFAULTSnotlisted.txt')
 
 V01<-read.table('datawritetestALLDEFAULTSlisted.txt', header=FALSE, sep="\t")
 V02<-read.table('datawritetestALLDEFAULTSnotlisted.txt', header=FALSE, sep="\t")
@@ -131,7 +131,7 @@ else {print("FAILED: R write: defaults not the same"); FAIL = FAIL + 1}
 print("********************************************")
 print("write to HD, write to R")
 rm(temp)
-tempfull <- upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestBOTHRandHD.txt', savetoR = TRUE, savetoHD = TRUE)
+tempfull <- QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestBOTHRandHD.txt', savetoR = TRUE, savetoHD = TRUE)
 V01<-read.table('datawritetestALLDEFAULTSlisted.txt', header=FALSE, sep="\t")
 V02<-read.table('datawritetestBOTHRandHD.txt', header=FALSE, sep="\t")
 write.table(tempfull, file = "datawritetest-datafromtempfull-writeR.txt", row.names=FALSE, col.names=FALSE)
@@ -152,7 +152,7 @@ else {print("PASSED: HD write: temp2 and wHDwR different")}
 print("********************************************")
 print("no write HD, no write R NULL")
 rm(temp)
-temp <- upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestonlyRNULL-SHOULDNTWRITE.txt', savetoR = 'NULL', savetoHD = FALSE)
+temp <- QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestonlyRNULL-SHOULDNTWRITE.txt', savetoR = 'NULL', savetoHD = FALSE)
 V01<-read.table('datawritetestALLDEFAULTSlisted.txt', header=FALSE, sep="\t")
 rm(V02)
 V02='NULL'
@@ -165,7 +165,7 @@ else {print("PASSED: HD write: default and readHD different")}
 print("********************************************")
 print("write to HD, no write to R FALSE")
 rm(temp)
-temp <- upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestonlyHD.txt', savetoR = FALSE, savetoHD = TRUE)
+temp <- QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestonlyHD.txt', savetoR = FALSE, savetoHD = TRUE)
 V01<-read.table('datawritetestALLDEFAULTSlisted.txt', header=FALSE, sep="\t")
 try(V02<-read.table('datawritetestonlyHD.txt', header=FALSE, sep="\t"))
 if (isTRUE(all.equal(V01, V02, tolerance = 1e-4))) {print("PASSED: HD write: defaults and write HD, no R write are the same")}
@@ -189,7 +189,7 @@ return(TRUE)
 
 print("********************************************")
 print("no write to HD, no write to R FALSE")
-upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestonlyRFALSE-SHOULDNTWRITE.txt', savetoR = FALSE, savetoHD = FALSE)
+QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestonlyRFALSE-SHOULDNTWRITE.txt', savetoR = FALSE, savetoHD = FALSE)
 V01<-read.table('datawritetestALLDEFAULTSlisted.txt', header=FALSE, sep="\t")
 try(V02<-read.table('datawritetestonlyRFALSE-SHOULDNTWRITE.txt', header=FALSE, sep="\t"))
 try(all.equal(V01, V02))
@@ -199,7 +199,7 @@ try(all.equal(V01, V02))
 print("********************************************")
 print("HD is testrun, no write to R FALSE")
 rm(temp)
-temp <- upwindordered(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestonlytestrun.txt', savetoR = FALSE, savetoHD = 'testrun')
+temp <- QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber, filename = 'datawritetestonlytestrun.txt', savetoR = FALSE, savetoHD = 'testrun')
 
 if (FAIL > 0) {print(paste("FAILURES OCCURRED: ",FAIL, "fails", sep=""))}
 

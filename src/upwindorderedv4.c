@@ -129,7 +129,7 @@ long *pacf = 0; /* position in the accepted front */
 /* const long neii[8]={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; /* neighbor's indices */
 long neii[8]; /*={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; /* neighbor's indices */
 double xa, ya, xb, yb; /* potential minima */
-char chfield='d';
+char chfield = 'd';
 
 /**************************************/
 /**************************************/
