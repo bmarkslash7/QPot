@@ -1,6 +1,12 @@
 /*
  * upwindorderedMATHEVALv4
  * added in Ben Nolting's two boundary cases of bounce and default
+ * replaced GNU libmatheval with expression_parser
+ * 
+ * system("R CMD SHLIB -I/usr/local/include -L/usr/local/lib expression_parser.c -lm")
+ * system("R CMD SHLIB -I/usr/local/include -L/usr/local/lib upwindorderedMATHEVALv4.c expression_parser.o -lm")
+ * currentupwindordered = "upwindorderedMATHEVALv4"
+ * try( dyn.load(paste(currentupwindordered, ".so", sep = "")) )
  * 
  * upwindorderedMATHEVALv3
  * changed from static buffer size to dynamic buffer size for the equation strings
@@ -19,9 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-/* #include <matheval.h> */
-/* #include "libmatheval/matheval.h" */
-#include "libmatheval/matheval.h" 
+#include "expression_parser.h" 
 #include <math.h>
 #include <time.h>
 
@@ -56,8 +60,6 @@ char xbuffer[BUFFERSIZE];		/*stores the equation as a string*/
 char ybuffer[BUFFERSIZE];
 char *xbuff;
 char *ybuff;
-void *fx;						/*stores the evaluation of the string as an equation*/
-void *fy;
 char *name[] = {"x", "y"};		/*variables used in the equations*/
 char *filenamebuff;
 double values[] = {0.0, 0.0};	/*values of variables used in equations*/
@@ -140,9 +142,69 @@ struct myvector myfieldchris(double x,double y) {
 }
 * **************************************/
 
+/* variable_back used to read in strings
+ * converts x and y to actual value in c code
+*/
+double chrisx;
+double chrisy;
+
+int variable_callback( void *user_data, const char *name, double *value ){
+	// look up the variables by name
+	if( strcmp( name, "x" ) == 0 ){
+		// set return value, return true
+		*value = chrisx;
+		return PARSER_TRUE;
+	} else if( strcmp( name, "y" ) == 0 ){
+		// set return value, return true
+		*value = chrisy;
+		return PARSER_TRUE;
+	}
+	// failed to find variable, return false
+	return PARSER_FALSE;
+}
+
+/* taken right from expression_parser::example.c
+ * because function_callback does not automatically go to NULL
+*/
+int function_callback( void *user_data, const char *name, const int num_args, const double *args, double *value ){
+	int i, max_args;
+	double tmp;
+	
+	// example to show the user-data parameter, sets the maximum number of
+	// arguments allowed for the following functions from the user-data function
+	max_args = *((int*)user_data);
+	
+	if( strcmp( name, "max_value") == 0 && num_args >= 2 && num_args <= max_args ){
+		// example 'maximum' function, returns the largest of the arguments, this and 
+		// the min_value function implementation below allow arbitrary number of arguments
+		tmp = args[0];
+		for( i=1; i<num_args; i++ ){
+			tmp = args[i] >= tmp ? args[i] : tmp;
+		}
+		// set return value and return true
+		*value = tmp;
+		return PARSER_TRUE;
+	} else if( strcmp( name, "min_value" ) == 0 && num_args >= 2 && num_args <= max_args ){
+		// example 'minimum' function, returns the smallest of the arguments
+		tmp = args[0];
+		for( i=1; i<num_args; i++ ){
+			tmp = args[i] <= tmp ? args[i] : tmp;
+		}
+		// set return value and return true
+		*value = tmp;
+		return PARSER_TRUE;
+	} 
+	
+	// failed to evaluate function, return false
+	return PARSER_FALSE;
+}
+
 struct myvector myfieldchris(double x,double y) {
     struct myvector v;
-    
+/* hack until I can check for sure what variables I am using */ 
+    chrisx = x;
+    chrisy = y;
+    int num_arguments = 4; /*need for parse_expression_with_callbacks; number picked and means nothing */
     switch( chfield ) {
         case 'p': /* positivevalues: Case to use if you want only positive values */
             if(x<0 && y<0)
@@ -155,8 +217,8 @@ struct myvector myfieldchris(double x,double y) {
             {v.x=0.0;
                 v.y=100000.0;}
             else {
-            	v.x = evaluator_evaluate_x_y(fx, x, y);
-                v.y = evaluator_evaluate_x_y(fy, x, y);
+            	v.x = parse_expression_with_callbacks( xbuff, variable_callback, function_callback, &num_arguments );
+                v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
             }
             break;
 		case 'b': /* bounce : Case to use if you want reflecting boundaries */
@@ -170,13 +232,13 @@ struct myvector myfieldchris(double x,double y) {
             {v.x=0.0;
                 v.y=100000.0;}
             else {
-            	v.x = evaluator_evaluate_x_y(fx, x, y);
-                v.y = evaluator_evaluate_x_y(fy, x, y);
+            	v.x = parse_expression_with_callbacks( xbuff, variable_callback, function_callback, &num_arguments );
+                v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
             }
             break;
         case 'd': /*default */
-			v.x = evaluator_evaluate_x_y(fx, x, y);
-			v.y = evaluator_evaluate_x_y(fy, x, y);
+			v.x = parse_expression_with_callbacks( xbuff, variable_callback, function_callback, &num_arguments );
+			v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
             break;
         default:
             printf("chfield = %c, please correct\n",chfield);
@@ -815,11 +877,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
     double cpu;
     
     printf("equationx = %s\n", xbuff);
-	fx = evaluator_create(xbuff);
-	assert(fx); /* a test to make sure that equation x exists */
 	printf("equationy = %s\n", ybuff);
-	fy = evaluator_create(ybuff);
-    assert(fy); /* a test to make sure that equation y exists */
     
     param();
     printf("Finished Loading Parameters\n");
@@ -895,8 +953,6 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	if (lengthfilename != 0) {free(filenamebuff);}
 	free(xbuff); free(ybuff); 
     free(aB); free(B); free(ms); free(g); free(rcurr); free(pos); free(tree); free(acf); free(pacf); 
-	evaluator_destroy(fx);
-	evaluator_destroy(fy);
 
 	printf("Successful.  Exiting C code\n");
 }
