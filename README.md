@@ -5,8 +5,12 @@
 Literature:
 
 
-Uses the expression_parser library from http://jamesgregson.blogspot.com/2012/06/mathematical-expression-parser-in-c.html, licensed under GPL v2. 
-
+Uses the expression_parser library from http://jamesgregson.blogspot.com/2012/06/mathematical-expression-parser-in-c.html, licensed under GPL v2. Reads strings of mathematical expression in infix notation.  
+*standard arithmetic operations (+,-,*,/) with operator precedence
+*exponentiation ^ and nested exponentiation
+*unary + and -
+*expressions enclosed in parentheses ('(',')'), optionally nested
+*built-in math functions: pow(x,y), sqrt(x), log(x), exp(x), sin(x), asin(x), cos(x), acos(x), tan(x), atan(x), atan2(y,x), abs(x), fabs(x), floor(x), ceil(x), round(x), with input arguments checked for domain validity, e.g. 'sqrt( -1.0 )' returns an error.
  
 File Structure:
 ```
