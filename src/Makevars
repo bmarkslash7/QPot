@@ -9,7 +9,8 @@ PKG_LIBS=-lm
 all: $(SHLIB)
 
 expression_parser.o: expression_parser.c
-	$(CC) -c expression_parser.c $(CFLAGS) -lm
+	$(CC) -c -fPIC expression_parser.c $(CFLAGS) -lm
 
 upwindorderedMATHEVALv4.o: upwindorderedMATHEVALv4.c expression_parser.o
-	$(CC) -c upwindorderedMATHEVALv4.c expression_parser.o $(CFLAGS) -lm
+	$(CC) -c -fPIC upwindorderedMATHEVALv4.c $(CFLAGS) -lm
+	$(CC) upwindorderedMATHEVALv4.o expression_parser.o $(CFLAGS) -lm
