@@ -28,6 +28,7 @@
 #include "expression_parser.h" 
 #include <math.h>
 #include <time.h>
+/*#include "R.h"*/
 
 #define PI 3.141592653589793
 #define mabs(a) ((a) >= 0 ? (a) : -(a))
@@ -241,9 +242,12 @@ struct myvector myfieldchris(double x,double y) {
 			v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
             break;
         default:
-            printf("chfield = %c, please correct\n",chfield);
+			printf("Should not be able to reach this in myfieldchris function");
+            break;
+/*            printf("chfield = %c, please correct\n",chfield);
             exit(1);
             break;
+*/
     }
     return v;
 }
@@ -804,6 +808,18 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	char *temptempchfield = *tempchfield;
 	chfield = temptempchfield[0]; 
 	bounceedge = tempbounceedge[0];
+	switch( chfield ) {
+        case 'p':
+			break;
+		case 'b':
+			break;
+		case 'd':
+			break;
+		default:
+			printf("chfield must be (d)efauly, (p)ositive, or (b)ounce\n");
+			return;
+	}
+			
 
 /* handling rhs of equations */
 	int lengthofequationx = lenequationx[0];

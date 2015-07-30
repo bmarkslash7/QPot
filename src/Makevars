@@ -4,13 +4,13 @@
  
 PKG_CFLAGS=-I.
 PKG_CPPFLAGS=
-PKG_LIBS=-lm
+PKG_LIBS=-lm 
 
 all: $(SHLIB)
 
 expression_parser.o: expression_parser.c
-	$(CC) -c -fPIC expression_parser.c $(CFLAGS) -lm
+	$(CC) -c -fPIC expression_parser.c $(CFLAGS) $(ALL_LIBS) -lm
 
 upwindorderedv4.o: upwindorderedv4.c expression_parser.o
-	$(CC) -c -fPIC upwindorderedv4.c $(CFLAGS) -lm
-	$(CC) upwindorderedv4.o expression_parser.o $(CFLAGS) -lm
+	$(CC) -c -fPIC upwindorderedv4.c $(CFLAGS) $(ALL_LIBS) -lm
+	$(CC) upwindorderedv4.o expression_parser.o $(CFLAGS) $(ALL_LIBS)  -lm
