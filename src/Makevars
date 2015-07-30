@@ -1,0 +1,15 @@
+# See Section 1.2.1 "Using 'Makevars'" of Writing R Extensions
+# cran.r-project.org/doc/manuals/R-exts.pdf
+# taken from http://mazamascience.com/WorkingWithData/?p=1151
+ 
+PKG_CFLAGS=
+PKG_CPPFLAGS=
+PKG_LIBS=-lm
+
+all: $(SHLIB)
+
+expression_parser.o: expression_parser.c
+	$(CC) -c expression_parser.c $(CFLAGS) -lm
+
+upwindorderedMATHEVALv4.o: upwindorderedMATHEVALv4.c expression_parser.o
+	$(CC) -c upwindorderedMATHEVALv4.c expression_parser.o $(CFLAGS) -lm
