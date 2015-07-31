@@ -1,0 +1,47 @@
+copying QPot to QPOTcopy
+go into QPotcopy folder
+start R
+library(devtools)
+check()
+Gives these warnings:
+------------------------------------------------------------------------
+SOLVED 31 July 2015
+#changed upwindorderedv4 to QPot
+* checking foreign function calls ... WARNING
+Foreign function call to a different package:
+  .C("quasipotential", ..., PACKAGE = "upwindorderedv4")
+Undeclared package in foreign function calls:
+   ‘upwindorderedv4’
+See chapter ‘System and foreign language interfaces’ in the ‘Writing R
+Extensions’ manual.
+------------------------------------------------------------------------
+* checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'QPotential'
+  ‘xstart’ ‘xrange’ ‘xsteps’ ‘yrhs’ ‘ystart’ ‘yrange’ ‘ysteps’
+  ‘filename’ ‘savetoR’ ‘savetoHD’ ‘bounce’ ‘bounceedge’
+
+Documented arguments not in \usage in documentation object 'defaultTest':
+  ‘NONE’
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+------------------------------------------------------------------------
+#SOLVED 31 JULY 2015
+#REMOVED @param none from file
+* checking Rd contents ... WARNING
+Argument items with no description in Rd object 'defaultTest':
+  ‘NONE’
+------------------------------------------------------------------------
+* checking PDF version of manual ... WARNING
+LaTeX errors when creating PDF version.
+This typically indicates Rd problems.
+------------------------------------------------------------------------
+* checking top-level files ... NOTE
+Non-standard files/directories found at top level:
+  ‘Install-Instructions-self.txt’ ‘README-chris.txt’
+  ‘devtools-check-results.txt’ ‘loadall.R’ ‘test’
+
+
