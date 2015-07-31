@@ -1,3 +1,11 @@
+#' Wrapper for call to quasipotential compution using the upwind ordered method
+#' 
+#' @export
+#' 
+#' @param xrhs xstart xrange xsteps yrhs ystart yrange ysteps filename savetoR savetoHD bounce bounceedge MORE
+#' @return filetoHD filetoR
+
+
 # R CMD SHLIB -I/usr/local/include -L/usr/local/lib -lmatheval upwindorderedMATHEVALv3.c -lm
 # -I adds directory to the head of the list of directories containing libraries
 # -L add directory to be searched for that contains library listed in -l

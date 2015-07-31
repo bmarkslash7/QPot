@@ -16,6 +16,6 @@ Author: Christopher Moore [aut,cph],
 Depends: R (>= 3.0.2)
 Maintainer: Christopher Stieha <stieha@hotmail.com>
 Description: Tools to 1) simulate and visualize stochastic differential equations and 2) determine stability of equilibria using the ordered-upwind method to compute the quasi-potential.    
-License: GPL-3
+License: NEED TO DECIDE, probably GPL-3
 URL: http://www.r-project.org, https://github.com/bmarkslash7/QPot
 BugReports: https://github.com/bmarkslash7/QPot/issues
