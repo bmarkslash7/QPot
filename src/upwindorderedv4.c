@@ -30,7 +30,7 @@
 #include <time.h>
 #include <R.h>
 
-#define PI 3.141592653589793
+#define ourPI 3.141592653589793
 #define mabs(a) ((a) >= 0 ? (a) : -(a))
 #define sgn(a) ((a) == 0 ? 0 : ((a) > 0  ? 1 : -1 ))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
@@ -593,7 +593,7 @@ struct myvector getpoint(long ind) {
 double angle(double x,double y) {
     double ang;
     if( y >= 0.0 ) ang=acos(x/sqrt(x*x+y*y));
-    else ang=2.0*PI-acos(x/sqrt(x*x+y*y));
+    else ang=2.0*ourPI-acos(x/sqrt(x*x+y*y));
     return ang;
 }
 
