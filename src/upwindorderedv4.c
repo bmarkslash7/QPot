@@ -28,7 +28,7 @@
 #include "expression_parser.h" 
 #include <math.h>
 #include <time.h>
-/*#include "R.h"*/
+#include <R.h>
 
 #define PI 3.141592653589793
 #define mabs(a) ((a) >= 0 ? (a) : -(a))
@@ -242,9 +242,9 @@ struct myvector myfieldchris(double x,double y) {
 			v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
             break;
         default:
-			printf("Should not be able to reach this in myfieldchris function");
+			Rprintf("Should not be able to reach this in myfieldchris function");
             break;
-/*            printf("chfield = %c, please correct\n",chfield);
+/*            Rprintf("chfield = %c, please correct\n",chfield);
             exit(1);
             break;
 */
@@ -263,9 +263,9 @@ void param() {
  * so need to take range from L2 to L1 and divide by number of steps 
  * */
 	hx=(LX2 - LX1)/(NX-1);
-	printf("hx = %g\n", hx);
+	Rprintf("hx = %g\n", hx);
 	hy=(LY2-LY1)/(NY-1);
-	printf("hy = %g\n", hy);
+	Rprintf("hy = %g\n", hy);
     h=sqrt(hx*hx+hy*hy);
     for( i=0; i<NX; i++ ) {
 /* v2: LX1 and LY1 used as beginning value, to compute "current" x and y
@@ -295,9 +295,9 @@ void ipoint() {
     const long isur[4]={0, 1, NX+1, NX};
     struct myvector x,l;
     
-/*    printf("DECLARED PARAMETERS IN ipoint()\n"); */
+/*    Rprintf("DECLARED PARAMETERS IN ipoint()\n"); */
     indac=(long *)malloc(4*sizeof(long));
-/*    printf("DECLARED indac IN ipoint()\n");*/
+/*    Rprintf("DECLARED indac IN ipoint()\n");*/
 
  /* v2: appears to convert the "current" value of x and y into an index value
   * so that (0+lower bound)/stepsize = 0 and (upper bound + lower bound)/ha = total number of steps
@@ -306,20 +306,20 @@ void ipoint() {
   * */
     i=floor((xa-(LX1))/hx);
     j=floor((ya-(LY1))/hy);
-/*    printf("DECLARED i and j IN ipoint()\n");*/
+/*    Rprintf("DECLARED i and j IN ipoint()\n");*/
     ind0=i+j*NX;
     for( m=0; m<4; m++ ) {
-/*		printf("DECLARED m = %li\n", m);*/
+/*		Rprintf("DECLARED m = %li\n", m);*/
         ind=ind0+isur[m];
-/*        printf("DECLARED ind = %li\n", ind);*/
-/*        printf("BEFORE getpoint() CALL\n");*/
+/*        Rprintf("DECLARED ind = %li\n", ind);*/
+/*        Rprintf("BEFORE getpoint() CALL\n");*/
         x=getpoint(ind);
-/*        printf("AFTER getpoint() CALL\n");*/
+/*        Rprintf("AFTER getpoint() CALL\n");*/
         l.x=x.x-xa;
         l.y=x.y-ya;
-/*        printf("BEFORE dotproduct() CALL\n");*/
+/*        Rprintf("BEFORE dotproduct() CALL\n");*/
         gtemp=aB[ind]*length(l.x,l.y)-dotproduct(B[ind],l);
-/*        printf("AFTER dotproduct() CALL\n");*/
+/*        Rprintf("AFTER dotproduct() CALL\n");*/
         g[ind]=min(g[ind],gtemp);
         if( ms[ind] == 0 ) {
             ms[ind]=1;
@@ -357,10 +357,10 @@ void ordered_upwind(void) {
         deltree();
         mycount++;
         if( i==2 || i==nx1-2 || j==2 || j== ny1-2 || g[ind] >= INFTY-1) {
-            printf("%ld\t(%ld\t%ld) is accepted, g=%.4f\n",mycount,i,j,g[ind]);
+            Rprintf("%ld\t(%ld\t%ld) is accepted, g=%.4f\n",mycount,i,j,g[ind]);
             break; /* quit if we reach the boundary of the computational domain */
         }
-        /*	printf("%ld\t(%ld\t%ld) is accepted, g=%.4f\n",mycount,i,j,g[ind]); */
+        /*	Rprintf("%ld\t(%ld\t%ld) is accepted, g=%.4f\n",mycount,i,j,g[ind]); */
         
         /* update considered neighbors of the accepted point */
         for( k=0; k<8; k++ ) {
@@ -370,7 +370,7 @@ void ordered_upwind(void) {
                 ind1p=ind+neii[(k+1)%8];
                 if( ms[ind1m] >= 2 && ms[ind1p] >= 2 ) {
                     ms[ind1]=3;
-                    /*	  printf("ms[%ld, %ld] = 3\n",ind1%NX,ind1/NX); */
+                    /*	  Rprintf("ms[%ld, %ld] = 3\n",ind1%NX,ind1/NX); */
                 }
                 else {
                     g0=g[ind];
@@ -399,7 +399,7 @@ void ordered_upwind(void) {
                                 g[indupdate]=min(g[indupdate],sol.g);
                                 if( sol.g <= g[indupdate] ) {
                                     updatetree(indupdate);
-                                    /*	    printf("( %ld %ld ) has been updated, g = %.4f\n", i0,j0,g[indupdate]); */
+                                    /*	    Rprintf("( %ld %ld ) has been updated, g = %.4f\n", i0,j0,g[indupdate]); */
                                 }
                             }
                         }
@@ -430,7 +430,7 @@ void ordered_upwind(void) {
             b=B[indupdate];
             bdotvec=dotproduct(b,vec);
             
-            /*   printf("New Considered point: (%ld %ld)\n",i,j); */
+            /*   Rprintf("New Considered point: (%ld %ld)\n",i,j); */
             for( i0=max(0,i-KX); i0<=min(nx1,i+KX); i0++ ) for( j0=max(j-KY,0); j0<=min(ny1,j+KY); j0++ ) {
                 ind0=i0+NX*j0;
 /* v2: converts index values to x or y values */
@@ -479,7 +479,7 @@ void ordered_upwind(void) {
                 addtree(indupdate);
                 ms[indupdate]=1;
             }
-            /*  printf("   ( %ld\t%ld ) becomes Considered, g=%.4f\n",i,j,g[indupdate]); */
+            /*  Rprintf("   ( %ld\t%ld ) becomes Considered, g=%.4f\n",i,j,g[indupdate]); */
         }
         
     } /* end while ( count > 0 ) */
@@ -576,7 +576,7 @@ double one_pt_update(long ind,long ind0) {
 
 struct myvector getpoint(long ind) {
     struct myvector l;
-/*	printf("ALL VALUES IN GETPOINT: %li %g %i %g %g %g\n", ind, hx, NX, LX1, hy, LY1); */
+/*	Rprintf("ALL VALUES IN GETPOINT: %li %g %i %g %g %g\n", ind, hx, NX, LX1, hy, LY1); */
 /* v2: takes an index value and converts it to an x,y value
  * The reason this looks strange is that the storage matrix g is a 1 by NX*NY array
  * as opposed to a two-dimensional array
@@ -757,7 +757,7 @@ void deltree() {
     }
     else if( lcc == count ) {
         ic=tree[lcc];
-        if( (g[ind]) > (g[ic]) ) {chd='l'; if(ch=='y') printf("left\n");}
+        if( (g[ind]) > (g[ic]) ) {chd='l'; if(ch=='y') Rprintf("left\n");}
         else chd='n';
     }
     else chd='n';
@@ -787,8 +787,8 @@ void deltree() {
         }
         else if( lcc == count ) {
             ic=tree[lcc];
-            if(ch=='y') printf("child: loc(%li)=%li, t1=%.12e\n",ic1,lcc,g[ic1]);
-            if( (g[ind]) > (g[ic]) ) { chd='l';if(ch=='y') printf("left\n");}
+            if(ch=='y') Rprintf("child: loc(%li)=%li, t1=%.12e\n",ic1,lcc,g[ic1]);
+            if( (g[ind]) > (g[ic]) ) { chd='l';if(ch=='y') Rprintf("left\n");}
             else chd='n';
         }
         else chd='n';
@@ -816,7 +816,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		case 'd':
 			break;
 		default:
-			printf("chfield must be (d)efauly, (p)ositive, or (b)ounce\n");
+			Rprintf("chfield must be (d)efauly, (p)ositive, or (b)ounce\n");
 			return;
 	}
 			
@@ -848,7 +848,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 /* Determine filename if file saved to harddrive */
 	char *filename;
 	int datasave = tempdatasave[0]; /*what type of save do we need to do? data to R, data to HD, data to both */
-	printf("Creating file name.\n");
+	Rprintf("Creating file name.\n");
 	int lengthfilename = templengthfilename[0];
 	if (lengthfilename == 0) {
 	/* use default naming scheme */
@@ -870,7 +870,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		filenamebuff[lengthfilename] = '\0';
 		filename = filenamebuff;
 	}
-	printf("File name created.\n");
+	Rprintf("File name created.\n");
 
 /* The workhorse */
 	nx1=NX-1; ny1=NY-1; nxy=NX*NY;
@@ -887,31 +887,31 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	acf = malloc(sizeof(long)*2*(NX+NY)); 
 	pacf = malloc(sizeof(long)*NX*NY);
 	
-	printf("Completed Memory Allocation\n");
+	Rprintf("Completed Memory Allocation\n");
     long i,j,ind;
     clock_t CPUbegin;
     double cpu;
     
-    printf("equationx = %s\n", xbuff);
-	printf("equationy = %s\n", ybuff);
+    Rprintf("equationx = %s\n", xbuff);
+	Rprintf("equationy = %s\n", ybuff);
     
     param();
-    printf("Finished Loading Parameters\n");
+    Rprintf("Finished Loading Parameters\n");
     CPUbegin=clock();
     ipoint();
-    printf("Finished ipoint() function\n");
+    Rprintf("Finished ipoint() function\n");
     ordered_upwind();
     cpu=(clock()-CPUbegin)/((double)CLOCKS_PER_SEC);
-    printf("Finished ordered_upwind() function\n");
-    printf("cputime = %g\n",cpu);
+    Rprintf("Finished ordered_upwind() function\n");
+    Rprintf("cputime = %g\n",cpu);
     
 	FILE *fg;
 /* Write data to use some where, some how */
 	switch(datasave) {
 	case 1: /* does not save to R, only saves to hard drive */
 		fg=fopen(filename, "w");
-		printf("File opened.\n");
-		printf("In datasave case 1\n");
+		Rprintf("File opened.\n");
+		Rprintf("In datasave case 1\n");
     
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
@@ -926,8 +926,8 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		fclose(fg);
 		break;
 	case 2: /* saves to R, but does not save to hard drive */
-		printf("Saves only to R\n");
-		printf("In datasave case 2\n");
+		Rprintf("Saves only to R\n");
+		Rprintf("In datasave case 2\n");
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
@@ -940,8 +940,8 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		break;
 	case 3:	/* saves to R and saves to hard drive */
 		fg=fopen(filename, "w");
-		printf("In datasave case 3\n");
-		printf("File opened.\n");
+		Rprintf("In datasave case 3\n");
+		Rprintf("File opened.\n");
     
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
@@ -958,7 +958,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		fclose(fg);
 		break;
 	default:
-		printf("Running testrun.  You are not saving any data.\n");
+		Rprintf("Running testrun.  You are not saving any data.\n");
 		break;
 	}
 	
@@ -970,13 +970,13 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	free(xbuff); free(ybuff); 
     free(aB); free(B); free(ms); free(g); free(rcurr); free(pos); free(tree); free(acf); free(pacf); 
 
-	printf("Successful.  Exiting C code\n");
+	Rprintf("Successful.  Exiting C code\n");
 }
 
 
 
 /*** main ***/
 int main (int argc, char **argv) {
-	printf("This code has been stripped of everything.  Only useful by R.");
+	Rprintf("This code has been stripped of everything.  Only useful by R.");
 	return 0;
 }
