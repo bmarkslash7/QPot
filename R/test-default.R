@@ -1,4 +1,4 @@
-default-test <- function () {
+defaultTest <- function () {
 xbounds = c(-5.0, 60.0)
 ybounds = c(-5.0, 60.0)
 xstepnumber = 1000

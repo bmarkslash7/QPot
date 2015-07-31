@@ -6,5 +6,5 @@
 useDynLib(QPot)
 
 #define functions that can be called in R code
-export("QPotential", "default_test")
+export("QPotential", "defaultTest")
 

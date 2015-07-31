@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<R.h>
 
 /**
  @file expression_parser.c
@@ -22,8 +23,8 @@ double parse_expression_with_callbacks( const char *expr, parser_variable_callba
 	parser_data_init( &pd, expr, variable_cb, function_cb, user_data );
 	val = parser_parse( &pd );
 	if( pd.error ){
-		printf("Error: %s\n", pd.error );
-		printf("Expression '%s' failed to parse, returning nan\n", expr );
+		Rprintf("Error: %s\n", pd.error );
+		Rprintf("Expression '%s' failed to parse, returning nan\n", expr );
 	}
 	return val;	
 }
