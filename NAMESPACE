@@ -2,3 +2,7 @@
 
 export(QPotential)
 export(defaultTest)
+export(QPGlobal)
+export(TSDensity)
+export(TSPlot)
+export(TSTraj)
