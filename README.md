@@ -33,10 +33,8 @@ https://cran.r-project.org/doc/manuals/R-exts.html#Package-structure
 DESCRIPTION	Basic information on authors, licenses, etc.
 NAMESPACE	lists what is imported (from other libraries) and exported (made available to the user)
 NEWS		file containing updates and news
+			currently being used to store warnings and errors and a TODO list
 README.md	file containing basic information on the package
-TODO		list of things to add; can also be incorporated into the issue tracker.
-loadall.R	R script to load all files not as a package
-READMEN-chris.txt		stieha todo file with notes - delete by 1 sept 2015
 ```
 
 
