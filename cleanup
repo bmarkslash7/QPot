@@ -1,3 +1,6 @@
+#########################################################################
+devtools::check
+#########################################################################
 copying QPot to QPOTcopy
 go into QPotcopy folder
 start R
@@ -43,5 +46,36 @@ This typically indicates Rd problems.
 Non-standard files/directories found at top level:
   ‘Install-Instructions-self.txt’ ‘README-chris.txt’
   ‘devtools-check-results.txt’ ‘loadall.R’ ‘test’
+
+
+#########################################################################
+Install_instructions_self
+#########################################################################
+R CMD REMOVE QPot
+R CMD build QPot
+#copy tar.gz to /home to install
+#can't install across partitions
+R CMD INSTALL QPot_
+
+
+#########################################################################
+TODO
+#########################################################################
+./configure 
+----------------------------------------
+test configure for windows
+
+
+Ccode
+----------------------------------------
+check to make sure long type isn't used.
+do not call C rand, but use R rand
+run "nm -pg mypkg.so" and look for unsatisfied entry points(?) check "if any of the symbols marked U is unexpected."
+maybe change variable names
+"It is not portable to call compiled code in R or other packages via .Internal, .C, .Fortran, .Call or .External, since such interfaces are subject to change without notice and will probably result in your code terminating the R process. " Then how do you call them?
+
+General 
+---------------------------------------
+Do not use paste in error statements in R
 
 

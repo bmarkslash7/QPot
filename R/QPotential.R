@@ -2,8 +2,21 @@
 #' 
 #' @export
 #' 
-#' @param xrhs xstart xrange xsteps yrhs ystart yrange ysteps filename savetoR savetoHD bounce bounceedge MORE
-#' @return filetoHD filetoR
+#' @param xrhs The right hand side of the equation for x.
+#' @param xstart The starting value of x, usually the x value of the current equilibrium.
+#' @param xrange The x boundaries denoted at c(minimum, maximum).
+#' @param xsteps The number of steps between the minimum and maximum x value defined in x range.
+#' @param yrhs The right hand side of the y equation.
+#' @param ystart The starting value of y, usually the y value of the current equilibrium.
+#' @param yrange The y boundaries denoted at c(minimum, maximum).
+#' @param ysteps The number of steps between the minimum and maximum y value defined in y range.
+#' @param filename If the 
+#' @param savetoR Output the matrix of results for the upwind-ordered method to the current R session.  The default is not to write the matrix to the R session.  savetoR=TRUE writes the output matrix to the R session.
+#' @param savetoHD Write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is TRUE.
+#' @param bounce Dy default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').
+#' @param bounceedge If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by xrange and yrange.  The boundary edge is bounceedge of the total range.  Default is 0.01
+#' @return filetoHD 
+#' @return filetoR
 
 
 # R CMD SHLIB -I/usr/local/include -L/usr/local/lib -lmatheval upwindorderedMATHEVALv3.c -lm
