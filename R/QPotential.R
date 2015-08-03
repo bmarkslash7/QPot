@@ -15,8 +15,8 @@
 #' @param savetoHD Write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is TRUE.
 #' @param bounce Dy default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').
 #' @param bounceedge If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by xrange and yrange.  The boundary edge is bounceedge of the total range.  Default is 0.01
-#' @return filetoHD 
-#' @return filetoR
+#' @return filetoHD If savetoHD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
+#' @return filetoR If savetoR enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
 
 
 # R CMD SHLIB -I/usr/local/include -L/usr/local/lib -lmatheval upwindorderedMATHEVALv3.c -lm
