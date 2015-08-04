@@ -856,9 +856,9 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		filename = tempfilename;
 		char tempname[10];
 		strcpy(filename,"defaultname-");
-		sprintf(tempname, "x%4.4f", FP1);
+		sprintf(tempname, "x%9.4f", FP1);
 		strcat(filename, tempname);
-		sprintf(tempname, "y%4.4f", FP2);
+		sprintf(tempname, "y%9.4f", FP2);
 		strcat(filename, tempname);
 		strcat(filename, ".txt");
 	} else {
