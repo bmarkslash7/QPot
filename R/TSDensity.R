@@ -8,7 +8,6 @@
 #' @param contour.lwd line width of contour lines if \code{contour.lines=TRUE}.
 #' @param contour.lines if TRUE, then black countour lines added to the graph.
 #' @keywords Density plot of stochastic simulations
-#' @export
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)

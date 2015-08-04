@@ -11,7 +11,6 @@
 #' @param line.alpha transparency of lines from 0--255.
 #' @param zero.axes if TRUE, then axes plotted at \code{X=0} and \code{Y=0}.
 #' @keywords plot stochastic simulations
-#' @export
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)

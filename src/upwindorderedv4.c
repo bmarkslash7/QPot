@@ -4,8 +4,8 @@
  * replaced GNU libmatheval with expression_parser
  * 
  * system("R CMD SHLIB -I/usr/local/include -L/usr/local/lib expression_parser.c -lm")
- * system("R CMD SHLIB -I/usr/local/include -L/usr/local/lib upwindorderedMATHEVALv4.c expression_parser.o -lm")
- * currentupwindordered = "upwindorderedMATHEVALv4"
+ * system("R CMD SHLIB -I/usr/local/include -L/usr/local/lib upwindorderedv4.c expression_parser.o -lm")
+ * currentupwindordered = "upwindorderedv4"
  * try( dyn.load(paste(currentupwindordered, ".so", sep = "")) )
  * 
  * upwindorderedMATHEVALv3

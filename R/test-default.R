@@ -18,5 +18,7 @@ testequationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
 print("This writes a file to your hard drive\n")
 QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber)
 
+#.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounceedge))
+#.C("quasipotential", 
 
 }

@@ -10,7 +10,6 @@
 #' @param lower.bound numeric value specifying a lower bound in the simulation.
 #' @param upper.bound numeric value specifying an upper bound in the simulation.
 #' @keywords Stochastic simulation
-#' @export
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)
