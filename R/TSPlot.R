@@ -32,10 +32,10 @@
 #' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, func=LVModel, parms=model.parms, sigma=model.sigma)
 #'
 #' # Fourth, plot as one-dimensional plot . . .
-#' TSPlot(mat=LVModelOut, deltat=model.delta)
+#' TSPlot(mat=LVModelOut, deltat=model.deltat)
 #'
 #' # . . . or plot as two-dimensional plot
-#' TSPlot(mat=LVModelOut, deltat=model.delta, dim=2)
+#' TSPlot(mat=LVModelOut, deltat=model.deltat, dim=2)
 
 
 	TSPlot <- function(mat, deltat , dim = 1 , y.lim = NA , x.lab = "time" , dens = TRUE , lwd = 2 , line.alpha = 130 , zero.axes = TRUE) {

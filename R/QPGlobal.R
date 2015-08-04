@@ -7,9 +7,7 @@
 #' @param xlim A two-element vector with the minimum and maximum x values used for computing the quasi-potential.
 #' @param ylim A two-element vector with the minimum and maximum y values used for computing the quasi-potential.
 #' @keywords Global quasi-potential
-#' @export
-#' @examples 
-#' QPGlobal(list(local.1,local.2),c(0,4),c(0,4),c(-1,5),c(-1,5))
+
 
 QPGlobal <- function(local.surfaces , unstable.eq.x , unstable.eq.y , xlim , ylim) {
 	n.surfaces <- length(local.surfaces)
