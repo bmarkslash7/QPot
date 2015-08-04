@@ -46,7 +46,7 @@
 			polygon(densB$x , densB$y, col = rgb(0,0,255,75,maxColorValue=255) , border = rgb(0,0,255,130,maxColorValue=255))
 			}
 		if (dim ==2) {
-			require("MASS")
+#			require("MASS")
 			kern.2d <- kde2d(mat[,2] , mat[,3])
 			x.max <- length(kern.2d$x)
 			y.max <- length(kern.2d$y)
@@ -74,7 +74,7 @@
 			polygon(densA$x , densA$y, col = rgb(255,0,0,75,maxColorValue=255) , border = rgb(255,0,0,130,maxColorValue=255))
 			polygon(densB$x , densB$y, col = rgb(0,0,255,75,maxColorValue=255) , border = rgb(0,0,255,130,maxColorValue=255))
 
-			require("MASS")
+#			require("MASS")
 			kern.2d <- kde2d(mat[,2] , mat[,3])
 			x.max <- length(kern.2d$x)
 			y.max <- length(kern.2d$y)
