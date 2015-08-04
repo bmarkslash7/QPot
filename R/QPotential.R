@@ -73,6 +73,9 @@ storage <- array(1.0, dim=c(1,(numofstepsx*numofstepsy)))
 if (filename != 'NULL') {lengthfilename = nchar(filename)}
 else 					{lengthfilename = 0}
 
+#default filename has a restriction on the name size
+if ( (filename == 'NULL') && (savetoHD == TRUE) && ( (abs(xstart) > 99999) || (abs(ystart) > 99999) ) ) { stop('Cannot use default filename because program will crash.  Please supply filename=')}
+
 if ((savetoR == TRUE) && (savetoHD == TRUE)) 		{datasave = 3}
 else if ((savetoR == TRUE) && (savetoHD == FALSE)) 	{datasave = 2}
 else if (isTRUE(savetoHD))							{datasave = 1}

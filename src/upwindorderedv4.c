@@ -854,7 +854,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	/* use default naming scheme */
 		char tempfilename[200];
 		filename = tempfilename;
-		char tempname[10];
+		char tempname[20]; /*magic number that contributed to a buffer overflow */
 		strcpy(filename,"defaultname-");
 		sprintf(tempname, "x%6.4f", FP1);
 		strcat(filename, tempname);
