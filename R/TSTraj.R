@@ -4,12 +4,13 @@
 #' @param y0 the a two-element vector of the initial conditions for the state variables.
 #' @param time numeric value indicating the total time over which the simulation is to be run.
 #' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}.
-#' @param func funciton containing deterministic equations formatted as \href{https://cran.r-project.org/web/packages/deSolve/index.html}{deSolve}.
+#' @param func funciton containing deterministic equations formatted as \pkg{deSolve}.
 #' @param parms a named vector of paramters and their respective values for the deterministic equations.
 #' @param sigma numberic value specifying the noise intensity.
 #' @param lower.bound numeric value specifying a lower bound in the simulation.
 #' @param upper.bound numeric value specifying an upper bound in the simulation.
 #' @keywords Stochastic simulation
+#' @export
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)

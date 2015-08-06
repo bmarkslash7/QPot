@@ -13,6 +13,7 @@
 #' x.limits <- c(-10,10)
 #' y.limits <- c(-10,10)
 #' length.xy <- c(15,15)
+#' mesh.xy <- c(20,20)
 #' x <- seq(x.limits[1], x.limits[2], length.out = length.xy[1]) + 0.5
 #' y <- seq(y.limits[1], y.limits[2], length.out = length.xy[2]) + 0.5
 #' eqns <- list("(y^2)/(x)" , "(x^2)/(y)")
