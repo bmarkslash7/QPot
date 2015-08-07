@@ -22,9 +22,9 @@
 #' VecDecomp(z)
 #' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits,remainder=T)
 
-VecDecomp <- function(surface,equations,length.out,x.lim,y.lim,remainder=FALSE){
+VecDecomp <- function(surface,equations,x.lim,y.lim,remainder=FALSE){
 	qpr <- nrow(surface)
-	qpc <- 	ncol(surface)
+	qpc <- ncol(surface)
 
 	r.dx <- (surface[,qpc] - surface[,(qpc-1)])
 	l.dx <- (surface[,2] - surface[,1])
@@ -34,7 +34,7 @@ VecDecomp <- function(surface,equations,length.out,x.lim,y.lim,remainder=FALSE){
 	}
 	int.dx[,1] <- l.dx
 	int.dx[,qpc] <- r.dx
-	dx <- int.dx
+	dx <- -1*int.dx
 
 	t.dy <- (surface[1,] - surface[2,])
 	b.dy <- (surface[(qpr-1),] - surface[qpr,])
@@ -44,18 +44,20 @@ VecDecomp <- function(surface,equations,length.out,x.lim,y.lim,remainder=FALSE){
 	}
 	int.dy[1,] <- t.dy
 	int.dy[qpr,] <- b.dy
-	dy <- int.dy
+	dy <- -1*int.dy
 
 	if(remainder == FALSE){
 		list(dx,dy)
 		} else {
-			x.val <- seq(min(x.lim),max(x.lim),length.out=length.out[1])
-			y.val <- seq(min(y.lim),max(y.lim),length.out=length.out[2])
+			x.val <- seq(min(x.lim),max(x.lim),length.out=qpc)
+			y.val <- seq(min(y.lim),max(y.lim),length.out=qpr)
 			n.eq <- length(equations)
 			z.list <- vector(mode="list" , length = n.eq)
 			for(i in 1:n.eq){
 			z.list[[i]] <- outer(x.val,y.val,function(x,y){eval(parse(text=equations[[i]]))})
 			}
-		list(surface,dx,dy, z.list[[1]],z.list[[2]])
+			rx <- z.list[[1]] + dx
+			ry <- z.list[[2]] + dy
+			list(dx,dy,rx,ry)
 		}
 }
