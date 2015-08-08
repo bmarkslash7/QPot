@@ -33,9 +33,12 @@ QPContour <- function(surface, density, x.lim, y.lim, n.filled.contour, n.contou
 	colmin <- min(which(eq.sub > 0 , arr.ind = T)[,2])
 	colmax <- max(which(eq.sub > 0 , arr.ind = T)[,2])
 
-	x.pretty <- pretty(c(rowmin/plot.mesh.xy[1]*x.range+x.lim[1],rowmax/plot.mesh.xy[1]*x.range+x.lim[2]))
+	
+	x.pretty <- pretty(c((colmin/density[1]*x.range-min(x.lim))*0.9,(colmax/density[1]*x.range-min(x.lim))*1.1))
+
 	x.pretty.at <- (x.pretty-x.lim[1])/x.range*plot.mesh.xy[1]
-	y.pretty <- pretty(c(colmin/plot.mesh.xy[2]*y.range+y.lim[1],colmax/plot.mesh.xy[2]*y.range+y.lim[2]))
+
+	y.pretty <- pretty(c((rowmin/density[2]*y.range-min(y.lim))*0.9,(rowmax/density[2]*y.range-min(y.lim))*1.1))
 	y.pretty.at <- (y.pretty-y.lim[1])/y.range*plot.mesh.xy[2]
 
 

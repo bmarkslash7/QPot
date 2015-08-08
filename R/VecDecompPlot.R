@@ -21,7 +21,7 @@
 #' VecDecomp(z)
 #' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits,remainder=T)
 
-VecDecompPlot <- function(field, density, x.lim, y.lim , arrow.type="proportional"){
+VecDecompPlot <- function(field, density, x.lim, y.lim ){
 	sub.dx.x <- seq(1, ncol(field[[1]]), length.out=density[1])
 	sub.dx.y <- seq(1, ncol(field[[1]]), length.out=density[2])
 	sub.dy.x <- seq(1, ncol(field[[2]]), length.out=density[1])
@@ -30,8 +30,8 @@ VecDecompPlot <- function(field, density, x.lim, y.lim , arrow.type="proportiona
 	dx.sub <- field[[1]][sub.dx.x, sub.dx.y]
 	dy.sub <- field[[2]][sub.dy.x, sub.dy.y]
 
-	dx.rel <- -1*(dx.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
-	dy.rel <- -1*(dy.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
+	dx.rel <- (dx.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
+	dy.rel <- (dy.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
 
 	# dx.even <- -1*dx.sub/((dx.sub^2)+(dy.sub^2))^0.5
 	# dy.even <- -1*dy.sub/(((dx.sub^2)+(dy.sub^2))^0.5)
@@ -44,29 +44,27 @@ VecDecompPlot <- function(field, density, x.lim, y.lim , arrow.type="proportiona
 	x.range <- max(x.lim)-min(x.lim)
 	y.range <- max(y.lim)-min(y.lim)
 
-	x.pretty <- pretty(c(rowmin/density[1]*x.range,rowmax/density[1]*x.range-0.5))
-	x.pretty.at <- (x.pretty-min(x.lim))/x.range*density[1]
-	y.pretty <- pretty(c(colmin/density[2]*y.range,colmax/density[2]*y.range-0.5))
-	y.pretty.at <- (y.pretty-min(y.lim))/y.range*density[2]
+	x.pretty <- pretty(c(((colmin-min(x.lim))/x.range)*density[1],((colmin-min(x.lim))/x.range)*density[1]))
+	x.pretty.at <- ((x.pretty-min(x.lim))/x.range)*density[1]
+	y.pretty <- pretty(c(((rowmin-min(y.lim))/y.range)*density[2],((rowmin-min(y.lim))/y.range)*density[2]))
+	y.pretty.at <- ((y.pretty-min(y.lim))/y.range)*density[2]
 
 	row.min <- c(rowmin,rowmax)
 	col.min <- c(colmin,colmax)
 
-	qpr <- nrow(field[[1]])
-	qpc <- ncol(field[[1]])
+	qpr <- nrow(dx.rel)
+	qpc <- ncol(dx.rel)
 
 	plot(0 , type = "n" , xlim = row.min , ylim = col.min , las = 1 , xlab = expression(italic(X)) , ylab = expression(italic(Y)) , xaxt = "n" , yaxt = "n")
-for (i in 0:(qpr-1)){ # rows
-		for (j in 1:qpc){ #columns
-			x1 <- i + (dy.rel[i+1,j]/2)
-			x2 <- i - (dy.rel[i+1,j]/2)
-			y1 <- j - (dx.rel[i+1,j]/2)
-			y2 <- j + (dx.rel[i+1,j]/2)
+for (i in 1:(qpr)){
+		for (j in 1:qpc){
+			x1 <- i + (dy.rel[i,j]/2)
+			x2 <- i - (dy.rel[i,j]/2)
+			y1 <- j - (dx.rel[i,j]/2)
+			y2 <- j + (dx.rel[i,j]/2)
 			arrows(x1,y1,x2,y2 , length = 0.03 , lwd = 1.1)
 		}
 	}
 axis(1,at=x.pretty.at,labels=x.pretty)
 axis(2,at=y.pretty.at,labels=y.pretty,las=1)
 }
-
-# # VecDecompPlot(VD,c(50,50),c(-.5,20),c(-.5,20))
