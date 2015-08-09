@@ -7,5 +7,5 @@ export(QPGlobal)
 export(TSDensity)
 export(TSPlot)
 export(TSTraj)
-
-
+export(VecDecomp)
+export(VecDecompPlot)
