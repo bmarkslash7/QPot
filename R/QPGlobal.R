@@ -1,9 +1,9 @@
 #' Finding the global quasi-potential
 #'
 #' This function allows you to find the global quasi-potential values for several local quasi-potential surfaces
-#' @param local.surfaces A list of local quasi-potential surfaces as matrices.
-#' @param unstable.eq.x A vector of unstable equilibria.  Must be in the same order as unstable.eq.y.
-#' @param unstable.eq.y A vector of unstable equilibria.  Must be in the same order as unstable.eq.x.
+#' @param local.surfaces A list of local quasi-potential surfaces, each of which is stored in discretized form as a matrix.
+#' @param unstable.eq.x A vector of the x-coordinates of the unstable equilibria.  Must be in the same order as unstable.eq.y.
+#' @param unstable.eq.y A vector of the y-coordinates of the unstable equilibria.  Must be in the same order as unstable.eq.x.
 #' @param xlim A two-element vector with the minimum and maximum x values used for computing the quasi-potential.
 #' @param ylim A two-element vector with the minimum and maximum y values used for computing the quasi-potential.
 #' @keywords Global quasi-potential
