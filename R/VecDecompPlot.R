@@ -6,7 +6,7 @@
 #' @param x.lim two-element vector for the x variable's minimum and maximum values
 #' @param y.lim two-element vector for the y variable's minimum and maximum values
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
-
+#' @param tail.length sets the length of the tail of the arrow.  The argument defaults to 1, which is length of the longest vector in the plotted space.
 #' @keywords vector field plot, remainder field plot
 #' @export
 #' @examples
@@ -19,12 +19,12 @@
 #' f <- function(x, y) { x <- (y^2)/(x) ; y <- (x^2)/(y) }
 #' z <- outer(x, y, f)
 #' VecDecomp(z)
-#' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits,remainder=T)
+#' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits)
 
-VecDecompPlot <- function(field, density, x.lim, y.lim ){
-	sub.dx.x <- seq(1, ncol(field[[1]]), length.out=density[1])
+VecDecompPlot <- function(field, density, x.bound, y.bound, arrow.type="equal", tail.length=1, ...){
+	sub.dx.x <- seq(1, nrow(field[[1]]), length.out=density[1])
 	sub.dx.y <- seq(1, ncol(field[[1]]), length.out=density[2])
-	sub.dy.x <- seq(1, ncol(field[[2]]), length.out=density[1])
+	sub.dy.x <- seq(1, nrow(field[[2]]), length.out=density[1])
 	sub.dy.y <- seq(1, ncol(field[[2]]), length.out=density[2])
 
 	dx.sub <- field[[1]][sub.dx.x, sub.dx.y]
@@ -33,13 +33,15 @@ VecDecompPlot <- function(field, density, x.lim, y.lim ){
 	dx.rel <- (dx.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
 	dy.rel <- (dy.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
 
-	# dx.even <- -1*dx.sub/((dx.sub^2)+(dy.sub^2))^0.5
-	# dy.even <- -1*dy.sub/(((dx.sub^2)+(dy.sub^2))^0.5)
+	dx.even <- dx.sub/((dx.sub^2)+(dy.sub^2))^0.5
+	dy.even <- dy.sub/(((dx.sub^2)+(dy.sub^2))^0.5)
 
 	rowmin <- min(which(dx.sub != 0 , arr.ind = T)[,1])
 	rowmax <- max(which(dx.sub != 0 , arr.ind = T)[,1])
 	colmin <- min(which(dx.sub != 0 , arr.ind = T)[,2])
 	colmax <- max(which(dx.sub != 0 , arr.ind = T)[,2])
+
+
 
 	x.range <- max(x.lim)-min(x.lim)
 	y.range <- max(y.lim)-min(y.lim)
@@ -49,22 +51,22 @@ VecDecompPlot <- function(field, density, x.lim, y.lim ){
 	y.pretty <- pretty(c(((rowmin-min(y.lim))/y.range)*density[2],((rowmin-min(y.lim))/y.range)*density[2]))
 	y.pretty.at <- ((y.pretty-min(y.lim))/y.range)*density[2]
 
-	row.min <- c(rowmin,rowmax)
-	col.min <- c(colmin,colmax)
+	x.lim <- c(rowmin,rowmax)
+	y.lim <- c(colmin,colmax)
 
-	qpr <- nrow(dx.rel)
-	qpc <- ncol(dx.rel)
+	qpr <- nrow(dx.sub)
+	qpc <- ncol(dx.sub)
 
-	plot(0 , type = "n" , xlim = row.min , ylim = col.min , las = 1 , xlab = expression(italic(X)) , ylab = expression(italic(Y)) , xaxt = "n" , yaxt = "n")
-for (i in 1:(qpr)){
-		for (j in 1:qpc){
-			x1 <- i + (dy.rel[i,j]/2)
-			x2 <- i - (dy.rel[i,j]/2)
-			y1 <- j - (dx.rel[i,j]/2)
-			y2 <- j + (dx.rel[i,j]/2)
-			arrows(x1,y1,x2,y2 , length = 0.03 , lwd = 1.1)
+	plot(0 , type = "n" , xlim = x.lim , ylim = y.lim , las = 1 , xlab = expression(italic(X)) , ylab = expression(italic(Y)) , yaxt = "n" , xaxt = "n")
+	for (i in 1:qpr){
+			for (j in 1:qpc){
+				x0 <- j - (dx.rel[j,i]/2)
+				x1 <- j + (dx.rel[j,i]/2)
+				y0 <- i - (dy.rel[j,i]/2)
+				y1 <- i + (dy.rel[j,i]/2)
+				arrows(x0,y0,x1,y1 , length = .035 , lwd = 1.1)
+			}
 		}
-	}
-axis(1,at=x.pretty.at,labels=x.pretty)
-axis(2,at=y.pretty.at,labels=y.pretty,las=1)
+	axis(1,at=x.pretty.at,labels=x.pretty)
+	axis(2,at=y.pretty.at,labels=y.pretty,las=1)
 }
