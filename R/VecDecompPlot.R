@@ -21,7 +21,7 @@
 #' VecDecomp(z)
 #' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits)
 
-VecDecompPlot <- function(field, density, x.bound, y.bound, arrow.type="equal", tail.length=1, ...){
+VecDecompPlot <- function(field, density, x.lim, y.lim, arrow.type="proportional", tail.length=1, ...){
 	sub.dx.x <- seq(1, nrow(field[[1]]), length.out=density[1])
 	sub.dx.y <- seq(1, ncol(field[[1]]), length.out=density[2])
 	sub.dy.x <- seq(1, nrow(field[[2]]), length.out=density[1])
