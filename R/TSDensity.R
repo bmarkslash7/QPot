@@ -8,7 +8,7 @@
 #' @param contour.lwd line width of contour lines if \code{contour.lines=TRUE}.
 #' @param contour.lines if TRUE, then black countour lines added to the graph.
 #' @keywords Density plot of stochastic simulations
-#' @export
+#' 
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)
@@ -26,7 +26,8 @@
 #' }
 #'
 #' # Third, run it
-#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, func=LVModel, parms=model.parms, sigma=model.sigma)
+#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
+#' func=LVModel, parms=model.parms, sigma=model.sigma)
 #'
 #' # Fourth, plot as one-dimensional plot . . .
 #' TSDensity(mat=LVModelOut)
@@ -47,8 +48,8 @@
 			polygon(densB$x , densB$y, col = rgb(0,0,255,75,maxColorValue=255) , border = rgb(0,0,255,130,maxColorValue=255))
 			}
 		if (dim ==2) {
-			require("MASS")
-			kern.2d <- kde2d(mat[,2] , mat[,3])
+#			require("MASS")	#Mass called in DESCRIPTION, Depends
+			kern.2d <- MASS::kde2d(mat[,2] , mat[,3])
 			x.max <- length(kern.2d$x)
 			y.max <- length(kern.2d$y)
 			x.range <- 1:x.max
@@ -75,8 +76,8 @@
 			polygon(densA$x , densA$y, col = rgb(255,0,0,75,maxColorValue=255) , border = rgb(255,0,0,130,maxColorValue=255))
 			polygon(densB$x , densB$y, col = rgb(0,0,255,75,maxColorValue=255) , border = rgb(0,0,255,130,maxColorValue=255))
 
-			require("MASS")
-			kern.2d <- kde2d(mat[,2] , mat[,3])
+#			require("MASS")
+			kern.2d <- MASS::kde2d(mat[,2] , mat[,3])
 			x.max <- length(kern.2d$x)
 			y.max <- length(kern.2d$y)
 			x.range <- 1:x.max

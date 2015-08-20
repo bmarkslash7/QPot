@@ -10,7 +10,7 @@
 #' @param lower.bound numeric value specifying a lower bound in the simulation.
 #' @param upper.bound numeric value specifying an upper bound in the simulation.
 #' @keywords Stochastic simulation
-#' @export
+#' 
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)
@@ -28,7 +28,8 @@
 #' }
 #'
 #' # Run it
-#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, func=LVModel, parms=model.parms, sigma=model.sigma)
+#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
+#' func=LVModel, parms=model.parms, sigma=model.sigma)
 
 	TSTraj <- function(y0, time, deltat, func, parms, sigma, lower.bound = NA, upper.bound = NA) {
 	time.vals <- seq(from = 1 , to = time , by = deltat)

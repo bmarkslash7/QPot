@@ -2,7 +2,7 @@
 #'
 #' This function allows you to plot the simulation of simulate two-dimensional stochastic differential equations from \code{\link{TSTraj}}
 #' @param mat a matrix output from \code{\link{TSTraj}}.
-#' @param delat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}, used in the function to recaluculate axes if applicable.
+#' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}, used in the function to recaluculate axes if applicable.
 #' @param dim dimensions of the plot; \code{dim=1} to plot a timeseries with \code{X} and \code{Y} on the ordinate axis or \code{dim=2} to plot the trjectories in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).
 #' @param y.lim for \code{dim=1}, allows user to specify the range of the y-axis as a two-element vector.
 #' @param x.lab for \code{dim=1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}
@@ -11,7 +11,7 @@
 #' @param line.alpha transparency of lines from 0--255.
 #' @param zero.axes if TRUE, then axes plotted at \code{X=0} and \code{Y=0}.
 #' @keywords plot stochastic simulations
-#' @export
+#' 
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)
@@ -29,7 +29,8 @@
 #' }
 #'
 #' # Third, run it
-#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, func=LVModel, parms=model.parms, sigma=model.sigma)
+#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
+#' func=LVModel, parms=model.parms, sigma=model.sigma)
 #'
 #' # Fourth, plot as one-dimensional plot . . .
 #' TSPlot(mat=LVModelOut, deltat=model.deltat)

@@ -1,6 +1,5 @@
 #' Wrapper for call to quasipotential compution using the upwind ordered method
 #' 
-#' @export
 #' 
 #' @param xrhs The right hand side of the equation for x.
 #' @param xstart The starting value of x, usually the x value of the current equilibrium.

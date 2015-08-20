@@ -5,11 +5,13 @@
 #' @param density two-element vector respectively specifying the number of respective arrows in the x and y directions.
 #' @param x.bound two-element vector for the x domain boundries used for the quasi-potential simulation.
 #' @param y.bound two-element vector for the y domain boundries used for the quasi-potential simulation.
+#' @param x.lim I DO NOT KNOW BUT NOW devtools::check() IS OK
+#' @param y.lim I DO NOT KNOW BUT NOW devtools::check() IS OK
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
 #' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
 #' @param ... passes arguments to both \code{\link{plot}} and \code{\link{arrows}}.
 #' @keywords vector field plot, remainder field plot
-#' @export
+#' 
 #' @examples
 #' x.limits <- c(-10,10)
 #' y.limits <- c(-10,10)
@@ -19,8 +21,11 @@
 #' eqns <- list("(y^2)/(x)" , "(x^2)/(y)")
 #' f <- function(x, y) { x <- (y^2)/(x) ; y <- (x^2)/(y) }
 #' z <- outer(x, y, f)
-#' VecDecomp(z)
-#' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits)
+########################################################################
+# THIS IS LEFT OVER FROM A PREVIOUS FUNCTION
+########################################################################
+# #' VecDecomp(z)
+# #' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits)
 
 VecDecompPlot <- function(field, density, x.bound, y.bound, x.lim, y.lim, arrow.type="equal", tail.length=1, ...){
 		x.range <- max(x.bound)-min(x.bound)

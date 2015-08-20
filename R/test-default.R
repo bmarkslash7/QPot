@@ -1,6 +1,5 @@
 #' Test run of QPotential function
 #' 
-#' @export
 #' 
 #' @return filetoHD
 

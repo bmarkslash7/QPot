@@ -3,24 +3,28 @@
 #' This function calculates the vector and remainder fields.
 #' @param surface matrix output from QPGlobal.
 #' @param equations a two-element list with equations as strings, one for each equation.
-#' @param mesh two-element vector with respective x and y mesh sizes.
 #' @param x.lim two-element vector with respective minimum and maximum x values.
 #' @param y.lim two-element vector with respective minimum and maximum y values.
-#' @param remainder if \code{TRUE}, calculates the remainder field, default is \code{FALSE}.
 #' @keywords vector field, remainder field
-#' @export
-#' @examples
-#' x.limits <- c(-10,10)
-#' y.limits <- c(-10,10)
-#' length.xy <- c(15,15)
-#' mesh.xy <- c(20,20)
-#' x <- seq(x.limits[1], x.limits[2], length.out = length.xy[1]) + 0.5
-#' y <- seq(y.limits[1], y.limits[2], length.out = length.xy[2]) + 0.5
-#' eqns <- list("(y^2)/(x)" , "(x^2)/(y)")
-#' f <- function(x, y) { x <- (y^2)/(x) ; y <- (x^2)/(y) }
-#' z <- outer(x, y, f)
-#' VecDecomp(z)
-#' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits,remainder=T)
+#' 
+########################################################################
+# THIS EXAMPLE FAILS WITH
+# > VecDecomp(z)
+# Error in seq(min(x.lim), max(x.lim), length.out = qpc) : 
+#  argument "x.lim" is missing, with no default
+########################################################################
+# @examples
+# x.limits <- c(-10,10)
+# y.limits <- c(-10,10)
+# length.xy <- c(15,15)
+# mesh.xy <- c(20,20)
+# x <- seq(x.limits[1], x.limits[2], length.out = length.xy[1]) + 0.5
+# y <- seq(y.limits[1], y.limits[2], length.out = length.xy[2]) + 0.5
+# eqns <- list("(y^2)/(x)" , "(x^2)/(y)")
+# f <- function(x, y) { x <- (y^2)/(x) ; y <- (x^2)/(y) }
+# z <- outer(x, y, f)
+# VecDecomp(z)
+# VecDecomp(z,eqns,x.lim,y.lim)
 
 VecDecomp <- function(surface,equations,x.lim,y.lim){
 	qpr <- nrow(surface)

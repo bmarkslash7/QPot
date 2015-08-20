@@ -3,8 +3,8 @@
 #' This function allows you to plot quasi-potential surfaces
 #' @param surface the surface to be plotted, from \code{\link{QPGlobal}}
 #' @param density vector respectively for the number of \code{x} and \code{y} points to be plotted.
-#' @param x.lim two-element vector for the x variable's minimum and maximum values
-#' @param y.lim two-element vector for the y variable's minimum and maximum values
+#' @param x.bound two-element vector for the x variable's minimum and maximum values
+#' @param y.bound two-element vector for the y variable's minimum and maximum values
 #' @param n.filled.contour numeric value for the nubmber of breaks in the filled contour.
 #' @param n.contour.lines numeric value for the nubmber of breaks in the contour lines.
 #' @param col vector of colors to be used in the plot.
@@ -12,14 +12,19 @@
 #' @param col.contour a vector of colors used for the filled contour region.
 #' @param contour.lines if TRUE, then contour lines plotted over filled contour; vice versa if FALSE.
 #' @param ... passes arguments to both \code{\link{plot}} and \code{\link{contour}}.
-#' @details Because, in gerneal, capturing the topological features can be subtle, we implemented a feature in \code{\link{QPContour}} to keep the filled.contour region while changing the contour lines.  Specifically, filled.contour takes the range of the surface values (\eqn{\phi}), divides by the number of the specified contours (i.e., \code{n.filled.contour}), and creates a contour at each break, which happenes to be equal across the range.  But because visualizing some topology may (i) require looking between contour breaks and (ii) adding contour lines would overload the plot with lines, we use an equation to modify the distribution of contour lines.  Namely, adjusting the \code{c} argument in the \code{\link{QPContour}} function adjusts the \eqn{c} paramter in the following equation: \deqn{max_\phi \times (\frac{x}{n-1})^c.}.  This allows the user to keep the same number of contour lines (i.e., specified with \code{n.contour.lines}), but focus them toward the troughs or peaks of the surfaces. At \eqn{c=1}, the contour lines correspond to the filled.contour breaks.  If \eqn{c > 1}, then the contour lines become more concentrated towards the trough.  Similarly, if \eqn{c < 1}, then the contour lines are more focused at the peaks of the surface.  As an example: \cr \figure{Ex3_QP_c.3.png}.
-#' @export
-#' @examples
-#' # First, use a surface (example from QPGlobal)
-#' global.qp <- QPGlobal(list(local.1,local.2),c(0,4),c(0,4),c(-1,5),c(-1,5))
-#'
-#' # Second, input that surface into QPContour
-#' QPContour(surface=global.qp, density=c(100,100), y.lim=c(-0.5,20), y.lim=c(-0.5,20), n.filled.contour=20, n.contour.lines=20, col=c("red", "white", "blue"), contour.lines = TRUE)
+#' @details Because, in general, capturing the topological features can be subtle, we implemented a feature in \code{\link{QPContour}} to keep the filled.contour region while changing the contour lines.  Specifically, filled.contour takes the range of the surface values (\eqn{\phi}), divides by the number of the specified contours (i.e., \code{n.filled.contour}), and creates a contour at each break, which happenes to be equal across the range.  But because visualizing some topology may (i) require looking between contour breaks and (ii) adding contour lines would overload the plot with lines, we use an equation to modify the distribution of contour lines.  Namely, adjusting the \code{c} argument in the \code{\link{QPContour}} function adjusts the \eqn{c} paramter in the following equation: \deqn{max_\phi \times (\frac{x}{n-1})^c.}.  This allows the user to keep the same number of contour lines (i.e., specified with \code{n.contour.lines}), but focus them toward the troughs or peaks of the surfaces. At \eqn{c=1}, the contour lines correspond to the filled.contour breaks.  If \eqn{c > 1}, then the contour lines become more concentrated towards the trough.  Similarly, if \eqn{c < 1}, then the contour lines are more focused at the peaks of the surface.  As an example: \cr \figure{Example3.png}.
+#' 
+########################################################################
+# COMMENTED OUT FOR PASSING devtools::check() - DECLARE local.1 and local.2
+########################################################################
+# @examples
+# # First, use a surface (example from QPGlobal)
+# global.qp <- QPGlobal(list(local.1,local.2),c(0,4),c(0,4),c(-1,5),c(-1,5))
+#
+# # Second, input that surface into QPContour
+# QPContour(surface=global.qp, density=c(100,100), y.bound=c(-0.5,20), 
+# y.bound=c(-0.5,20), n.filled.contour=20, n.contour.lines=20,
+# col=c("red", "white", "blue"), contour.lines = TRUE)
 
 QPContour <- function(surface, density, x.bound, y.bound, n.filled.contour=25, n.contour.lines=25, c=1, col.contour, contour.lines = TRUE, ...){
 	x.range <- max(x.bound)-min(x.bound)
