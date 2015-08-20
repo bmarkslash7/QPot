@@ -916,10 +916,10 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
-				fprintf(fg,"%.4e\t",g[ind]);
+				fprintf(fg,"%.4e\t",(1/2)*g[ind]);
 				ind++;
 			}
-			fprintf(fg,"%.4e",g[(ind)]);
+			fprintf(fg,"%.4e",(1/2)*g[(ind)]);
 			ind++;
 			fprintf(fg,"\n");
 		}
@@ -931,10 +931,10 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
-				storage[ind] = g[ind];
+				storage[ind] = (1/2)*g[ind];
 				ind++;
 			}
-			storage[ind] = g[ind];
+			storage[ind] = (1/2)*g[ind];
 			ind++;
 		}
 		break;
@@ -946,12 +946,12 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
-				fprintf(fg,"%.4e\t",g[ind]);
-				storage[ind] = g[ind];
+				fprintf(fg,"%.4e\t",(1/2)*g[ind]);
+				storage[ind] = (1/2)*g[ind];
 				ind++;
 			}
-			fprintf(fg,"%.4e",g[(ind)]);
-			storage[ind] = g[ind];
+			fprintf(fg,"%.4e",(1/2)*g[(ind)]);
+			storage[ind] = (1/2)*g[ind];
 			ind++;
 			fprintf(fg,"\n");
 		}
