@@ -905,6 +905,11 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
     Rprintf("Finished ordered_upwind() function\n");
     Rprintf("cputime = %g\n",cpu);
     
+    
+/*
+ * NEED TO DEFINE A temporary double THAT HOLDS g[ind] and divides by 2
+ */
+	double tempg;
 	FILE *fg;
 /* Write data to use some where, some how */
 	switch(datasave) {
@@ -916,10 +921,13 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
-				fprintf(fg,"%.4e\t",(1/2)*g[ind]);
+				tempg = (1.0/2.0)*g[ind];
+/*				fprintf(fg,"%.4e\t",g[ind]); */
+				fprintf(fg,"%.4e\t",tempg);
 				ind++;
 			}
-			fprintf(fg,"%.4e",(1/2)*g[(ind)]);
+			tempg = (1.0/2.0)*g[ind];
+			fprintf(fg,"%.4e",tempg);
 			ind++;
 			fprintf(fg,"\n");
 		}
@@ -931,10 +939,10 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
-				storage[ind] = (1/2)*g[ind];
+				storage[ind] = (1.0/2.0)*g[ind];
 				ind++;
 			}
-			storage[ind] = (1/2)*g[ind];
+			storage[ind] = (1.0/2.0)*g[ind];
 			ind++;
 		}
 		break;
@@ -946,12 +954,14 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
-				fprintf(fg,"%.4e\t",(1/2)*g[ind]);
-				storage[ind] = (1/2)*g[ind];
+				tempg = (1.0/2.0)*g[ind];
+				fprintf(fg,"%.4e\t",tempg);
+				storage[ind] = tempg;
 				ind++;
 			}
-			fprintf(fg,"%.4e",(1/2)*g[(ind)]);
-			storage[ind] = (1/2)*g[ind];
+			tempg = (1.0/2.0)*g[ind];
+			fprintf(fg,"%.4e",tempg);
+			storage[ind] = tempg;
 			ind++;
 			fprintf(fg,"\n");
 		}
