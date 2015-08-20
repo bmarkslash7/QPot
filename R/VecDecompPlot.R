@@ -2,11 +2,12 @@
 #'
 #' This function calculates the vector and remainder fields.
 #' @param field list output from \code{\link{VecDecomp}}.
-#' @param density two-element vector respectively specifying the number of arrows in the x and y directions.
-#' @param x.lim two-element vector for the x variable's minimum and maximum values
-#' @param y.lim two-element vector for the y variable's minimum and maximum values
+#' @param density two-element vector respectively specifying the number of respective arrows in the x and y directions.
+#' @param x.bound two-element vector for the x domain boundries used for the quasi-potential simulation.
+#' @param y.bound two-element vector for the y domain boundries used for the quasi-potential simulation.
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
-#' @param tail.length sets the length of the tail of the arrow.  The argument defaults to 1, which is length of the longest vector in the plotted space.
+#' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
+#' @param ... passes arguments to both \code{\link{plot}} and \code{\link{arrows}}.
 #' @keywords vector field plot, remainder field plot
 #' @export
 #' @examples
@@ -21,52 +22,79 @@
 #' VecDecomp(z)
 #' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits)
 
-VecDecompPlot <- function(field, density, x.lim, y.lim, arrow.type="proportional", tail.length=1, ...){
-	sub.dx.x <- seq(1, nrow(field[[1]]), length.out=density[1])
-	sub.dx.y <- seq(1, ncol(field[[1]]), length.out=density[2])
-	sub.dy.x <- seq(1, nrow(field[[2]]), length.out=density[1])
-	sub.dy.y <- seq(1, ncol(field[[2]]), length.out=density[2])
+VecDecompPlot <- function(field, density, x.bound, y.bound, x.lim, y.lim, arrow.type="equal", tail.length=1, ...){
+		x.range <- max(x.bound)-min(x.bound)
+		y.range <- max(y.bound)-min(y.bound)
 
-	dx.sub <- field[[1]][sub.dx.x, sub.dx.y]
-	dy.sub <- field[[2]][sub.dy.x, sub.dy.y]
+		row.range <- nrow(field[[1]])-1
+		col.range <- ncol(field[[1]])-1
 
+	if(missing(x.lim) | missing(y.lim)) {
+		row.min <- min(which(field[[1]] != 0 , arr.ind = T)[,1])
+		row.max <- max(which(field[[1]] != 0 , arr.ind = T)[,1])
+		col.min <- min(which(field[[1]] != 0 , arr.ind = T)[,2])
+		col.max <- max(which(field[[1]] != 0 , arr.ind = T)[,2])
+
+		x.min <- ((row.min-1)/row.range)*x.range + min(x.bound)
+		x.max <- ((row.max-1)/row.range)*x.range + min(x.bound)
+		y.min <- ((col.min-1)/col.range)*y.range + min(y.bound)
+		y.max <- ((col.max-1)/col.range)*y.range + min(y.bound)
+
+		x.win <- c(x.min,x.max)
+		y.win <- c(y.min,y.max)
+
+		print(x.win)
+		print(y.win)
+	} else {
+		x.win <- x.lim
+		y.win <- y.lim
+	
+		row.min <- (min(x.win)-min(x.bound))/x.range*row.range + 1
+		row.max <- (max(x.win)-min(x.bound))/x.range*row.range + 1
+		col.min <- (min(y.win)-min(y.bound))/y.range*col.range + 1
+		col.max <- (max(y.win)-min(y.bound))/y.range*col.range + 1
+	}
+
+ 	sub.x <- seq(row.min, row.max, length.out=density[1])
+	sub.y <- seq(col.min, col.max, length.out=density[2])
+
+	sub.x.val <- ((sub.x-1)/row.range)*x.range + min(x.bound)
+	sub.y.val <- ((sub.y-1)/col.range)*y.range + min(y.bound)
+
+	dx.sub <- field[[1]][sub.x, sub.y]
+	dy.sub <- field[[2]][sub.x, sub.y]
+
+	if(arrow.type=="proportional"){
 	dx.rel <- (dx.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
 	dy.rel <- (dy.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
+	dx.plot <- dx.rel*tail.length
+	dy.plot <- dy.rel*tail.length
+	}
 
+	if(arrow.type=="equal"){
 	dx.even <- dx.sub/((dx.sub^2)+(dy.sub^2))^0.5
 	dy.even <- dy.sub/(((dx.sub^2)+(dy.sub^2))^0.5)
-
-	rowmin <- min(which(dx.sub != 0 , arr.ind = T)[,1])
-	rowmax <- max(which(dx.sub != 0 , arr.ind = T)[,1])
-	colmin <- min(which(dx.sub != 0 , arr.ind = T)[,2])
-	colmax <- max(which(dx.sub != 0 , arr.ind = T)[,2])
+	dx.plot <- dx.even*tail.length
+	dy.plot <- dy.even*tail.length
+	}
 
 
+	if(arrow.type != "proportional" & arrow.type != "equal"){
+	dx.plot <- dx.sub*tail.length
+	dy.plot <- dy.sub*tail.length
+	}
 
-	x.range <- max(x.lim)-min(x.lim)
-	y.range <- max(y.lim)-min(y.lim)
+ 	qpr <- nrow(dx.plot)
+	qpc <- ncol(dy.plot)
 
-	x.pretty <- pretty(c(((colmin-min(x.lim))/x.range)*density[1],((colmin-min(x.lim))/x.range)*density[1]))
-	x.pretty.at <- ((x.pretty-min(x.lim))/x.range)*density[1]
-	y.pretty <- pretty(c(((rowmin-min(y.lim))/y.range)*density[2],((rowmin-min(y.lim))/y.range)*density[2]))
-	y.pretty.at <- ((y.pretty-min(y.lim))/y.range)*density[2]
-
-	x.lim <- c(rowmin,rowmax)
-	y.lim <- c(colmin,colmax)
-
-	qpr <- nrow(dx.sub)
-	qpc <- ncol(dx.sub)
-
-	plot(0 , type = "n" , xlim = x.lim , ylim = y.lim , las = 1 , xlab = expression(italic(X)) , ylab = expression(italic(Y)) , yaxt = "n" , xaxt = "n")
-	for (i in 1:qpr){
-			for (j in 1:qpc){
-				x0 <- j - (dx.rel[j,i]/2)
-				x1 <- j + (dx.rel[j,i]/2)
-				y0 <- i - (dy.rel[j,i]/2)
-				y1 <- i + (dy.rel[j,i]/2)
-				arrows(x0,y0,x1,y1 , length = .035 , lwd = 1.1)
+	plot(0 , type = "n" , xlim = x.win , ylim = y.win , las = 1, ...)
+	for (j in 1:qpr){
+			for (i in 1:qpc){
+				x0 <- sub.x.val[j] - (dx.plot[j,i]/2)
+				x1 <- sub.x.val[j] + (dx.plot[j,i]/2)
+				y0 <- sub.y.val[i] - (dy.plot[j,i]/2)
+				y1 <- sub.y.val[i] + (dy.plot[j,i]/2)
+				arrows(x0,y0,x1,y1, ...)
 			}
 		}
-	axis(1,at=x.pretty.at,labels=x.pretty)
-	axis(2,at=y.pretty.at,labels=y.pretty,las=1)
 }
