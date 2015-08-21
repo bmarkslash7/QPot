@@ -1,8 +1,8 @@
 #' Plotting function for vector decomposition and remainder fields
 #'
 #' This function calculates the vector and remainder fields.
-#' @param field list output from \code{\link{VecDecomp}}. GIVE EXAMPLE CODE
-#' @param density two-element vector respectively specifying the number of respective arrows in the x and y directions.
+#' @param field list output from \code{\link{VecDecomp}}.
+#' @param dens two-element vector respectively specifying the number of respective arrows in the x and y directions.
 #' @param x.bound two-element vector for the x domain boundries used for the quasi-potential simulation.
 #' @param y.bound two-element vector for the y domain boundries used for the quasi-potential simulation.
 #' @param x.lim I DO NOT KNOW BUT NOW devtools::check() IS OK
@@ -27,9 +27,7 @@
 # #' VecDecomp(z)
 # #' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits)
 
-VecDecompPlot <- function(field, density, x.bound, y.bound, x.lim, y.lim, arrow.type="equal", tail.length=1, ...){
-#CHECK TO MAKE SURE FIELD CONTAINS TWO ELEMENTS
-#CHECK TO MAKE SURE FIELD MATRICES ARE THE SAME SIZE
+VecDecompPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type="equal", tail.length=1, ...){
 		x.range <- max(x.bound)-min(x.bound)
 		y.range <- max(y.bound)-min(y.bound)
 
@@ -62,8 +60,8 @@ VecDecompPlot <- function(field, density, x.bound, y.bound, x.lim, y.lim, arrow.
 		col.max <- (max(y.win)-min(y.bound))/y.range*col.range + 1
 	}
 
- 	sub.x <- seq(row.min, row.max, length.out=density[1])
-	sub.y <- seq(col.min, col.max, length.out=density[2])
+ 	sub.x <- seq(row.min, row.max, length.out=dens[1])
+	sub.y <- seq(col.min, col.max, length.out=dens[2])
 
 	sub.x.val <- ((sub.x-1)/row.range)*x.range + min(x.bound)
 	sub.y.val <- ((sub.y-1)/col.range)*y.range + min(y.bound)

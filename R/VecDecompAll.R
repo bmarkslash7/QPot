@@ -2,7 +2,8 @@
 #'
 #' This function calculates the vector, gradient, and remainder fields.
 #' @param surface matrix output from QPGlobal.
-#' @param equations a two-element list with equations as strings, one for each equation.
+#' @param x.rhs COPY FROM QPOTENTIAL().
+#' @param y.rhs COPY FROM QPOTENTIAL().
 #' @param x.bound two-element vector with respective minimum and maximum x values.
 #' @param y.bound two-element vector with respective minimum and maximum y values.
 #' @keywords vector field, remainder field
@@ -26,9 +27,10 @@
 # VecDecomp(z)
 # VecDecomp(z,eqns,x.bound,y.bound)
 
-VecDecompAll <- function(surface,equations,x.bound,y.bound){
+VecDecompAll <- function(surface,x.rhs,y.rhs,x.bound,y.bound){
 	qpr <- nrow(surface)
 	qpc <- ncol(surface)
+	equations <- list(x.rhs,y.rhs)
 
 	# column derivative
 	r.dc <- (surface[,qpc] - surface[,(qpc-1)])

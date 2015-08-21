@@ -4,8 +4,8 @@
 #' @param local.surfaces A list of local quasi-potential surfaces, each of which is stored in discretized form as a matrix.
 #' @param unstable.eq.x A vector of the x-coordinates of the unstable equilibria.  Must be in the same order as unstable.eq.y.
 #' @param unstable.eq.y A vector of the y-coordinates of the unstable equilibria.  Must be in the same order as unstable.eq.x.
-#' @param xlim A two-element vector with the minimum and maximum x values used for computing the quasi-potential.
-#' @param ylim A two-element vector with the minimum and maximum y values used for computing the quasi-potential.
+#' @param x.bound A two-element vector with the minimum and maximum x values used for computing the quasi-potential.
+#' @param y.bound A two-element vector with the minimum and maximum y values used for computing the quasi-potential.
 #' @keywords Global quasi-potential
 #' 
 ########################################################################
@@ -14,21 +14,21 @@
 # #' @examples 
 # #' QPGlobal(list(local.1,local.2),c(0,4),c(0,4),c(-1,5),c(-1,5))
 
-QPGlobal <- function(local.surfaces , unstable.eq.x , unstable.eq.y , xlim , ylim) {
+QPGlobal <- function(local.surfaces , unstable.eq.x , unstable.eq.y , x.bound , y.bound) {
 	n.surfaces <- length(local.surfaces)
 	n.unstable.eq.x <- length(unstable.eq.x)
 	n.unstable.eq.y <- length(unstable.eq.y)
 		if(n.unstable.eq.x != n.unstable.eq.y){stop("Unstable x and y points not equal")}
 	mesh.xy <- dim(local.surfaces[[1]])
-	x.range <- max(xlim)-min(xlim)
-	y.range <- max(ylim)-min(ylim)
+	x.range <- max(x.bound)-min(x.bound)
+	y.range <- max(y.bound)-min(y.bound)
 
 	unstable.xy <- cbind(unstable.eq.x , unstable.eq.y) #unstable eq. as one object
 	unstable.phi.loc <- matrix(data = NA , nrow = n.unstable.eq.x , ncol = 2 , byrow = T) #local indeces
 	unstable.phi <- matrix(data = NA , nrow = n.unstable.eq.x , ncol = n.surfaces , byrow = F) #local phi values for each unstable equilibrium pair
 for (i in 1:n.unstable.eq.x){
-	x.loc <- round((unstable.xy[i,][1]-min(xlim))/x.range*mesh.xy[1])
-	y.loc <- round((unstable.xy[i,][2]-min(ylim))/y.range*mesh.xy[2])
+	x.loc <- round((unstable.xy[i,][1]-min(x.bound))/x.range*mesh.xy[1])
+	y.loc <- round((unstable.xy[i,][2]-min(y.bound))/y.range*mesh.xy[2])
 	unstable.phi.loc[i,] <- c(x.loc, y.loc)
 	}
 
