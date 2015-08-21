@@ -1,26 +1,21 @@
 #' Wrapper for call to quasipotential compution using the upwind ordered method
 #' 
 #' 
-#' @param xrhs A string containing the right hand side of the equation for x.
-#' @param xstart The starting value of x, usually the x value of the current equilibrium.
-#' @param xrange The x boundaries denoted at c(minimum, maximum).
-#' @param xsteps The number of steps between the minimum and maximum x value defined in x range.
-#' @param yrhs A string containing the right hand side of the y equation.
-#' @param ystart The starting value of y, usually the y value of the current equilibrium.
-#' @param yrange The y boundaries denoted at c(minimum, maximum).
-#' @param ysteps The number of steps between the minimum and maximum y value defined in y range.
-#' @param filename If the 
-#' @param savetoR Output the matrix of results for the upwind-ordered method to the current R session.  The default is not to write the matrix to the R session.  savetoR=TRUE writes the output matrix to the R session.
-#' @param savetoHD Write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is TRUE.
+#' @param x.rhs A string containing the right hand side of the equation for x.
+#' @param x.start The starting value of x, usually the x value of the current equilibrium.
+#' @param x.bound The x boundaries denoted at c(minimum, maximum).
+#' @param x.num.steps The number of steps between the minimum and maximum x value defined in x range.
+#' @param y.rhs A string containing the right hand side of the y equation.
+#' @param y.start The starting value of y, usually the y value of the current equilibrium.
+#' @param y.bound The y boundaries denoted at c(minimum, maximum).
+#' @param y.num.steps The number of steps between the minimum and maximum y value defined in y range.
+#' @param filename String for the name of the file saved to the hard drive.  If filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively. 
+#' @param save.to.R Output the matrix of results for the upwind-ordered method to the current R session.  The default is not to write the matrix to the R session.  save.to.R=TRUE writes the output matrix to the R session.
+#' @param save.to.HD Write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is TRUE.
 #' @param bounce Dy default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').
-#' @param bounceedge If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by xrange and yrange.  The boundary edge is bounceedge of the total range.  Default is 0.01
-#' @return filetoHD If savetoHD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
-#' @return filetoR If savetoR enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
-
-# CHANGE xrange and yrange to x.bound  and y.bound
-# CHANGE everything to x. and y.
-# ysteps to y.num.steps and for x
-#
+#' @param bounce.edge If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
+#' @return filetoHD If save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
+#' @return filetoR If save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
 
 # R CMD SHLIB -I/usr/local/include -L/usr/local/lib -lmatheval upwindorderedMATHEVALv3.c -lm
 # -I adds directory to the head of the list of directories containing libraries
@@ -36,38 +31,38 @@
 
 #currentupwindordered = "upwindorderedMATHEVALv4"
 
-QPotential <- function (xrhs = 'NULL', xstart = 'NULL', xrange = 'NULL', xsteps = 'NULL', yrhs = 'NULL', ystart = 'NULL', yrange = 'NULL', ysteps = 'NULL', filename = 'NULL', savetoR = 'NULL', savetoHD = TRUE, bounce = 'd', bounceedge = 0.01)
+QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = 'NULL', save.to.HD = TRUE, bounce = 'd', bounce.edge = 0.01)
 {
 
 #currentupwindordered = "upwindorderedMATHEVALv4"
 # Break apart function parameters into things that C code will use
 
 # check if any component of x is missing
-if (xrhs == 'NULL') {stop("No equation defined for x. Define xrhs.")} else {equationx <- xrhs}
-if (xstart == 'NULL') {stop("No starting value for x. Define xstart.")} else {startxval <- xstart}
-if (xsteps == 'NULL') {stop("Need the number of steps in x range. Define xsteps.")} else {numofstepsx <- xsteps}
-lengthequationx	<- nchar(xrhs)
-if (length(xrange) < 2) stop("Not enough values for x range in parameter xrange.")
-if (length(xrange) > 2) stop("Too many values for x range in parameter xrange.")
-lowerboundsx	<- xrange[1]
-upperboundsx	<- xrange[2]
+if (x.rhs == 'NULL') {stop("No equation defined for x. Define x.rhs.")} else {equationx <- x.rhs}
+if (x.start == 'NULL') {stop("No starting value for x. Define x.start.")} else {startxval <- x.start}
+if (x.num.steps == 'NULL') {stop("Need the number of steps in x range. Define x.num.steps.")} else {numofstepsx <- x.num.steps}
+lengthequationx	<- nchar(x.rhs)
+if (length(x.bound) < 2) stop("Not enough values for x range in parameter x.bound.")
+if (length(x.bound) > 2) stop("Too many values for x range in parameter x.bound.")
+lowerboundsx	<- x.bound[1]
+upperboundsx	<- x.bound[2]
 
 
 # check if any component of y is missing
-if (yrhs == 'NULL') {equationy = '0'} else {equationy <- yrhs}
-lengthequationy <- nchar(yrhs)
-if ( (length(yrange) == 1) && (yrange == 'NULL') ) {lowerboundsy <- 0; upperboundsy <- 0}
-if (yrange[1] != 'NULL') {
-	if (length(yrange) < 2) stop("Not enough values for y range in variable yrange.")
-	if (length(yrange) > 2) stop("Too many values for y range in variable yrange.")
-	lowerboundsy <- yrange[1]; upperboundsy	<- yrange[2]
-} # end of if yrange != 'NULL 
-if (yrange[1] == 'NULL') stop('No minimum and maximum y values.  Parameter yrange not defined')
+if (y.rhs == 'NULL') {equationy = '0'} else {equationy <- y.rhs}
+lengthequationy <- nchar(y.rhs)
+if ( (length(y.bound) == 1) && (y.bound == 'NULL') ) {lowerboundsy <- 0; upperboundsy <- 0}
+if (y.bound[1] != 'NULL') {
+	if (length(y.bound) < 2) stop("Not enough values for y range in variable y.bound.")
+	if (length(y.bound) > 2) stop("Too many values for y range in variable y.bound.")
+	lowerboundsy <- y.bound[1]; upperboundsy	<- y.bound[2]
+} # end of if y.bound != 'NULL 
+if (y.bound[1] == 'NULL') stop('No minimum and maximum y values.  Parameter y.bound not defined')
 #The numofstepsy cannot equal 1, because hy=(LY2-LY1)/(NY-1), where NY is numofsteps
-if (ysteps == 'NULL') {numofstepsy <- 2} else {numofstepsy <- ysteps}
-if (ystart == 'NULL') {startyval = 0} else {startyval <- ystart}
+if (y.num.steps == 'NULL') {numofstepsy <- 2} else {numofstepsy <- y.num.steps}
+if (y.start == 'NULL') {startyval = 0} else {startyval <- y.start}
 
-#TODO only create this storage array if savetoR == TRUE
+#TODO only create this storage array if save.to.R == TRUE
 # I think the .C function creates its own storage matrix, despite what 
 # I tell it or what it is supposed to do.
 storage <- array(1.0, dim=c(1,(numofstepsx*numofstepsy)))
@@ -77,17 +72,17 @@ if (filename != 'NULL') {lengthfilename = nchar(filename)}
 else 					{lengthfilename = 0}
 
 #default filename has a restriction on the name size
-if ( (filename == 'NULL') && (savetoHD == TRUE) && ( (abs(xstart) > 99999) || (abs(ystart) > 99999) ) ) { stop('Cannot use default filename because program will crash.  Please supply filename=')}
+if ( (filename == 'NULL') && (save.to.HD == TRUE) && ( (abs(x.start) > 99999) || (abs(y.start) > 99999) ) ) { stop('Cannot use default filename because program will crash.  Please supply filename=')}
 
-if ((savetoR == TRUE) && (savetoHD == TRUE)) 		{datasave = 3}
-else if ((savetoR == TRUE) && (savetoHD == FALSE)) 	{datasave = 2}
-else if (isTRUE(savetoHD))							{datasave = 1}
+if ((save.to.R == TRUE) && (save.to.HD == TRUE)) 		{datasave = 3}
+else if ((save.to.R == TRUE) && (save.to.HD == FALSE)) 	{datasave = 2}
+else if (isTRUE(save.to.HD))							{datasave = 1}
 else												{datasave = 4}
-if (savetoHD == 'testrun')							{datasave = 4}
+if (save.to.HD == 'testrun')							{datasave = 4}
 print(paste("Variable datasave is: ", datasave, sep = ""))
 
-# bounceedge is defined in function
-if (!is.numeric(bounceedge)) stop('Parameter bounceedge must be a number')
+# bounce.edge is defined in function
+if (!is.numeric(bounce.edge)) stop('Parameter bounce.edge must be a number')
 
 if (bounce == FALSE) {bouncestyle = 'd'}
 else if (bounce == 'd') {bouncestyle = 'd'}
@@ -136,34 +131,34 @@ if (numofstepsx*numofstepsy > 7000*7000) {
 
 #TODO check that removing out2 <- should prevent R from printing everything out,
 #probably not required because of call to storage 
-#out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounceedge))
+#out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounce.edge))
 if (datasave == 1) {
 	#no R write; HD write
-	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounceedge), PACKAGE="QPot")
+	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounce.edge), PACKAGE="QPot")
 	return(TRUE)
 }
 else if (datasave == 2) {
 	#R write; no HD write
-	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounceedge), PACKAGE="QPot")
+	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounce.edge), PACKAGE="QPot")
 	storage = out2[[1]]
-	storage <- matrix(storage, nrow = xsteps, byrow = TRUE)
+	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
 	return(storage)
 }
 else if (datasave == 3) {
 	# R write; HD write
-	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounceedge), PACKAGE="QPot")
+	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounce.edge), PACKAGE="QPot")
 	storage = out2[[1]]
-	storage <- matrix(storage, nrow = xsteps, byrow = TRUE)
+	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
 	return(storage)
 }
 else if (datasave == 4) {
 	# no R write; no HD write
-	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounceedge), PACKAGE="QPot")
+	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounce.edge), PACKAGE="QPot")
 	return(TRUE)
 }
 else 					{print("datasave is not a possible number.  How did you get here?")}
 
-#out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounceedge))
+#out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounce.edge))
 #storage = out2[[1]]
 #return(storage)
 } # end of upwind ordered function call
