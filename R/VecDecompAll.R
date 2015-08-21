@@ -1,10 +1,10 @@
 #' Vector decomposition and remainder fields
 #'
-#' This function calculates the vector and remainder fields.
+#' This function calculates the vector, gradient, and remainder fields.
 #' @param surface matrix output from QPGlobal.
 #' @param equations a two-element list with equations as strings, one for each equation.
-#' @param x.lim two-element vector with respective minimum and maximum x values.
-#' @param y.lim two-element vector with respective minimum and maximum y values.
+#' @param x.bound two-element vector with respective minimum and maximum x values.
+#' @param y.bound two-element vector with respective minimum and maximum y values.
 #' @keywords vector field, remainder field
 #' 
 ########################################################################
@@ -24,9 +24,9 @@
 # f <- function(x, y) { x <- (y^2)/(x) ; y <- (x^2)/(y) }
 # z <- outer(x, y, f)
 # VecDecomp(z)
-# VecDecomp(z,eqns,x.lim,y.lim)
+# VecDecomp(z,eqns,x.bound,y.bound)
 
-VecDecomp <- function(surface,equations,x.lim,y.lim){
+VecDecompAll <- function(surface,equations,x.bound,y.bound){
 	qpr <- nrow(surface)
 	qpc <- ncol(surface)
 
@@ -39,7 +39,7 @@ VecDecomp <- function(surface,equations,x.lim,y.lim){
 	}
 	int.dc[,1] <- l.dc
 	int.dc[,qpc] <- r.dc
-	dc <- -1*int.dc
+	dc <- -int.dc
 
 	# row derivative
 	t.dr <- (surface[1,] - surface[2,])
@@ -50,11 +50,11 @@ VecDecomp <- function(surface,equations,x.lim,y.lim){
 	}
 	int.dr[1,] <- t.dr
 	int.dr[qpr,] <- b.dr
-	dr <- -1*int.dr
+	dr <- int.dr
 
 	# vector and remainder fields
-	x.val <- seq(min(x.lim),max(x.lim),length.out=qpc)
-	y.val <- seq(min(y.lim),max(y.lim),length.out=qpr)
+	x.val <- seq(min(x.bound),max(x.bound),length.out=qpc)
+	y.val <- seq(min(y.bound),max(y.bound),length.out=qpr)
 	n.eq <- length(equations)
 	z.list <- vector(mode="list" , length = n.eq)
 	for(i in 1:n.eq){
@@ -67,8 +67,8 @@ VecDecomp <- function(surface,equations,x.lim,y.lim){
 		vy <- z.list[[2]]
 
 		#remainder field
-		rx <- z.list[[1]]-dr
-		ry <- z.list[[2]]-dc
+		rx <- z.list[[1]]+dr
+		ry <- z.list[[2]]+dc
 
-	list(vx,vy,dr,dc,rx,ry)
+	array(data=c(vx,vy,dr,dc,rx,ry),dim=c(qpr,qpc,6))
 }
