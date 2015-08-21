@@ -4,20 +4,78 @@
 #' @return filetoHD
 
 defaultTest <- function () {
-xbounds = c(-5.0, 60.0)
-ybounds = c(-5.0, 60.0)
-xstepnumber = 1000
-ystepnumber = 1000
-xinit = 6.60341
-yinit = 3.04537
-testequationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
-testequationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#Test Case 1 from the QPot dropbox folder
+xbounds = c(-0.5, 20.0)
+ybounds = c(-0.5, 20.0)
+xstepnumber = 4100
+ystepnumber = 4100
+xinit = 1.40491
+yinit = 2.80808
+testequationx = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
+testequationy = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
 
-#full code
-print("This writes a file to your hard drive\n")
-QPotential(xrhs=testequationx, xstart=xinit, xrange=xbounds, xsteps=xstepnumber, yrhs=testequationy, ystart=yinit, yrange=ybounds, ysteps=ystepnumber)
+choice <- readline(prompt = "This function runs a series of tests on the function QPotential() that takes a lot of time, hard drive space, and RAM.  This could cause your computer to be unhappy.  Do you want to continue (y/N)?")
+if ( (choice == "Y") || (choice == "y") ) {print("I warned you.\n")}
+else (stop("Exiting defaultTest function."))
 
-#.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bouncestyle, as.double(bounceedge))
-#.C("quasipotential", 
+
+print("########################################################")
+print("Starting QPotential()")
+print("########################################################")
+print("DEFAULT: This writes the file defaultname-x1.4049y2.8081.txt to your hard drive")
+QPotential(x.rhs = testequationx, x.start = xinit, x.bound = xbounds, x.num.steps = xstepnumber, 
+			y.rhs = testequationy, y.start = yinit, y.bound = ybounds, y.num.steps = ystepnumber, 
+			filename = 'NULL', save.to.R = 'NULL', save.to.HD = TRUE, 
+			bounce = 'd', bounce.edge = 0.01, 
+			verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
+
+print("writeHDwriteR: This writes the file defaultname-writeHDwriteR.txt to your hard drive and stores the file in your instance of R")
+storage <- 
+QPotential(x.rhs = testequationx, x.start = xinit, x.bound = xbounds, x.num.steps = xstepnumber, 
+			y.rhs = testequationy, y.start = yinit, y.bound = ybounds, y.num.steps = ystepnumber, 
+			filename = 'defaultname-writeHDwriteR.txt', save.to.R = TRUE, save.to.HD = TRUE, 
+			bounce = 'd', bounce.edge = 0.01, 
+			verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
+print("Size of writeHDwriteR storage (R matrix):")
+print("(May be backwards)")
+print(paste("Number of Rows ", nrow(storage), " should be ", xstepnumber, sep=""))
+print(paste("Number of Columns ", ncol(storage), " should be ", ystepnumber, sep=""))
+
+print("nowriteHDwriteR: This stores the results of QPotential() in your instance of R only")
+storage2 <- 
+QPotential(x.rhs = testequationx, x.start = xinit, x.bound = xbounds, x.num.steps = xstepnumber, 
+			y.rhs = testequationy, y.start = yinit, y.bound = ybounds, y.num.steps = ystepnumber, 
+			save.to.R = TRUE, save.to.HD = FALSE, 
+			bounce = 'd', bounce.edge = 0.01, 
+			verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
+print("Size of nowriteHDwriteR storage (R matrix):")
+print("(May be backwards)")
+print(paste("Number of Rows ", nrow(storage2), " should be ", xstepnumber, sep=""))
+print(paste("Number of Columns ", ncol(storage2), " should be ", ystepnumber, sep=""))
+
+
+print("########################################################")
+print("Reading in matrices on hard drive")
+print("########################################################")
+TEMP_default <- read.table(file = "defaultname-x1.4049y2.8081.txt", sep = "\t", header = FALSE)
+TEMP_HD_writeHDwriteR <- read.table(file = "defaultname-writeHDwriteR.txt", sep = "\t", header = FALSE)
+TEMP_CORRECT <- read.table(file = "CORRECTdefaultname-x1.4049y2.8081.txt", sep = "\t", header = FALSE)
+
+
+print("########################################################")
+print("Testing for equality among matrices")
+print("########################################################")
+if (isTRUE(all.equal(TEMP_default, TEMP_CORRECT, tolerance = 10^-4))) {print("SUCCESS - Code from DEFAULT and TEMP_CORRECT get same answer")} else {print("FAIL - code from DEFAULT and TEMP_CORRECT produced different matrices")} #PASSES
+
+if (isTRUE(all.equal(TEMP_HD_writeHDwriteR, TEMP_CORRECT, tolerance = 10^-4))) {print("SUCCESS - Code from TEMP_HD_writeHDwriteR and TEMP_CORRECT get same answer")} else {print("FAIL - code from TEMP_HD_writeHDwriteR and TEMP_CORRECT produced different matrices")} #FAILS
+
+if (isTRUE(all.equal(TEMP_default, TEMP_HD_writeHDwriteR, tolerance = 10^-4))) {print("SUCCESS - Code from DEFAULT and writeHDwriteR get same answer")} else {print("FAIL - code from DEFAULT and writeHDwriteR produced different matrices")} #FAILS
+
+if (isTRUE(all.equal(TEMP_default, storage, tolerance = 10^-4))) {print("SUCCESS - Code from DEFAULT and storage-writeHDwriteR get same answer")} else {print("FAIL - code from DEFAULT and storage-writeHDwriteR produced different matrices")}
+
+
+if (isTRUE(all.equal(TEMP_HD_writeHDwriteR, storage, tolerance = 10^-4))) {print("SUCCESS - Code from TEMP_HD_writeHDwriteR and storage-writeHDwriteR get same answer")} else {print("FAIL - code from TEMP_HD_writeHDwriteR and storage-writeHDwriteR produced different matrices")} #FAIL
+
+
 
 }
