@@ -1,7 +1,7 @@
 #' Plotting function for vector decomposition and remainder fields
 #'
 #' This function calculates the vector and remainder fields.
-#' @param field list output from \code{\link{VecDecomp}}.
+#' @param field list output from \code{\link{VecDecomp}}. GIVE EXAMPLE CODE
 #' @param density two-element vector respectively specifying the number of respective arrows in the x and y directions.
 #' @param x.bound two-element vector for the x domain boundries used for the quasi-potential simulation.
 #' @param y.bound two-element vector for the y domain boundries used for the quasi-potential simulation.
@@ -28,6 +28,8 @@
 # #' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits)
 
 VecDecompPlot <- function(field, density, x.bound, y.bound, x.lim, y.lim, arrow.type="equal", tail.length=1, ...){
+#CHECK TO MAKE SURE FIELD CONTAINS TWO ELEMENTS
+#CHECK TO MAKE SURE FIELD MATRICES ARE THE SAME SIZE
 		x.range <- max(x.bound)-min(x.bound)
 		y.range <- max(y.bound)-min(y.bound)
 

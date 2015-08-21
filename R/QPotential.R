@@ -1,11 +1,11 @@
 #' Wrapper for call to quasipotential compution using the upwind ordered method
 #' 
 #' 
-#' @param xrhs The right hand side of the equation for x.
+#' @param xrhs A string containing the right hand side of the equation for x.
 #' @param xstart The starting value of x, usually the x value of the current equilibrium.
 #' @param xrange The x boundaries denoted at c(minimum, maximum).
 #' @param xsteps The number of steps between the minimum and maximum x value defined in x range.
-#' @param yrhs The right hand side of the y equation.
+#' @param yrhs A string containing the right hand side of the y equation.
 #' @param ystart The starting value of y, usually the y value of the current equilibrium.
 #' @param yrange The y boundaries denoted at c(minimum, maximum).
 #' @param ysteps The number of steps between the minimum and maximum y value defined in y range.
@@ -17,6 +17,10 @@
 #' @return filetoHD If savetoHD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
 #' @return filetoR If savetoR enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
 
+# CHANGE xrange and yrange to x.bound  and y.bound
+# CHANGE everything to x. and y.
+# ysteps to y.num.steps and for x
+#
 
 # R CMD SHLIB -I/usr/local/include -L/usr/local/lib -lmatheval upwindorderedMATHEVALv3.c -lm
 # -I adds directory to the head of the list of directories containing libraries
