@@ -7,8 +7,13 @@ export(QPGlobal)
 export(TSDensity)
 export(TSPlot)
 export(TSTraj)
+<<<<<<< HEAD
 export(VecDecompVec)
 export(VecDecompAll)
 export(VecDecompGrad)
 export(VecDecompRem)
 export(VecDecompPlot)
+=======
+export(VecDecompAll)
+export(VecDecompPlot)
+>>>>>>> origin/master
