@@ -39,6 +39,7 @@ QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.nu
 
 # check if any component of x is missing
 if (x.rhs == 'NULL') {stop("No equation defined for x. Define x.rhs.")} else {equationx <- x.rhs}
+if (grepl(pattern="=", x = x.rhs)) {stop("Equals sign (=) found in x.rhs parameter.  Please give only right hand side of the equation.")}
 if (x.start == 'NULL') {stop("No starting value for x. Define x.start.")} else {startxval <- x.start}
 if (x.num.steps == 'NULL') {stop("Need the number of steps in x range. Define x.num.steps.")} else {numofstepsx <- x.num.steps}
 lengthequationx	<- nchar(x.rhs)
@@ -50,6 +51,7 @@ upperboundsx	<- x.bound[2]
 
 # check if any component of y is missing
 if (y.rhs == 'NULL') {equationy = '0'} else {equationy <- y.rhs}
+if (grepl(pattern="=", x = y.rhs)) {stop("Equals sign (=) found in y.rhs parameter.  Please give only right hand side of the equation.")}
 lengthequationy <- nchar(y.rhs)
 if ( (length(y.bound) == 1) && (y.bound == 'NULL') ) {lowerboundsy <- 0; upperboundsy <- 0}
 if (y.bound[1] != 'NULL') {
