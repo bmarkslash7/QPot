@@ -61,7 +61,7 @@ if (y.start == 'NULL') {startyval = 0} else {startyval <- y.start}
 #TODO only create this storage array if save.to.R == TRUE
 # I think the .C function creates its own storage matrix, despite what 
 # I tell it or what it is supposed to do.
-storage <- array(1.0, dim=c(1,(numofstepsx*numofstepsy)))
+# storage <- array(1.0, dim=c(1,(numofstepsx*numofstepsy)))
 
 # ----------------------------------------------------------------------
 # Components to enable file saving
@@ -132,11 +132,14 @@ if (numofstepsx*numofstepsy > 7000*7000) {
 #	4) no data saved, testing purposes only
 if (datasave == 1) {
 	#no R write; HD write
+	storage = 0;
 	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
+#	print(ls())
 	return(TRUE)
 }
 else if (datasave == 2) {
 	#R write; no HD write
+	storage <- array(1.0, dim=c(1,(numofstepsx*numofstepsy)))
 	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
 	storage = out2[[1]]
 	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
@@ -144,6 +147,7 @@ else if (datasave == 2) {
 }
 else if (datasave == 3) {
 	# R write; HD write
+	storage <- array(1.0, dim=c(1,(numofstepsx*numofstepsy)))
 	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
 	storage = out2[[1]]
 	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)

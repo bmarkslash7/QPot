@@ -44,6 +44,7 @@
 /*Pull all of these out of define and make them global variables that 
  * get values given to C from R attached to them
  */
+int chrisprint = 0; /* flag that helps in printing out the current count */
 
 int NX = 260; /* This is the number of discrete units in the horizontal direction.*/
 int NY = 260; /* This is the number of discrete units in the vertical direction. So the total number of discrete points on the grid is NX*NY*/
@@ -267,6 +268,10 @@ void param() {
 	hy=(LY2-LY1)/(NY-1);
 	Rprintf("hy = %g\n", hy);
     h=sqrt(hx*hx+hy*hy);
+    clock_t chrisCPUbegin;
+	double chriscpu;
+	chrisCPUbegin=clock();
+    
     for( i=0; i<NX; i++ ) {
 /* v2: LX1 and LY1 used as beginning value, to compute "current" x and y
  * need to add stepsize times step number and add to lower bound
@@ -283,6 +288,10 @@ void param() {
             g[ind]=INFTY;
         }
     }
+    
+    chriscpu=(clock()-chrisCPUbegin)/((double)CLOCKS_PER_SEC);
+    Rprintf("Finished initializing a bunch of matrices in param() function\n");
+	Rprintf("cputime = %g\n",chriscpu);
 }
 
 
@@ -342,9 +351,11 @@ void ordered_upwind(void) {
     double gamma, bdotvec, det, avec, aux,a0,b0,a1,b1,HUPS;
     struct myvector vec, b, c, v0, v1;
     double xnewac, ynewac; /* x and y of the newly accepted point  */
-    
+    Rprintf("Initial count = %d\n",count);
 	HUPS=max(KX,KY)*h;
     while( count > 0 ) {
+/* TODO: Using this to solve the error that running the code twice leads to different results */
+	if ( (chrisprint != count) && (count % 1000)==0) {Rprintf("current count = %d\n",count); chrisprint = count;}
         ind=tree[1];
         j=ind/NX;
         i=ind%NX;
@@ -358,6 +369,7 @@ void ordered_upwind(void) {
         mycount++;
         if( i==2 || i==nx1-2 || j==2 || j== ny1-2 || g[ind] >= INFTY-1) {
             Rprintf("%ld\t(%ld\t%ld) is accepted, g=%.4f\n",mycount,i,j,g[ind]);
+            Rprintf("Final count = %d\n",count);
             break; /* quit if we reach the boundary of the computational domain */
         }
         /*	Rprintf("%ld\t(%ld\t%ld) is accepted, g=%.4f\n",mycount,i,j,g[ind]); */
@@ -576,7 +588,7 @@ double one_pt_update(long ind,long ind0) {
 
 struct myvector getpoint(long ind) {
     struct myvector l;
-/*	Rprintf("ALL VALUES IN GETPOINT: %li %g %i %g %g %g\n", ind, hx, NX, LX1, hy, LY1); */
+/* Rprintf("ALL VALUES IN GETPOINT: %li %g %i %g %g %g\n", ind, hx, NX, LX1, hy, LY1); */
 /* v2: takes an index value and converts it to an x,y value
  * The reason this looks strange is that the storage matrix g is a 1 by NX*NY array
  * as opposed to a two-dimensional array
@@ -804,6 +816,8 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	LY1 = tempymin[0]; LY2 = tempymax[0]; NY = tempysteps[0];
 	FP1 = tempeqx[0]; 
 	FP2 = tempeqy[0];
+	
+	count = 0;
 /* variables for edge handling */
 	char *temptempchfield = *tempchfield;
 	chfield = temptempchfield[0]; 

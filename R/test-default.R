@@ -9,6 +9,8 @@ xbounds = c(-0.5, 20.0)
 ybounds = c(-0.5, 20.0)
 xstepnumber = 4100
 ystepnumber = 4100
+#xstepnumber = 1000
+#ystepnumber = 1000
 xinit = 1.40491
 yinit = 2.80808
 testequationx = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
@@ -28,6 +30,13 @@ QPotential(x.rhs = testequationx, x.start = xinit, x.bound = xbounds, x.num.step
 			filename = 'NULL', save.to.R = 'NULL', save.to.HD = TRUE, 
 			bounce = 'd', bounce.edge = 0.01, 
 			verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
+			
+#print("DEFAULT: This writes the file default file with filename CHRISdefaulttest.txt to your hard drive")
+#QPotential(x.rhs = testequationx, x.start = xinit, x.bound = xbounds, x.num.steps = xstepnumber, 
+#			y.rhs = testequationy, y.start = yinit, y.bound = ybounds, y.num.steps = ystepnumber, 
+#			filename = 'CHRISdefaulttest.txt', save.to.R = 'NULL', save.to.HD = TRUE, 
+#			bounce = 'd', bounce.edge = 0.01, 
+#			verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
 
 print("writeHDwriteR: This writes the file defaultname-writeHDwriteR.txt to your hard drive and stores the file in your instance of R")
 storage <- 
@@ -57,10 +66,20 @@ print(paste("Number of Columns ", ncol(storage2), " should be ", ystepnumber, se
 print("########################################################")
 print("Reading in matrices on hard drive")
 print("########################################################")
+#TEMP_CHRISdefault <- read.table(file = "CHRISdefaulttest.txt", sep = "\t", header = FALSE) # I ran this after running writeHDwriteR
 TEMP_default <- read.table(file = "defaultname-x1.4049y2.8081.txt", sep = "\t", header = FALSE)
-TEMP_HD_writeHDwriteR <- read.table(file = "defaultname-writeHDwriteR.txt", sep = "\t", header = FALSE)
+TEMP_HD_writeHDwriteR <- read.table(file = "defaultname-writeHDwriteR.txt", sep = "\t", header = FALSE) # this is when writeHDwriteR is run first
+#TEMP_HD_writeHDwriteRSECOND <- read.table(file = "TESTdefaultname-writeHDwriteR.txt", sep = "\t", header = FALSE) #this is when writeHDwriteR is run after default
+
 TEMP_CORRECT <- read.table(file = "CORRECTdefaultname-x1.4049y2.8081.txt", sep = "\t", header = FALSE)
 
+print("########################################################")
+print("Plotting the Matrices for easy comparison")
+print("########################################################")
+QPContour(as.matrix(TEMP_CORRECT), c(4100,4100), xbounds, ybounds, c=5)
+QPContour(as.matrix(TEMP_div2), c(4100,4100), xbounds, ybounds, c=5)
+QPContour(as.matrix(TEMP_HD_withHDwriteR), c(4100,4100), xbounds, ybounds, c=5)
+QPContour(storage, c(4100,4100), xbounds, ybounds, c.parm=5)
 
 print("########################################################")
 print("Testing for equality among matrices")
