@@ -45,7 +45,7 @@ for (i in 1:n.unstable.eq.x){
 		for (i in 1:n.surfaces){
 			phi.diff[i,] <- global.max - unstable.phi[max.phi[1,1],i]
 		}
-	}
+	} else {phi.diff <- matrix(data = 0 , nrow = n.surfaces , ncol = 1)}
 
 	eq.arr.unadj <- array(data = unlist(local.surfaces) , dim = c(mesh.xy[1] , mesh.xy[2] , n.surfaces))
 	eq.arr <- array(data = NA , dim = c(mesh.xy[1] , mesh.xy[2] , n.surfaces))

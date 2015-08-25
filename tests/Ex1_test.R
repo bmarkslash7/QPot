@@ -42,14 +42,48 @@
 		TSDensity(ts.out.ex1,dim=2)
 
 ##### 0.3 local quasi-potential!!! #####
+		testequationx = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
+		testequationy = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
+		xbounds = c(-0.5, 20.0)
+		ybounds = c(-0.5, 20.0)
+		xstepnumber = 4100
+		ystepnumber = 4100
+		xinit1 = 1.40491
+		yinit1 = 2.80808
+		xinit2 = 4.9040
+		yinit2 = 4.06187
+
+		QPotential(x.rhs = testequationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, 
+			y.rhs = testequationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber, 
+			filename = 'exampleone_eq1.txt')
+		QPotential(x.rhs = testequationx, x.start = xinit2, x.bound = xbounds, x.num.steps = xstepnumber, 
+			y.rhs = testequationy, y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber, 
+			filename = 'exampleone_eq2.txt')
+	# read in the results using fread() in the package data.table
+		require(data.table)		#		requireNamespace("data.table")
+		e1.1.raw <- fread('exampleone_eq1.txt')
+		e1.1.local <- t(data.matrix(e1.1.raw))
+		rm(e1.1.raw)
+		e1.2.raw <- fread('exampleone_eq2.txt')
+		e1.2.local <- t(data.matrix(e1.2.raw))
+		rm(e1.2.raw)
+#	#read in the tables using read.table to test for speed and compare to fread + transpose
+#		e1.1.readtest <- read.table('exampleone_eq1.txt', sep="\t", header = FALSE)
+#		e1.2.readtest <- read.table('exampleone_eq2.txt', sep="\t", header = FALSE)
+		
+		e1.1.local[e1.1.local == 5e+05] = NA
+		e1.2.local[e1.2.local == 5e+05] = NA
+		
+		if (isTRUE(all.equal(t(data.matrix(e1.1.readtest)), e1.1.local))) {print("SUCCESS - Code from e1.1 get same answer")} else {print("FAIL - code from e1.1 produced different matrices")} #PASSES
+		if (isTRUE(all.equal(t(data.matrix(e1.2.readtest)), e1.2.local))) {print("SUCCESS - Code from e1.2 get same answer")} else {print("FAIL - code from e1.2 produced different matrices")} #PASSES
 
 ##### 0.4 global quasi-potential!!! #####
 
-	e1.global <- QPGlobal(list(e1.1.local,e1.2.local),c(0,4.2008),c(0,4.0039),c(-0.5,20),c(-0.5,20))
+	e1.global <- QPGlobal(local.surfaces = list(e1.1.local,e1.2.local),unstable.eq.x = c(0,4.2008),unstable.eq.y = c(0,4.0039), x.bound = c(-0.5,20),y.bound = c(-0.5,20))
 
 ##### 0.5 quasi-potential vizualization!!! #####
 
-	QPContour(e1.global,c(1000,1000),c(-0.5,20),c(-0.5,20),c=5)
+	QPContour(e1.global,c(1000,1000),c(-0.5,20),c(-0.5,20),c.parm=5)
 
 ##### 0.6 vector field decompisition!!! #####
 
