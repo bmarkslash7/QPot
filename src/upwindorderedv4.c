@@ -90,7 +90,7 @@ struct mysol {
 
 int main(int argc, char **argv);
 void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge);
-void write_output(int HDwrite, int Rwrite);
+void write_output(double *storage, int HDwrite, int Rwrite);
 
 /* struct myvector myfield(double x,double y); /* B */
 struct myvector myfieldchris(double x,double y);
@@ -151,7 +151,8 @@ struct myvector myfieldchris(double x,double y) {
 double chrisx;
 double chrisy;
 
-void write_output(int HDwrite, int Rwrite) {
+void write_output(double *storage, int HDwrite, int Rwrite) {
+	long i,j,ind;
 	double tempg;
 	FILE *fg;
 	ind=0;
@@ -173,9 +174,7 @@ void write_output(int HDwrite, int Rwrite) {
 		if(HDwrite==1) {fprintf(fg,"\n");}
 	}
 	fclose(fg);
-		
-	return0;
-}
+} /* void write_output(int HDwrite, int Rwrite) */
 
 int variable_callback( void *user_data, const char *name, double *value ){
 	// look up the variables by name
@@ -956,7 +955,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	case 1: /* does not save to R, only saves to hard drive */
 		Rprintf("File opened.\n");
 		Rprintf("In datasave case 1\n");
-		write_output(1,0);
+		write_output(storage,1,0);
 /* Working on code to transpose g[] as it writes to HD and R */    
 /*		fg=fopen(filename, "w");
 		ind=0;
@@ -977,7 +976,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	case 2: /* saves to R, but does not save to hard drive */
 		Rprintf("Saves only to R\n");
 		Rprintf("In datasave case 2\n");
-		write_output(0,1)
+		write_output(storage,0,1)
 /*		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
@@ -992,7 +991,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	case 3:	/* saves to R and saves to hard drive */
 		Rprintf("In datasave case 3\n");
 		Rprintf("File opened.\n");
-		write_output(1,1)
+		write_output(storage,1,1)
 /*		fg=fopen(filename, "w");
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
