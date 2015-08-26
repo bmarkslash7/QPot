@@ -976,7 +976,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	case 2: /* saves to R, but does not save to hard drive */
 		Rprintf("Saves only to R\n");
 		Rprintf("In datasave case 2\n");
-		write_output(storage,0,1)
+		write_output(storage,0,1);
 /*		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
@@ -991,7 +991,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	case 3:	/* saves to R and saves to hard drive */
 		Rprintf("In datasave case 3\n");
 		Rprintf("File opened.\n");
-		write_output(storage,1,1)
+		write_output(storage,1,1);
 /*		fg=fopen(filename, "w");
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
