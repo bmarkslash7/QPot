@@ -77,6 +77,7 @@ print("########################################################")
 print("Plotting the Matrices for easy comparison")
 print("########################################################")
 QPContour(as.matrix(TEMP_CORRECT), c(4100,4100), xbounds, ybounds, c.parm=5)
+QPContour(as.matrix(TEMP_CHRISdefault), c(4100,4100), xbounds, ybounds, c.parm=5)
 QPContour(as.matrix(TEMP_div2), c(4100,4100), xbounds, ybounds, c.parm=5)
 QPContour(as.matrix(TEMP_HD_withHDwriteR), c(4100,4100), xbounds, ybounds, c.parm=5)
 QPContour(storage, c(4100,4100), xbounds, ybounds, c.parm=5)
@@ -84,6 +85,9 @@ QPContour(storage, c(4100,4100), xbounds, ybounds, c.parm=5)
 print("########################################################")
 print("Testing for equality among matrices")
 print("########################################################")
+########################################################################
+# USE as.data.frame before using as.matrix
+########################################################################
 if (isTRUE(all.equal(TEMP_default, TEMP_CORRECT, tolerance = 10^-4))) {print("SUCCESS - Code from DEFAULT and TEMP_CORRECT get same answer")} else {print("FAIL - code from DEFAULT and TEMP_CORRECT produced different matrices")} #PASSES
 
 if (isTRUE(all.equal(TEMP_HD_writeHDwriteR, TEMP_CORRECT, tolerance = 10^-4))) {print("SUCCESS - Code from TEMP_HD_writeHDwriteR and TEMP_CORRECT get same answer")} else {print("FAIL - code from TEMP_HD_writeHDwriteR and TEMP_CORRECT produced different matrices")} #FAILS
@@ -92,6 +96,7 @@ if (isTRUE(all.equal(TEMP_default, TEMP_HD_writeHDwriteR, tolerance = 10^-4))) {
 
 if (isTRUE(all.equal(TEMP_default, storage, tolerance = 10^-4))) {print("SUCCESS - Code from DEFAULT and storage-writeHDwriteR get same answer")} else {print("FAIL - code from DEFAULT and storage-writeHDwriteR produced different matrices")}
 
+if (isTRUE(all.equal(TEMP_CHRISdefault, TEMP_CORRECT, tolerance = 10^-4))) {print("SUCCESS - Code from CHRIS and CORRECT get same answer")} else {print("FAIL - code from CHRIS and CORRECT produced different matrices")} #FAILS
 
 if (isTRUE(all.equal(TEMP_HD_writeHDwriteR, storage, tolerance = 10^-4))) {print("SUCCESS - Code from TEMP_HD_writeHDwriteR and storage-writeHDwriteR get same answer")} else {print("FAIL - code from TEMP_HD_writeHDwriteR and storage-writeHDwriteR produced different matrices")} #FAIL
 
