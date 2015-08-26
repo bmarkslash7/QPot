@@ -45,6 +45,7 @@
  * get values given to C from R attached to them
  */
 int chrisprint = 0; /* flag that helps in printing out the current count */
+char *filename;
 
 int NX = 260; /* This is the number of discrete units in the horizontal direction.*/
 int NY = 260; /* This is the number of discrete units in the vertical direction. So the total number of discrete points on the grid is NX*NY*/
@@ -89,7 +90,7 @@ struct mysol {
 
 int main(int argc, char **argv);
 void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge);
-
+void write_output(int HDwrite, int Rwrite);
 
 /* struct myvector myfield(double x,double y); /* B */
 struct myvector myfieldchris(double x,double y);
@@ -149,6 +150,32 @@ struct myvector myfieldchris(double x,double y) {
 */
 double chrisx;
 double chrisy;
+
+void write_output(int HDwrite, int Rwrite) {
+	double tempg;
+	FILE *fg;
+	ind=0;
+	fg=fopen(filename, "w");
+	int TOTAL = NX*NY;
+	for( j=0; j<(NY); j++ ) {
+		for( i=0; i<(NX-1); i++ ) {
+			ind = (TOTAL-j) - i*NY;
+			tempg = (1.0/2.0)*g[ind];
+			if(HDwrite == 1) {fprintf(fg,"%.4e\t",tempg);}
+			if(Rwrite == 1) {storage[ind] = tempg;}
+			ind++;
+		}
+		ind = (TOTAL-j) - i*NY;
+		tempg = (1.0/2.0)*g[ind];
+		if(HDwrite == 1) {fprintf(fg,"%.4e",tempg);}
+		if(Rwrite == 1) {storage[ind] = tempg;}
+		ind++;
+		if(HDwrite==1) {fprintf(fg,"\n");}
+	}
+	fclose(fg);
+		
+	return0;
+}
 
 int variable_callback( void *user_data, const char *name, double *value ){
 	// look up the variables by name
@@ -860,7 +887,6 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	ybuff[lengthofequationy] = '\0';
 	
 /* Determine filename if file saved to harddrive */
-	char *filename;
 	int datasave = tempdatasave[0]; /*what type of save do we need to do? data to R, data to HD, data to both */
 	Rprintf("Creating file name.\n");
 	int lengthfilename = templengthfilename[0];
@@ -928,15 +954,15 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 /* Write data to use some where, some how */
 	switch(datasave) {
 	case 1: /* does not save to R, only saves to hard drive */
-		fg=fopen(filename, "w");
 		Rprintf("File opened.\n");
 		Rprintf("In datasave case 1\n");
-    
+		write_output(1,0);
+/* Working on code to transpose g[] as it writes to HD and R */    
+/*		fg=fopen(filename, "w");
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
 				tempg = (1.0/2.0)*g[ind];
-/*				fprintf(fg,"%.4e\t",g[ind]); */
 				fprintf(fg,"%.4e\t",tempg);
 				ind++;
 			}
@@ -946,11 +972,13 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 			fprintf(fg,"\n");
 		}
 		fclose(fg);
+*/
 		break;
 	case 2: /* saves to R, but does not save to hard drive */
 		Rprintf("Saves only to R\n");
 		Rprintf("In datasave case 2\n");
-		ind=0;
+		write_output(0,1)
+/*		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
 				storage[ind] = (1.0/2.0)*g[ind];
@@ -959,12 +987,13 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 			storage[ind] = (1.0/2.0)*g[ind];
 			ind++;
 		}
+*/
 		break;
 	case 3:	/* saves to R and saves to hard drive */
-		fg=fopen(filename, "w");
 		Rprintf("In datasave case 3\n");
 		Rprintf("File opened.\n");
-    
+		write_output(1,1)
+/*		fg=fopen(filename, "w");
 		ind=0;
 		for( j=0; j<(NY); j++ ) {
 			for( i=0; i<(NX-1); i++ ) {
@@ -980,6 +1009,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 			fprintf(fg,"\n");
 		}
 		fclose(fg);
+*/
 		break;
 	default:
 		Rprintf("Running testrun.  You are not saving any data.\n");
