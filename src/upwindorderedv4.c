@@ -159,18 +159,20 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 	fg=fopen(filename, "w");
 	int TOTAL = NX*NY;
 	for( j=0; j<(NY); j++ ) {
-		for( i=0; i<(NX-1); i++ ) {
-			ind = (TOTAL-j) - i*NY;
+/*		for( i=0; i<(NX-1); i++ ) { ORIGINAL */
+		for( i=0; i<(NX); i++) {
+			ind = j + NY*i; /*(TOTAL-j) - i*NY;*/
 			tempg = (1.0/2.0)*g[ind];
 			if(HDwrite == 1) {fprintf(fg,"%.4e\t",tempg);}
 			if(Rwrite == 1) {storage[ind] = tempg;}
 			ind++;
 		}
-		ind = (TOTAL-j) - i*NY;
-		tempg = (1.0/2.0)*g[ind];
+/*		ind = j + (NY)*j;/*(TOTAL-j) - i*NY;*/
+/*		tempg = (1.0/2.0)*g[ind];
 		if(HDwrite == 1) {fprintf(fg,"%.4e",tempg);}
 		if(Rwrite == 1) {storage[ind] = tempg;}
 		ind++;
+*/
 		if(HDwrite==1) {fprintf(fg,"\n");}
 	}
 	fclose(fg);
