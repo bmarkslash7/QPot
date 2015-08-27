@@ -12,6 +12,14 @@ VecDecompGrad(surface)
 \description{
 This function calculates the gradient field.
 }
+\examples{
+#Example 1 from article. Equations are not required
+equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
+equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#e1.global <- matrix()
+#VDG <- VecDecompGrad(e1.global)
+#VecDecompPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+}
 \keyword{decompoosition,}
 \keyword{field}
 \keyword{gradient}

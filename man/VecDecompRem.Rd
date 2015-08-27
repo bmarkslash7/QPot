@@ -20,6 +20,14 @@ VecDecompRem(surface, x.rhs, y.rhs, x.bound, y.bound)
 \description{
 This function calculates the remainder field.
 }
+\examples{
+#Example 1 from article
+equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
+equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#e1.global <- matrix()
+#VDR <- VecDecompRem(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+#VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+}
 \keyword{decompoosition,}
 \keyword{field}
 \keyword{remainder}
