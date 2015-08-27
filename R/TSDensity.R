@@ -9,6 +9,10 @@
 #' @param contour.lines if TRUE, then black countour lines added to the graph.
 #' @keywords Density plot of stochastic simulations
 #' 
+########################################################################
+# Error in TSTraj(y0 = state, time = 250, deltat = model.deltat, func = LVModel,  : 
+# unused argument (func = LVModel)
+########################################################################
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)
@@ -25,15 +29,15 @@
 #' })
 #' }
 #'
-#' # Third, run it
-#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
-#' func=LVModel, parms=model.parms, sigma=model.sigma)
-#'
-#' # Fourth, plot as one-dimensional plot . . .
-#' TSDensity(mat=LVModelOut)
-#'
-#' # . . . or plot as two-dimensional plot
-#' TSDensity(mat=LVModelOut, dim=2)
+# # Third, run it
+# LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
+# func=LVModel, parms=model.parms, sigma=model.sigma)
+#
+# # Fourth, plot as one-dimensional plot . . .
+# TSDensity(mat=LVModelOut)
+#
+# # . . . or plot as two-dimensional plot
+# TSDensity(mat=LVModelOut, dim=2)
 
 
 

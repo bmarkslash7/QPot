@@ -9,10 +9,10 @@
 #' @keywords interpolation
 #' @details this function uses simple bilinear interpolation for estimattion of any x- and y-value.
 ########################################################################
-# COMMENTED OUT FOR PASSING devtools::check() - Need a srface from QPGlobal
+# COMMENTED OUT FOR PASSING devtools::check() - Need e1.global
 ########################################################################
-#' @examples
-#' QPInterp(X=3,Y=3,x.bound=c(-0.5,20),y.bound=c(-0.5,20),surface=e1.global)
+# @examples
+# QPInterp(X=3,Y=3,x.bound=c(-0.5,20),y.bound=c(-0.5,20),surface=e1.global)
 
 	QPInterp <- function(X, Y, x.bound, y.bound, surface) {
 		mat.row.min <- 1

@@ -1,7 +1,7 @@
 #' Plotting function for vector decomposition and remainder fields
 #'
 #' This function calculates the vector and remainder fields.
-#' @param field list output from \code{\link{VecDecomp}}.
+#' @param field list output from \code{\link{VecDecompAll}}.
 #' @param dens two-element vector respectively specifying the number of respective arrows in the x and y directions.
 #' @param x.bound two-element vector for the x domain boundries used for the quasi-potential simulation.
 #' @param y.bound two-element vector for the y domain boundries used for the quasi-potential simulation.

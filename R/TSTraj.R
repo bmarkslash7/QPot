@@ -4,7 +4,7 @@
 #' @param y0 the a two-element vector of the initial conditions for the state variables.
 #' @param time numeric value indicating the total time over which the simulation is to be run.
 #' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}.
-#' @param func funciton containing deterministic equations formatted as \pkg{deSolve}.
+# @param func function containing deterministic equations formatted as \pkg{deSolve}.
 #' @param x.rhs A string containing the right hand side of the equation for x.
 #' @param y.rhs A string containing the right hand side of the y equation.
 #' @param parms a named vector of paramters and their respective values for the deterministic equations.
@@ -20,18 +20,21 @@
 #' model.sigma <- 0.1
 #' model.deltat <- 0.005
 #'
-#' # Second, create the model in the sense of deSolve
-#' LVModel <- function(t, state, parms) {
-#' with(as.list(c(state, parms)), {
-#' dx <- -(y-5) + mu*(x-4)*(1-((x-4)^2)-((y-5)^2))
-#' dy <- (x-4) + mu*(y-5)*(1-((x-4)^2)-((y-5)^2))
-#' list(c(dx,dy))
-#' })
-#' }
-#'
-#' # Run it
-#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
-#' func=LVModel, parms=model.parms, sigma=model.sigma)
+########################################################################
+# USES TSTraj that uses function as opposed to strings
+########################################################################
+# # Second, create the model in the sense of deSolve
+# LVModel <- function(t, state, parms) {
+# with(as.list(c(state, parms)), {
+# dx <- -(y-5) + mu*(x-4)*(1-((x-4)^2)-((y-5)^2))
+# dy <- (x-4) + mu*(y-5)*(1-((x-4)^2)-((y-5)^2))
+# list(c(dx,dy))
+# })
+# }
+#
+# # Run it
+# LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
+# func=LVModel, parms=model.parms, sigma=model.sigma)
 
 	TSTraj <- function(y0, time, deltat, x.rhs, y.rhs, parms, sigma, lower.bound = NA, upper.bound = NA) {
 	func <- function(t, state, parms) {

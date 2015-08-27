@@ -72,6 +72,7 @@ TEMP_HD_writeHDwriteR <- read.table(file = "defaultname-writeHDwriteR.txt", sep 
 #TEMP_HD_writeHDwriteRSECOND <- read.table(file = "TESTdefaultname-writeHDwriteR.txt", sep = "\t", header = FALSE) #this is when writeHDwriteR is run after default
 
 TEMP_CORRECT <- read.table(file = "CORRECTdefaultname-x1.4049y2.8081.txt", sep = "\t", header = FALSE)
+TEMP_div2 <- 0.5*TEMP_CORRECT
 
 print("########################################################")
 print("Plotting the Matrices for easy comparison")

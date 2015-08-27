@@ -7,8 +7,9 @@
 #' 
 #' @param model.function function containing the differential equations as given to TSTraj()
 #' @param parms a named vector of paramters and their respective values for the deterministic equations.
-#' x.lhs.term string containing the left hand side of the first equation to search for, default is 'dx'
-#' y.lhs.term string containing the left hand side of the second equation to search for, default is 'dx'
+#' @param x.lhs.term string containing the left hand side of the first equation to search for, default is 'dx'
+#' @param y.lhs.term string containing the left hand side of the second equation to search for, default is 'dx'
+#' @param supress.print Default it FALSE, supress output.  TRUE prints out equations from function
 #' @return equations a list with two elements, the first is the x equation, the second is the y equation
 
 Model2String <- function(model.function, parms = 'NULL', x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE) {

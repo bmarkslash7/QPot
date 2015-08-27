@@ -1,3 +1,4 @@
+Ex1_test <- function() {
 ##### 0.0 prepreperation #####
 	# install.packages("fortunes")
 	# library("fortunes")
@@ -51,7 +52,7 @@
 			y.rhs = testequationy, y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber, 
 			filename = 'exampleone_eq2.txt')
 	# 0.3.0 read in the results using fread() in the package data.table
-		require(data.table)		#		requireNamespace("data.table")
+#		require(data.table)		#		requireNamespace("data.table")
 		e1.1.raw <- fread('exampleone_eq1.txt')
 		e1.1.local <- t(data.matrix(e1.1.raw))
 		rm(e1.1.raw)
@@ -92,3 +93,4 @@
 	# 0.6.3 remainder field
 	VDR <- VecDecompRem(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 		VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+}

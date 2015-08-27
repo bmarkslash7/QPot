@@ -92,7 +92,7 @@ int main(int argc, char **argv);
 void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge);
 void write_output(double *storage, int HDwrite, int Rwrite);
 
-/* struct myvector myfield(double x,double y); /* B */
+/* struct myvector myfield(double x,double y); B */
 struct myvector myfieldchris(double x,double y);
 double angle(double x,double y);
 double length(double x,double y);
@@ -129,8 +129,8 @@ long *tree = 0; /* tree(position in the tree) = index of mesh pt */
 double UPS, HUPS; /* unisotropy ratio. This measures how funky your vector field is. */
 long *acf = 0; /* vector of indexes of points in the accepted front */
 long *pacf = 0; /* position in the accepted front */
-/* const long neii[8]={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; /* neighbor's indices */
-long neii[8]; /*={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; /* neighbor's indices */
+/* const long neii[8]={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; neighbor's indices */
+long neii[8]; /*={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; neighbor's indices */
 double xa, ya, xb, yb; /* potential minima */
 char chfield = 'd';
 
