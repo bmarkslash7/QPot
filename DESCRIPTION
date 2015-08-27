@@ -1,17 +1,17 @@
 Package: QPot
 Version: 0.1
 Date: 2015-07-27
-Title: Quasi-potential analysis for stochastic differential equations
+Title: Quasi-Potential Analysis for Stochastic Differential Equations
 Authors@R: c(
 	person("Christopher", "Moore", role = c("aut", "cph"), email = ""),
 	person("Christopher", "Stieha", role = c("aut", "cre", "cph"), email = "stieha@hotmail.com"),
 	person("Ben", "Nolting", role = c("aut", "ctb", "cph"), email = ""),
 	person("Maria", "Cameron", role = c("aut", "ctb", "cph"), email = ""),
 	person("Karen", "Abbott", role = c("ctb"), email = ""))
-Author: Christopher Moore [aut,cph],
+Author: Christopher Moore [aut, cph],
 	Christopher Stieha [aut, cre, cph],
 	Ben Nolting [aut, ctb, cph],
-	Maria Cameron [aut, ctb, cph]
+	Maria Cameron [aut, ctb, cph],
 	Karen Abbott [ctb]
 Depends: R (>= 3.0.2)
 Imports: MASS
