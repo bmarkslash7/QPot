@@ -155,25 +155,36 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 	long i,j,ind;
 	double tempg;
 	FILE *fg;
-	ind=0;
+/*	ind=0; */
 	fg=fopen(filename, "w");
 	int TOTAL = NX*NY;
 	for( j=0; j<(NY); j++ ) {
 /*		for( i=0; i<(NX-1); i++ ) { ORIGINAL */
 		for( i=0; i<(NX-1); i++) {
 			ind = j + NY*i; /*(TOTAL-j) - i*NY;*/
-			tempg = (1.0/2.0)*g[ind];
-			if(HDwrite == 1) {fprintf(fg,"%.4e\t",tempg);}
-			if(Rwrite == 1) {storage[ind] = tempg;}
-			ind++;
+			if (g[ind] < INFTY) {
+				tempg = (1.0/2.0)*g[ind];
+				if(HDwrite == 1) {fprintf(fg,"%.4e\t",tempg);}
+				if(Rwrite == 1) {storage[ind] = tempg;}
+			} else {
+				if(HDwrite == 1) {fprintf(fg,"NA\t");}
+				if(Rwrite == 1) {storage[ind] = INFTY;}
+			}
+			
+/*			ind++; */
 		}
 /* THIS PREVENTED AN EXTRA COLUMN FROM BEING MADE */
 		ind = j + (NX-1)*(NY);/*(TOTAL-j) - i*NY;*/
-		tempg = (1.0/2.0)*g[ind];
-		if(HDwrite == 1) {fprintf(fg,"%.4e",tempg);}
-		if(Rwrite == 1) {storage[ind] = tempg;}
-		ind++;
-		if(HDwrite==1) {fprintf(fg,"\n");}
+		if (g[ind] < INFTY) {
+			tempg = (1.0/2.0)*g[ind];
+			if(HDwrite == 1) {fprintf(fg,"%.4e\n",tempg);}
+			if(Rwrite == 1) {storage[ind] = tempg;}
+		} else {
+			if(HDwrite == 1) {fprintf(fg,"NA\n");}
+			if(Rwrite == 1) {storage[ind] = INFTY;}
+		}
+/*		ind++; */
+/*		if(HDwrite==1) {fprintf(fg,"\n");} */
 	}
 	fclose(fg);
 } /* void write_output(int HDwrite, int Rwrite) */

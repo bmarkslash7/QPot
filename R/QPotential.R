@@ -143,7 +143,12 @@ else if (datasave == 2) {
 	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
 	storage = out2[[1]]
 	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
-	return(storage)
+	#1.0e+6 is the INFTY place holder in the C code
+	#it means that no QP value was computed
+	tstorage = t(storage)
+	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
+	rm(storage)
+	return(tstorage)
 }
 else if (datasave == 3) {
 	# R write; HD write
@@ -151,7 +156,12 @@ else if (datasave == 3) {
 	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
 	storage = out2[[1]]
 	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
-	return(storage)
+	#1.0e+6 is the INFTY place holder in the C code
+	#it means that no QP value was computed
+	tstorage = t(storage)
+	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
+	rm(storage)
+	return(tstorage)
 }
 else if (datasave == 4) {
 	# no R write; no HD write

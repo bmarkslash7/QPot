@@ -79,7 +79,7 @@ print("########################################################")
 QPContour(as.matrix(TEMP_CORRECT), c(4100,4100), xbounds, ybounds, c.parm=5)
 QPContour(as.matrix(TEMP_CHRISdefault), c(4100,4100), xbounds, ybounds, c.parm=5)
 QPContour(as.matrix(TEMP_div2), c(4100,4100), xbounds, ybounds, c.parm=5)
-QPContour(as.matrix(TEMP_HD_withHDwriteR), c(4100,4100), xbounds, ybounds, c.parm=5)
+QPContour(as.matrix(TEMP_HD_writeHDwriteR), c(4100,4100), xbounds, ybounds, c.parm=5)
 QPContour(storage, c(4100,4100), xbounds, ybounds, c.parm=5)
 
 print("########################################################")
