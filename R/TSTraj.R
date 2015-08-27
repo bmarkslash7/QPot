@@ -27,6 +27,20 @@
 #' # Third, Run it
 #' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
 #' x.rhs=equationx, y.rhs=equationy, sigma=model.sigma)
+#'
+#' #Can also input x.rhs and y.rhs as strings that contain parameter names
+#' #and include parms with names and values of parameters
+#' model.state <- c(x=1 , y=2)
+#' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+#' model.sigma <- 0.05
+#' model.time <- 1000
+#' model.deltat <- 0.2
+#'
+#' test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
+#' test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+#'
+#' ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat, x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
+
 
 TSTraj <- function(y0, time, deltat, x.rhs, y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA) {
 	func <- function(t, state, parms) {
