@@ -15,25 +15,6 @@
 #' VDR <- VecDecompRem(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 #' VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 
-########################################################################
-# THIS EXAMPLE FAILS WITH
-# > VecDecomp(z)
-# Error in seq(min(x.lim), max(x.lim), length.out = qpc) : 
-#  argument "x.lim" is missing, with no default
-########################################################################
-# @examples
-# x.limits <- c(-10,10)
-# y.limits <- c(-10,10)
-# length.xy <- c(15,15)
-# mesh.xy <- c(20,20)
-# x <- seq(x.limits[1], x.limits[2], length.out = length.xy[1]) + 0.5
-# y <- seq(y.limits[1], y.limits[2], length.out = length.xy[2]) + 0.5
-# eqns <- list("(y^2)/(x)" , "(x^2)/(y)")
-# f <- function(x, y) { x <- (y^2)/(x) ; y <- (x^2)/(y) }
-# z <- outer(x, y, f)
-# VecDecomp(z)
-# VecDecomp(z,eqns,x.bound,y.bound)
-
 VecDecompRem <- function(surface,x.rhs,y.rhs,x.bound,y.bound){
 	qpr <- nrow(surface)
 	qpc <- ncol(surface)
