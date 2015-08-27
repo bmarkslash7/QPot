@@ -28,30 +28,6 @@
 #' # . . . or plot as two-dimensional plot
 #' TSPlot(ts.out.ex1, deltat=model.deltat, dim=2)
 
-
-########################################################################
-# OLD VERSION OF TSTraj
-########################################################################
-# # Second, create the model in the sense of deSolve
-# LVModel <- function(t, state, parms) {
-# with(as.list(c(state, parms)), {
-# dx <- -(y-5) + mu*(x-4)*(1-((x-4)^2)-((y-5)^2))
-# dy <- (x-4) + mu*(y-5)*(1-((x-4)^2)-((y-5)^2))
-# list(c(dx,dy))
-# })
-# }
-#
-# # Third, run it
-# LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
-# func=LVModel, parms=model.parms, sigma=model.sigma)
-#
-# # Fourth, plot as one-dimensional plot . . .
-# TSPlot(mat=LVModelOut, deltat=model.deltat)
-#
-# # . . . or plot as two-dimensional plot
-# TSPlot(mat=LVModelOut, deltat=model.deltat, dim=2)
-
-
 	TSPlot <- function(mat, deltat , dim = 1 , y.lim = NA , x.lab = "time" , dens = TRUE , lwd = 2 , line.alpha = 130 , zero.axes = TRUE) {
 		if (dim ==1) {
 			if (table(is.infinite(mat))["FALSE"] != nrow(mat)*3 ) { # if Inf values in the timeseries
