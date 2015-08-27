@@ -9,37 +9,22 @@
 #' @param contour.lines if TRUE, then black countour lines added to the graph.
 #' @keywords Density plot of stochastic simulations
 #' 
-########################################################################
-# Error in TSTraj(y0 = state, time = 250, deltat = model.deltat, func = LVModel,  : 
-# unused argument (func = LVModel)
-########################################################################
 #' @examples
-#' # First, the parameter values
-#' state <- c(x = 3 , y = 3)
-#' model.parms <- c(mu = 0.2)
-#' model.sigma <- 0.1
-#' model.deltat <- 0.005
+#' model.state <- c(x=1 , y=2)
+#' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+#' model.sigma <- 0.05
+#' model.time <- 100
+#' model.deltat <- 0.2
 #'
-#' # Second, create the model in the sense of deSolve
-#' LVModel <- function(t, state, parms) {
-#' with(as.list(c(state, parms)), {
-#' dx <- -(y-5) + mu*(x-4)*(1-((x-4)^2)-((y-5)^2))
-#' dy <- (x-4) + mu*(y-5)*(1-((x-4)^2)-((y-5)^2))
-#' list(c(dx,dy))
-#' })
-#' }
+#' test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
+#' test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
 #'
-# # Third, run it
-# LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
-# func=LVModel, parms=model.parms, sigma=model.sigma)
-#
-# # Fourth, plot as one-dimensional plot . . .
-# TSDensity(mat=LVModelOut)
-#
-# # . . . or plot as two-dimensional plot
-# TSDensity(mat=LVModelOut, dim=2)
-
-
+#' ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat, x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
+#'
+#' # Plot as one-dimensional plot
+#' TSDensity(ts.out.ex1, dim=1)
+#' # . . . or plot as two-dimensional plot
+#' TSDensity(ts.out.ex1, dim=2)
 
 	TSDensity <- function(mat , dim = 1 , contour.levels = 15 ,  col2d = c("blue" , "yellow" , "orange" , "red") , contour.lwd = 0.5 ,  contour.lines = TRUE){
 		if (dim ==1){

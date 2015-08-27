@@ -23,7 +23,7 @@
 #' test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
 #'
 #' ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat, x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
-#' # Fourth, plot as one-dimensional plot
+#' # Plot as one-dimensional plot
 #' TSPlot(ts.out.ex1, deltat=model.deltat)
 #' # . . . or plot as two-dimensional plot
 #' TSPlot(ts.out.ex1, deltat=model.deltat, dim=2)
