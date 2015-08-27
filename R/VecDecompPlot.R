@@ -28,7 +28,7 @@
 # VecDecompPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 #
 # # 0.6.3 remainder field
-# VDR <- VecDecompRem(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# VDR <- VecDecompRem(surface=e1.global, x.rhs=equationx, y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 # VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 
 

@@ -11,6 +11,14 @@
 #' @param y.lhs.term string containing the left hand side of the second equation to search for, default is 'dx'
 #' @param supress.print Default it FALSE, supress output.  TRUE prints out equations from function
 #' @return equations a list with two elements, the first is the x equation, the second is the y equation
+#'
+# @examples
+# test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
+# test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+# # 0.2.1 parameters
+# model.state <- c(x=1 , y=2)
+# model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+# equations.as.strings <- Model2String(
 
 Model2String <- function(model.function, parms = 'NULL', x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE) {
 	if (!supress.print) {
