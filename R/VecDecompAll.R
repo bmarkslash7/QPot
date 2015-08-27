@@ -15,14 +15,14 @@
 ########################################################################
 # Need to decide how to handle e1.global in examples
 ########################################################################
-# #' e1.global <- matrix()
-# #' VDAll <- VecDecompAll(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy ,x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-# #' # 0.6.1 vector field. See VecDecompVec()
-# #' VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-# #' # 0.6.2 gradient field.  See VecDecompGrad()
-# #' VecDecompPlot(field=list(VDV[,,3],VDV[,,4]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-# #' # 0.6.3 remainder field.  See VecDecompRem()
-# #' VecDecompPlot(field=list(VDV[,,5],VDV[,,6]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# # e1.global <- matrix()
+# # VDAll <- VecDecompAll(surface=e1.global, x.rhs=equationx, y.rhs=equationy ,x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# # # 0.6.1 vector field. See VecDecompVec()
+# # VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# # # 0.6.2 gradient field.  See VecDecompGrad()
+# # VecDecompPlot(field=list(VDV[,,3],VDV[,,4]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# # # 0.6.3 remainder field.  See VecDecompRem()
+# # VecDecompPlot(field=list(VDV[,,5],VDV[,,6]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 
 
 VecDecompAll <- function(surface,x.rhs,y.rhs,x.bound,y.bound){
