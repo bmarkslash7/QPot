@@ -9,12 +9,6 @@
 #' @param y.bound two-element vector with respective minimum and maximum y values.
 #' @keywords vector field decompoosition, vector field
 #' 
-########################################################################
-# THIS EXAMPLE FAILS WITH
-# > VecDecomp(z)
-# Error in seq(min(x.lim), max(x.lim), length.out = qpc) : 
-#  argument "x.lim" is missing, with no default
-########################################################################
 #' @examples
 #' #Example 1 from article
 #' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
