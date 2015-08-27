@@ -16,34 +16,27 @@
 #' @examples
 #' # First, the parameter values
 #' state <- c(x = 3 , y = 3)
-#' model.parms <- c(mu = 0.2)
 #' model.sigma <- 0.1
 #' model.deltat <- 0.005
 #'
-########################################################################
-# USES TSTraj that uses function as opposed to strings
-########################################################################
-# # Second, create the model in the sense of deSolve
-# LVModel <- function(t, state, parms) {
-# with(as.list(c(state, parms)), {
-# dx <- -(y-5) + mu*(x-4)*(1-((x-4)^2)-((y-5)^2))
-# dy <- (x-4) + mu*(y-5)*(1-((x-4)^2)-((y-5)^2))
-# list(c(dx,dy))
-# })
-# }
-#
-# # Run it
-# LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
-# func=LVModel, parms=model.parms, sigma=model.sigma)
+#' # Second, write out the deterministic skeleton of the equations to be simulated
+#' #Example 1 from article
+#' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
+#' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#'
+#' # Third, Run it
+#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
+#' x.rhs=equationx, y.rhs=equationy, sigma=model.sigma)
 
-	TSTraj <- function(y0, time, deltat, x.rhs, y.rhs, parms, sigma, lower.bound = NA, upper.bound = NA) {
+TSTraj <- function(y0, time, deltat, x.rhs, y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA) {
 	func <- function(t, state, parms) {
 		with(as.list(c(state, parms)), {
 		dx <- eval(parse(text=x.rhs))
 		dy <- eval(parse(text=y.rhs))
 		list(c(dx,dy))
 		})
-		}
+	}
+	
 	time.vals <- seq(from = 0 , to = time , by = deltat)[-1]
 	mat <- matrix(data = NA , nrow = length(time.vals) , ncol = 3)
 	colnames(mat) <- c("t" , names(y0))

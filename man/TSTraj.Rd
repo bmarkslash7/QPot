@@ -32,9 +32,17 @@ This function allows you to simulate two-dimensional stochastic differential equ
 \examples{
 # First, the parameter values
 state <- c(x = 3 , y = 3)
-model.parms <- c(mu = 0.2)
 model.sigma <- 0.1
 model.deltat <- 0.005
+
+# Second, write out the deterministic skeleton of the equations to be simulated
+#Example 1 from article
+equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
+equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+
+# Third, Run it
+LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat,
+x.rhs=equationx, y.rhs=equationy, sigma=model.sigma)
 }
 \keyword{Stochastic}
 \keyword{simulation}
