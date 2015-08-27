@@ -8,24 +8,22 @@
 #' @param y.bound two-element vector with respective minimum and maximum y values.
 #' @keywords vector field, remainder field
 #' 
+#' @examples
+#' #Example 1 from article
+#' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
+#' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
 ########################################################################
-# THIS EXAMPLE FAILS WITH
-# > VecDecomp(z)
-# Error in seq(min(x.lim), max(x.lim), length.out = qpc) : 
-#  argument "x.lim" is missing, with no default
+# Need to decide how to handle e1.global in examples
 ########################################################################
-# @examples
-# x.limits <- c(-10,10)
-# y.limits <- c(-10,10)
-# length.xy <- c(15,15)
-# mesh.xy <- c(20,20)
-# x <- seq(x.limits[1], x.limits[2], length.out = length.xy[1]) + 0.5
-# y <- seq(y.limits[1], y.limits[2], length.out = length.xy[2]) + 0.5
-# eqns <- list("(y^2)/(x)" , "(x^2)/(y)")
-# f <- function(x, y) { x <- (y^2)/(x) ; y <- (x^2)/(y) }
-# z <- outer(x, y, f)
-# VecDecomp(z)
-# VecDecomp(z,eqns,x.bound,y.bound)
+# #' e1.global <- matrix()
+# #' VDAll <- VecDecompAll(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy ,x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# #' # 0.6.1 vector field. See VecDecompVec()
+# #' VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# #' # 0.6.2 gradient field.  See VecDecompGrad()
+# #' VecDecompPlot(field=list(VDV[,,3],VDV[,,4]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# #' # 0.6.3 remainder field.  See VecDecompRem()
+# #' VecDecompPlot(field=list(VDV[,,5],VDV[,,6]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+
 
 VecDecompAll <- function(surface,x.rhs,y.rhs,x.bound,y.bound){
 	qpr <- nrow(surface)
