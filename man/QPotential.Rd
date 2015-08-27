@@ -61,12 +61,12 @@ equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
 #Boundaries of the x and y state space
 xbounds = c(-0.5, 20.0)
 ybounds = c(-0.5, 20.0)
-#Step number
-In the examples, these are 4100
-set to a smaller number for this example
+# Step number
+# In the examples, these are 4100
+# set to a smaller number for this example
 xstepnumber = 1000
 ystepnumber = 1000
-Equilibrium x and y values for Equilibrium 1 in Example 1
+# Equilibrium x and y values for Equilibrium 1 in Example 1
 xinit1 = 1.40491
 yinit1 = 2.80808
 QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber,
