@@ -17,7 +17,7 @@
 #' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
 #' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
 #' # 0.6.1 vector field
-#' VDV <- VecDecompVec(x.num.steps=4100, y.num.steps=4100, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+#' VDV <- VecDecompVec(x.num.steps=4100, y.num.steps=4100, x.rhs=equationx, y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 #' VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 #'
 ########################################################################

@@ -1,4 +1,4 @@
-#' Wrapper for call to quasipotential compution using the upwind ordered method
+#' Wrapper for call to quasipotential computation using the upwind ordered method
 #' 
 #' 
 #' @param x.rhs A string containing the right hand side of the equation for x.
@@ -19,6 +19,27 @@
 #' @param debugC NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code 
 #' @return filetoHD If save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
 #' @return filetoR If save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
+#'
+#' @examples
+#' #Example 1, Equilibrium 1 from article
+#' #THIS WRITES A FILE TO YOUR HARD DRIVE
+#' #Equations
+#' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
+#' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#' #Boundaries of the x and y state space
+#' xbounds = c(-0.5, 20.0)
+#' ybounds = c(-0.5, 20.0)
+#' #Step number
+#' In the examples, these are 4100
+#' set to a smaller number for this example
+#' xstepnumber = 1000
+#' ystepnumber = 1000
+#' Equilibrium x and y values for Equilibrium 1 in Example 1
+#' xinit1 = 1.40491
+#' yinit1 = 2.80808
+#' QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, 
+#'	y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber, 
+#'	filename = 'exampleone_eq1.txt')
 
 QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = 'NULL', save.to.HD = TRUE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
 {
