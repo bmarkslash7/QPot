@@ -13,19 +13,24 @@
 #' @keywords vector field plot, remainder field plot
 #' 
 #' @examples
-#' x.limits <- c(-10,10)
-#' y.limits <- c(-10,10)
-#' length.xy <- c(15,15)
-#' x <- seq(x.limits[1], x.limits[2], length.out = length.xy[1]) + 0.5
-#' y <- seq(y.limits[1], y.limits[2], length.out = length.xy[2]) + 0.5
-#' eqns <- list("(y^2)/(x)" , "(x^2)/(y)")
-#' f <- function(x, y) { x <- (y^2)/(x) ; y <- (x^2)/(y) }
-#' z <- outer(x, y, f)
+#' #Example 1 from article
+#' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
+#' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#' # 0.6.1 vector field
+#' VDV <- VecDecompVec(x.num.steps=4100, y.num.steps=4100, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+#' VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+#'
 ########################################################################
-# THIS IS LEFT OVER FROM A PREVIOUS FUNCTION
+# This is off until we decide what to do about e1.global
 ########################################################################
-# #' VecDecomp(z)
-# #' VecDecomp(z,eqns,mesh.xy,x.limits,y.limits)
+# # 0.6.2 gradient field	
+# VDG <- VecDecompGrad(e1.global)
+# VecDecompPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+#
+# # 0.6.3 remainder field
+# VDR <- VecDecompRem(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+
 
 VecDecompPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type="equal", tail.length=1, ...){
 		x.range <- max(x.bound)-min(x.bound)
