@@ -15,7 +15,13 @@
 # Error in seq(min(x.lim), max(x.lim), length.out = qpc) : 
 #  argument "x.lim" is missing, with no default
 ########################################################################
-# @examples
+#' @examples
+#' #Example 1 from article
+#' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
+#' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#' 	VDV <- VecDecompVec(x.num.steps=1000, y.num.steps=1000, x.rhs=equationx, y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+
+
 # x.donmain.boundaries <- c(-10,10)
 # y.donmain.boundaries <- c(-10,10)
 # length.xy <- c(15,15)
