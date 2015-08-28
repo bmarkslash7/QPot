@@ -47,6 +47,17 @@ QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.nu
 # Break apart function parameters into things that C code will use
 # ----------------------------------------------------------------------
 
+#-----------------------------------------------------------------------
+# Make sure that numeric values are numeric
+#-----------------------------------------------------------------------
+if ((x.start != 'NULL') && !isTRUE(is.numeric(x.start))) {stop("x.start is not a number")}
+if ((x.bound != 'NULL') && !isTRUE(is.numeric(x.bound))) {stop("x.bound is not a number")}
+if ((x.num.steps != 'NULL') && !isTRUE(is.numeric(x.num.steps))) {stop("x.num.steps is not a number")}
+if ((y.start != 'NULL') && !isTRUE(is.numeric(y.start))) {stop("y.start is not a number")}
+if ((y.bound != 'NULL') && !isTRUE(is.numeric(y.bound))) {stop("y.bound is not a number")}
+if ((y.num.steps != 'NULL') && !isTRUE(is.numeric(y.num.steps))) {stop("y.num.steps is not a number")}
+if ((bounce.edge != 0.01) && !isTRUE(is.numeric(bounce.edge))) {stop("bounce.edge is not a number")}
+
 # ----------------------------------------------------------------------
 # check if any component of x is missing
 # ----------------------------------------------------------------------
