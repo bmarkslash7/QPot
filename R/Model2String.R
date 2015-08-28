@@ -12,13 +12,30 @@
 #' @param supress.print Default it FALSE, supress output.  TRUE prints out equations from function
 #' @return equations a list with two elements, the first is the x equation, the second is the y equation
 #'
-# @examples
-# test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
-# test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
-# # 0.2.1 parameters
-# model.state <- c(x=1 , y=2)
-# model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-# equations.as.strings <- Model2String(
+#' @examples
+#' #deSolve-style function call:
+#' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+#' ModelEquations <- function(t, state, parms) {
+#' 	with(as.list(c(state, parms)), {
+#'	dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+#'	dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+#'	list(c(dx,dy))
+#'	})
+#' }
+#'
+#' Model2String(ModelEquations, parms = model.parms, x.lhs.term = 'dx', y.lhs.term = 'dy') 
+#'
+#' 
+#' #Second example with individual strings
+#' # Note the use of dx and dy
+#' test.eqn.x = "dx = (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
+#' test.eqn.y = "dy = ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+#' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+#' equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms, 
+#'  x.lhs.term = 'dx', y.lhs.term = 'dy')
+#' equations.as.strings.y <- Model2String(test.eqn.y, parms = model.parms, 
+#'  x.lhs.term = 'dx', y.lhs.term = 'dy')
+
 
 Model2String <- function(model.function, parms = 'NULL', x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE) {
 	if (!supress.print) {
@@ -27,6 +44,9 @@ Model2String <- function(model.function, parms = 'NULL', x.lhs.term = 'dx', y.lh
 #	if (parms[1] == 'NULL') {stop("Need to define parms, the names and values of the model parameters")} 
 	
 	temp <- deparse(model.function, width.cutoff = 500)
+# for some reason, inputing a string causes a " to be added
+	temp <- gsub(pattern = '\"', replacement = '', x = temp)
+
 #Dump function into a list of character strings
 #Go through each string and determine if it contains an equation
 	foundx = 0	#flag for making sure dx is only found once
@@ -37,32 +57,35 @@ Model2String <- function(model.function, parms = 'NULL', x.lhs.term = 'dx', y.lh
 	#when searching, first look for the lhs defining whether the derivative is for x or y
 	#once found, look inside the string and use either '<-' or '=' to separate
 	# the lhs from the rhs
-		if ((foundx == 0) && isTRUE(grep(pattern = x.lhs.term, x = temp[i]) == 1)) {
+		if ((foundx == 0) && isTRUE(grepl(pattern = x.lhs.term, x = temp[i]))) {
 			foundx = 1
-			if (grep(pattern = '<-', x = temp[i]) == 1) {
+			if (grepl(pattern = '<-', x = temp[i])) {
 				location <- regexpr(pattern = '<-', text = temp[i])
 				x.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
 			}
-			else if (grep(pattern = '=', x = temp[i]) == 1) {
+			else if (grepl(pattern = '=', x = temp[i])) {
 				location <- regexpr(pattern = '=', text = temp[i])
 				x.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
 			} else {stop("Equation does not contain = or <-")}
 		}
 
-		if ((foundy == 0) && isTRUE(grep(pattern = y.lhs.term, x = temp[i]) == 1)) {
+		if ((foundy == 0) && isTRUE(grepl(pattern = y.lhs.term, x = temp[i]))) {
 			foundy = 1
-			if (grep(pattern = '<-', x = temp[i]) == 1) {
+			if (grepl(pattern = '<-', x = temp[i])) {
 				location <- regexpr(pattern = '<-', text = temp[i])
 				y.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
 			}
-			else if (grep(pattern = '=', x = temp[i]) == 1) {
+			else if (grepl(pattern = '=', x = temp[i])) {
 				location <- regexpr(pattern = '=', text = temp[i])
 				y.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
 			} else {stop("Equation does not contain = or <-")}
 		}
 	}
 	
-	equations = c(x.equation, y.equation)
+	equations = c()
+	if (foundx == 1) {equations = x.equation}
+	if (foundy == 1) {equations = c(equations, y.equation)}
+	
 #if parameters are not declared, then we do not have to replace anything
 	if (!(parms[1] == 'NULL')){
 #replace the parameter names in the equations with their values

@@ -34,4 +34,28 @@ equations within the function, and returns a list of strings containing
 the differential equations from the function.
 Will also replace parameters of those equations with numerical values.
 }
+\examples{
+#deSolve-style function call:
+model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+ModelEquations <- function(t, state, parms) {
+	with(as.list(c(state, parms)), {
+	dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+	dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+	list(c(dx,dy))
+	})
+}
+
+Model2String(ModelEquations, parms = model.parms, x.lhs.term = 'dx', y.lhs.term = 'dy')
+
+
+#Second example with individual strings
+# Note the use of dx and dy
+test.eqn.x = "dx = (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
+test.eqn.y = "dy = ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms,
+ x.lhs.term = 'dx', y.lhs.term = 'dy')
+equations.as.strings.y <- Model2String(test.eqn.y, parms = model.parms,
+ x.lhs.term = 'dx', y.lhs.term = 'dy')
+}
 
