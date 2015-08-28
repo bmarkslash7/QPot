@@ -9,9 +9,9 @@ VecDecompRem(surface, x.rhs, y.rhs, x.bound, y.bound)
 \arguments{
 \item{surface}{matrix output from QPGlobal.}
 
-\item{x.rhs}{COPY FROM QPOTENTIAL().}
+\item{x.rhs}{A string containing the right hand side of the equation for x.}
 
-\item{y.rhs}{COPY FROM QPOTENTIAL().}
+\item{y.rhs}{A string containing the right hand side of the y equation.}
 
 \item{x.bound}{two-element vector with respective minimum and maximum x values.}
 

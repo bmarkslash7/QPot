@@ -7,13 +7,13 @@
 VecDecompVec(x.num.steps, y.num.steps, x.rhs, y.rhs, x.bound, y.bound)
 }
 \arguments{
-\item{x.num.steps}{COPY FROM QPOTENTIAL().}
+\item{x.num.steps}{The number of steps between the minimum and maximum x value defined in x range.}
 
-\item{y.num.steps}{COPY FROM QPOTENTIAL().}
+\item{y.num.steps}{The number of steps between the minimum and maximum y value defined in y range.}
 
-\item{x.rhs}{COPY FROM QPOTENTIAL().}
+\item{x.rhs}{A string containing the right hand side of the equation for x.}
 
-\item{y.rhs}{COPY FROM QPOTENTIAL().}
+\item{y.rhs}{A string containing the right hand side of the y equation.}
 
 \item{x.bound}{two-element vector with respective minimum and maximum x values.}
 

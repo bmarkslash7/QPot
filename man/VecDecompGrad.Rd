@@ -20,7 +20,7 @@ equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
 #VDG <- VecDecompGrad(e1.global)
 #VecDecompPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 }
-\keyword{decompoosition,}
+\keyword{decomposition,}
 \keyword{field}
 \keyword{gradient}
 \keyword{vector}

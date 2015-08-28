@@ -2,12 +2,7 @@
 % Please edit documentation in R/Model2String.R
 \name{Model2String}
 \alias{Model2String}
-\title{Function that converts differential equations from
-function-format to string-format
-Specifically, it reads in a function, searches for the differential
-equations within the function, and returns a list of strings containing
-the differential equations from the function.
-Will also replace parameters of those equations with numerical values.}
+\title{Converts equations with parameters to strings with numbers}
 \usage{
 Model2String(model.function, parms = "NULL", x.lhs.term = "dx",
   y.lhs.term = "dy", supress.print = FALSE)
@@ -27,12 +22,7 @@ Model2String(model.function, parms = "NULL", x.lhs.term = "dx",
 equations a list with two elements, the first is the x equation, the second is the y equation
 }
 \description{
-Function that converts differential equations from
-function-format to string-format
-Specifically, it reads in a function, searches for the differential
-equations within the function, and returns a list of strings containing
-the differential equations from the function.
-Will also replace parameters of those equations with numerical values.
+Function that converts differential equations from function-format to string-format.  Specifically, it reads in a function, searches for the differential equations within the function, and returns a list of strings containing the differential equations from the function.   Will also replace parameters of those equations with numerical values.
 }
 \examples{
 #deSolve-style function call:

@@ -68,7 +68,9 @@ ystepnumber = 1000
 # Equilibrium x and y values for Equilibrium 1 in Example 1
 xinit1 = 1.40491
 yinit1 = 2.80808
-storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber,
-	y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
+storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1,
+ x.bound = xbounds, x.num.steps = xstepnumber,
+	y.rhs = equationy, y.start = yinit1,
+y.bound = ybounds, y.num.steps = ystepnumber)
 }
 
