@@ -46,6 +46,8 @@
  */
 int chrisprint = 0; /* flag that helps in printing out the current count */
 char *filename;
+/* double tempg; */
+/* FILE *fg; */
 
 int NX = 260; /* This is the number of discrete units in the horizontal direction.*/
 int NY = 260; /* This is the number of discrete units in the vertical direction. So the total number of discrete points on the grid is NX*NY*/
@@ -156,7 +158,7 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 	double tempg;
 	FILE *fg;
 /*	ind=0; */
-	fg=fopen(filename, "w");
+	if (HDwrite == 1) {fg=fopen(filename, "w");}
 	int TOTAL = NX*NY;
 	for( j=0; j<(NY); j++ ) {
 /*		for( i=0; i<(NX-1); i++ ) { ORIGINAL */
@@ -186,7 +188,7 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 /*		ind++; */
 /*		if(HDwrite==1) {fprintf(fg,"\n");} */
 	}
-	fclose(fg);
+	if (HDwrite == 1) {fclose(fg);}
 } /* void write_output(int HDwrite, int Rwrite) */
 
 int variable_callback( void *user_data, const char *name, double *value ){
@@ -958,11 +960,6 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
     Rprintf("cputime = %g\n",cpu);
     
     
-/*
- * NEED TO DEFINE A temporary double THAT HOLDS g[ind] and divides by 2
- */
-	double tempg;
-	FILE *fg;
 /* Write data to use some where, some how */
 	switch(datasave) {
 	case 1: /* does not save to R, only saves to hard drive */
