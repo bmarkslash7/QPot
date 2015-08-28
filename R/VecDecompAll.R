@@ -16,7 +16,8 @@
 # Need to decide how to handle e1.global in examples
 ########################################################################
 # # e1.global <- matrix()
-# # VDAll <- VecDecompAll(surface=e1.global, x.rhs=equationx, y.rhs=equationy ,x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# # VDAll <- VecDecompAll(surface=e1.global, x.rhs=equationx, y.rhs=equationy, 
+# #  x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 # # # 0.6.1 vector field. See VecDecompVec()
 # # VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 # # # 0.6.2 gradient field.  See VecDecompGrad()

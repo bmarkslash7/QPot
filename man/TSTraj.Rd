@@ -55,7 +55,8 @@ model.deltat <- 0.2
 test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
 test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
 
-ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat, x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
+ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat,
+  x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
 }
 \keyword{Stochastic}
 \keyword{simulation}

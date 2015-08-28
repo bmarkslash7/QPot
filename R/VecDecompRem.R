@@ -16,8 +16,10 @@
 # Need to decide how to handle e1.global in examples
 ########################################################################
 # #' e1.global <- matrix()
-# #' VDR <- VecDecompRem(surface=e1.global, x.rhs=equationx, y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-# #' VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# #' VDR <- VecDecompRem(surface=e1.global, x.rhs=equationx, y.rhs=equationy,
+# #'  x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# #' VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), 
+# #'  x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 
 VecDecompRem <- function(surface,x.rhs,y.rhs,x.bound,y.bound){
 	qpr <- nrow(surface)
