@@ -22,7 +22,6 @@
 #'
 #' @examples
 #' #Example 1, Equilibrium 1 from article
-#' #THIS WRITES A FILE TO YOUR HARD DRIVE
 #' #Equations
 #' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
 #' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
@@ -37,11 +36,10 @@
 #' # Equilibrium x and y values for Equilibrium 1 in Example 1
 #' xinit1 = 1.40491
 #' yinit1 = 2.80808
-#' QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, 
-#'	y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber, 
-#'	filename = 'exampleone_eq1.txt')
+#' storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, 
+#'	y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
 
-QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = 'NULL', save.to.HD = TRUE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
+QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
 {
 # ----------------------------------------------------------------------
 # Break apart function parameters into things that C code will use
