@@ -3,10 +3,10 @@
 #' This function allows you to plot quasi-potential surfaces
 #' @param surface the surface to be plotted, from \code{\link{QPGlobal}}
 #' @param dens vector respectively for the number of \code{x} and \code{y} points to be plotted.
-#' @param x.bound two-element vector for the x variable's minimum and maximum values
-#' @param y.bound two-element vector for the y variable's minimum and maximum values
+#' @param x.bound two-element vector for the surface's minimum and maximum x values
+#' @param y.bound two-element vector for the surface's minimum and maximum y values
 #' @param n.filled.contour numeric value for the nubmber of breaks in the filled contour.
-#' @param n.contour.lines numeric value for the nubmber of breaks in the contour lines.
+#' @param n.contour.lines numeric value for the number of breaks in the contour lines.
 #' @param c.parm contour line adjustment (see details).
 #' @param col.contour a vector of colors used for the filled contour region.
 #' @param contour.lines if TRUE, then contour lines plotted over filled contour; vice versa if FALSE.

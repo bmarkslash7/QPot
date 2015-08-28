@@ -12,7 +12,7 @@
 #' @param save.to.R Output the matrix of results for the upwind-ordered method to the current R session.  The default is not to write the matrix to the R session.  save.to.R=TRUE writes the output matrix to the R session.
 #' @param save.to.HD Write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is TRUE.
 #' @param filename String for the name of the file saved to the hard drive.  If filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively. 
-#' @param bounce Dy default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').
+#' @param bounce By default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').
 #' @param bounce.edge If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
 #' @param verboseR NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential Rwrapper
 #' @param verboseC NOT IMPLEMENTED: Flag (default = FALSE) for printing out useful-for-everyone information in quasipotential.C
@@ -38,8 +38,8 @@
 #' yinit1 = 2.80808
 #' storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, 
 #'  x.bound = xbounds, x.num.steps = xstepnumber, 
-#'	y.rhs = equationy, y.start = yinit1, 
-#' y.bound = ybounds, y.num.steps = ystepnumber)
+#'  y.rhs = equationy, y.start = yinit1, 
+#'  y.bound = ybounds, y.num.steps = ystepnumber)
 
 QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
 {

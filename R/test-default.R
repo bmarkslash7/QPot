@@ -24,10 +24,10 @@ else (stop("Exiting defaultTest function."))
 print("########################################################")
 print("Starting QPotential()")
 print("########################################################")
-print("DEFAULT: This writes the file defaultname-x1.4049y2.8081.txt to your hard drive")
+print("This writes the file defaultname-x1.4049y2.8081.txt to your hard drive")
 QPotential(x.rhs = testequationx, x.start = xinit, x.bound = xbounds, x.num.steps = xstepnumber, 
 			y.rhs = testequationy, y.start = yinit, y.bound = ybounds, y.num.steps = ystepnumber, 
-			filename = 'NULL', save.to.R = 'NULL', save.to.HD = TRUE, 
+			filename = 'NULL', save.to.R = FALSE, save.to.HD = TRUE, 
 			bounce = 'd', bounce.edge = 0.01, 
 			verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
 			

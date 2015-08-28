@@ -13,13 +13,13 @@ QPContour(surface, dens, x.bound, y.bound, n.filled.contour = 25,
 
 \item{dens}{vector respectively for the number of \code{x} and \code{y} points to be plotted.}
 
-\item{x.bound}{two-element vector for the x variable's minimum and maximum values}
+\item{x.bound}{two-element vector for the surface's minimum and maximum x values}
 
-\item{y.bound}{two-element vector for the y variable's minimum and maximum values}
+\item{y.bound}{two-element vector for the surface's minimum and maximum y values}
 
 \item{n.filled.contour}{numeric value for the nubmber of breaks in the filled contour.}
 
-\item{n.contour.lines}{numeric value for the nubmber of breaks in the contour lines.}
+\item{n.contour.lines}{numeric value for the number of breaks in the contour lines.}
 
 \item{c.parm}{contour line adjustment (see details).}
 

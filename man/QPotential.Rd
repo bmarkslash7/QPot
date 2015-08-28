@@ -34,7 +34,7 @@ QPotential(x.rhs = "NULL", x.start = "NULL", x.bound = "NULL",
 
 \item{save.to.HD}{Write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is TRUE.}
 
-\item{bounce}{Dy default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').}
+\item{bounce}{By default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').}
 
 \item{bounce.edge}{If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01}
 
@@ -70,7 +70,7 @@ xinit1 = 1.40491
 yinit1 = 2.80808
 storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1,
  x.bound = xbounds, x.num.steps = xstepnumber,
-	y.rhs = equationy, y.start = yinit1,
-y.bound = ybounds, y.num.steps = ystepnumber)
+ y.rhs = equationy, y.start = yinit1,
+ y.bound = ybounds, y.num.steps = ystepnumber)
 }
 
