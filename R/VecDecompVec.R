@@ -1,10 +1,10 @@
 #' Vector decomposition and remainder fields
 #'
 #' This function calculates the vector field.
-#' @param x.num.steps COPY FROM QPOTENTIAL().
-#' @param y.num.steps COPY FROM QPOTENTIAL().
-#' @param x.rhs COPY FROM QPOTENTIAL().
-#' @param y.rhs COPY FROM QPOTENTIAL().
+#' @param x.num.steps The number of steps between the minimum and maximum x value defined in x range.
+#' @param y.num.steps The number of steps between the minimum and maximum y value defined in y range.
+#' @param x.rhs A string containing the right hand side of the equation for x.
+#' @param y.rhs A string containing the right hand side of the y equation.
 #' @param x.bound two-element vector with respective minimum and maximum x values.
 #' @param y.bound two-element vector with respective minimum and maximum y values.
 #' @keywords vector field decompoosition, vector field

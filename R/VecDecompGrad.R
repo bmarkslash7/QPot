@@ -2,7 +2,7 @@
 #'
 #' This function calculates the gradient field.
 #' @param surface matrix output from QPGlobal.
-#' @keywords vector field decompoosition, gradient field
+#' @keywords vector field decomposition, gradient field
 #' 
 #' @examples
 #' #Example 1 from article. Equations are not required

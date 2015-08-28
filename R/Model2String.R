@@ -1,9 +1,6 @@
-#' Function that converts differential equations from 
-#' function-format to string-format
-#' Specifically, it reads in a function, searches for the differential
-#' equations within the function, and returns a list of strings containing
-#' the differential equations from the function.
-#' Will also replace parameters of those equations with numerical values.
+#' Converts equations with parameters to strings with numbers
+#'
+#' Function that converts differential equations from function-format to string-format.  Specifically, it reads in a function, searches for the differential equations within the function, and returns a list of strings containing the differential equations from the function.   Will also replace parameters of those equations with numerical values.
 #' 
 #' @param model.function function containing the differential equations as given to TSTraj()
 #' @param parms a named vector of paramters and their respective values for the deterministic equations.
