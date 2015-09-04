@@ -54,8 +54,6 @@ VecDecompPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.typ
 		x.win <- c(x.min,x.max)
 		y.win <- c(y.min,y.max)
 
-		print(x.win)
-		print(y.win)
 	} else {
 		x.win <- x.lim
 		y.win <- y.lim

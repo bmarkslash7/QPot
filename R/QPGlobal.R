@@ -33,9 +33,7 @@ QPGlobal <- function(local.surfaces , unstable.eq.x , unstable.eq.y , x.bound , 
 		unstable.phi.loc[i,] <- c(x.loc, y.loc)
 		}
 
-local.surfaces[[1]][940,901]
-local.surfaces[[2]][940,901]
-	unstable.phi <- matrix(data = NA , nrow = n.unstable.pts , ncol = n.surfaces , byrow = F , dimnames=list(paste("unstab.eq",1:n.unstable.pts,sep=""),paste("surface",1:n.unstable.pts,sep=""))) #local phi values for each unstable equilibrium pair
+	unstable.phi <- matrix(data = NA , nrow = n.unstable.pts , ncol = n.surfaces , byrow = F , dimnames=list(paste("unstab.eq",1:n.unstable.pts,sep=""),paste("surface",1:n.surfaces,sep=""))) #local phi values for each unstable equilibrium pair
 	for(i in 1:n.unstable.pts) {
 		for (j in 1:n.surfaces) {
 		unstable.phi[i,j] <- local.surfaces[[j]][unstable.phi.loc[i,1],unstable.phi.loc[i,2]]
