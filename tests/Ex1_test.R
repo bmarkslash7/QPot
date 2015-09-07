@@ -1,15 +1,9 @@
-Ex1_test <- function() {
-##### 0.0 prepreperation #####
-	# install.packages("fortunes")
-	# library("fortunes")
-	# fortune(344) # or use fortune() to be distracted for way too long
-
 ##### 0.1 preperation #####
 	# 0.1.0 clean up and set seed
 	rm(list=ls())
 	your.favourite.number <- 6174
-	set.seed(your.favourite.number) # see fortune(306)
-	def.par <- par() # for deefault par settings for resetting plottting functions
+	set.seed(your.favourite.number)
+
 
 ##### 0.2 stochastic simulations!!! #####
 	# 0.2.0 equations without parameters for easier paramter manipulation in a list (in 0.2.1)
@@ -28,69 +22,55 @@ Ex1_test <- function() {
 
 	# 0.2.3 time series plots
 		TSPlot(ts.out.ex1, deltat=model.deltat)
-		par(def.par)
+		quartz() # new window with a single plotting area
 		TSPlot(ts.out.ex1, deltat=model.deltat, dim=2)
 		TSDensity(ts.out.ex1, dim=1)
 		TSDensity(ts.out.ex1, dim=2)
 
+
 ##### 0.3 local quasi-potential!!! #####
-		testequationx = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
-		testequationy = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
-		xbounds = c(-0.5, 20.0)
-		ybounds = c(-0.5, 20.0)
-		xstepnumber = 4100
-		ystepnumber = 4100
-		xinit1 = 1.40491
-		yinit1 = 2.80808
-		xinit2 = 4.9040
-		yinit2 = 4.06187
+	equation.x = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
+	equation.y = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
+	bounds.x = c(-0.5, 20.0)
+	bounds.y = c(-0.5, 20.0)
+	step.number.x = 4100
+	step.number.y = 4100
+	eq.1.1.x = 1.40491
+	eq.1.1.y = 2.80808
+	eq.1.2.x = 4.9040
+	eq.1.2.y = 4.06187
 
-		QPotential(x.rhs = testequationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, 
-			y.rhs = testequationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber, 
-			filename = 'exampleone_eq1.txt')
-		QPotential(x.rhs = testequationx, x.start = xinit2, x.bound = xbounds, x.num.steps = xstepnumber, 
-			y.rhs = testequationy, y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber, 
-			filename = 'exampleone_eq2.txt')
-	# 0.3.0 read in the results using fread() in the package data.table
-#		require(data.table)		#		requireNamespace("data.table")
-		e1.1.raw <- fread('exampleone_eq1.txt')
-		e1.1.local <- t(data.matrix(e1.1.raw))
-		rm(e1.1.raw)
-		e1.2.raw <- fread('exampleone_eq2.txt')
-		e1.2.local <- t(data.matrix(e1.2.raw))
-		rm(e1.2.raw)
-#	#read in the tables using read.table to test for speed and compare to fread + transpose
-#		e1.1.readtest <- read.table('exampleone_eq1.txt', sep="\t", header = FALSE)
-#		e1.2.readtest <- read.table('exampleone_eq2.txt', sep="\t", header = FALSE)
+	eq.1.1.local <- QPotential(x.rhs = equation.x, x.start = eq.1.1.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = equation.y, y.start = eq.1.1.y,  y.bound = bounds.y, y.num.steps = step.number.y)
+	eq.1.2.local <- QPotential(x.rhs = equation.x, x.start = eq.1.2.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = equation.y, y.start = eq.1.2.y, y.bound = bounds.y, y.num.steps = step.number.y)
 
-		e1.1.local[e1.1.local == 5e+05] = NA
-		e1.2.local[e1.2.local == 5e+05] = NA
-
-		if (isTRUE(all.equal(t(data.matrix(e1.1.readtest)), e1.1.local))) {print("SUCCESS - Code from e1.1 get same answer")} else {print("FAIL - code from e1.1 produced different matrices")} #PASSES
-		if (isTRUE(all.equal(t(data.matrix(e1.2.readtest)), e1.2.local))) {print("SUCCESS - Code from e1.2 get same answer")} else {print("FAIL - code from e1.2 produced different matrices")} #PASSES
 
 ##### 0.4 global quasi-potential!!! #####
 
-	e1.global <- QPGlobal(local.surfaces = list(e1.1.local,e1.2.local),unstable.eq.x = c(0,4.2008),unstable.eq.y = c(0,4.0039), x.bound = c(-0.5,20),y.bound = c(-0.5,20))
+	eq.1.global <- QPGlobal(local.surfaces = list(eq.1.1.local,eq.1.2.local),unstable.eq.x = c(0,4.2008),unstable.eq.y = c(0,4.0039), x.bound = xbounds, y.bound = ybounds)
+
 
 ##### 0.5 quasi-potential vizualization!!! #####
+	QPContour(surface=eq.1.global,dens=c(1000,1000), x.bound = xbounds, y.bound = ybounds,c.parm=5)
 
-	QPContour(e1.global,c(1000,1000),c(-0.5,20),c(-0.5,20),c.parm=5)
 
 ##### 0.6 vector field decompisition!!! #####
-
 	# 0.6.0 all fields
-	VDAll <- VecDecompAll(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy ,x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+	VDAll <- VecDecompAll(surface=eq.1.global, x.rhs=testequationx, y.rhs=testequationy, x.bound=xbounds, y.bound=ybounds)
 
 	# 0.6.1 vector field
-	VDV <- VecDecompVec(x.num.steps=4100, y.num.steps=4100, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-		VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+	VDV <- VecDecompVec(x.num.steps=step.number.x, y.num.steps=step.number.y, x.rhs=testequationx, y.rhs=testequationy, x.bound=xbounds, y.bound=ybounds)
+		VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=xbounds, y.bound=ybounds, x.lim=c(0,11), y.lim=c(0,6), arrow.type="proportional", tail.length=0.75, length=0.03)
 
 	# 0.6.2 gradient field	
-	VDG <- VecDecompGrad(e1.global)
-		VecDecompPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+	VDG <- VecDecompGrad(eq.1.global)
+		VecDecompPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=xbounds, y.bound=ybounds, arrow.type="proportional", length=0.03, tail.length=0.5)
 
 	# 0.6.3 remainder field
-	VDR <- VecDecompRem(surface=e1.global, x.rhs=testequationx, y.rhs=testequationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-		VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-}
+	VDR <- VecDecompRem(surface=eq.1.global, x.rhs=testequationx, y.rhs=testequationy, x.bound=xbounds, y.bound=ybounds)
+		VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=xbounds, y.bound=ybounds, arrow.type="proportional", tail.length=0.5, length=0.03)
+
+##### 0.7 3D graphs!!! #####
+	dens.sub <- c(1000,1000)
+	global.sub <- eq.1.global[round(seq(1,nrow(eq.1.global),length.out=dens.sub[1])) , round(seq(1,ncol(eq.1.global),length.out=dens.sub[2]))]
+	global.sub[global.sub > 0.1] <- NA
+	persp(global.sub, xlab="", ylab="y", zlab="", theta=0, phi=42.5, d=5, expand=.6, zlim=c(0,0.11), xlim=c(0,.4), ylim=c(0.15,.3), lphi=30, ltheta=0, col="orange", shade=1.25, ticktype="detailed", border=NA, r=1)
