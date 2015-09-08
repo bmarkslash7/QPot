@@ -17,7 +17,7 @@
 #' @param k.x Integer anisotropic factor for x.  See journal article.  Default is 20.
 #' @param k.y Integer anisotropic factor for y.  See journal article.  Default is 20.
 #' @param verboseR NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential Rwrapper
-#' @param verboseC NOT IMPLEMENTED: Flag (default = FALSE) for printing out useful-for-everyone information in quasipotential.C
+#' @param verboseC NOT IMPLEMENTED: Flag (default = TRUE) for printing out useful-for-everyone information in quasipotential.C
 #' @param debugC NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code 
 #' @return filetoHD If save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
 #' @return filetoR If save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
@@ -43,7 +43,7 @@
 #'  y.rhs = equationy, y.start = yinit1, 
 #'  y.bound = ybounds, y.num.steps = ystepnumber)
 
-QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = FALSE, debugC = FALSE, k.x = 20, k.y = 20)
+QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20)
 {
 # ----------------------------------------------------------------------
 # Break apart function parameters into things that C code will use

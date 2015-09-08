@@ -866,6 +866,11 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	DEBUG = tempDEBUG[0];
 	VERBOSE = tempVERBOSE[0];
 	
+	if (VERBOSE) {
+		Rprintf("The upwind ordered method will be chatty\n");
+		Rprintf("Set verboseC = FALSE to turn off completely\n");
+	}
+	
 	count = 0;
 /* variables for edge handling */
 	char *temptempchfield = *tempchfield;
