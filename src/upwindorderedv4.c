@@ -61,6 +61,8 @@ double FP1 = 6.60341; /* This is the x-coordinate of the initial point for the c
 double FP2 = 3.04537; /* This is the y-coordinate of the initial point for the calculation (equilibirium or point on a limit cycle). */
 
 long KX=20, KY=20;
+int DEBUG = 0;
+int VERBOSE = 0;
 
 /* variables used by matheval */
 char xbuffer[BUFFERSIZE];		/*stores the equation as a string*/
@@ -93,7 +95,7 @@ struct mysol {
 } mysol;
 
 int main(int argc, char **argv);
-void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky);
+void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky, int *tempDEBUG, int *tempVERBOSE);
 void write_output(double *storage, int HDwrite, int Rwrite);
 
 /* struct myvector myfield(double x,double y); B */
@@ -852,7 +854,7 @@ void deltree() {
 
 
 /********************************************************/
-void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky) {
+void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky, int *tempDEBUG, int *tempVERBOSE) {
 /* Assign function parameter values to variables defined in C code*/
 /* x range, y range, and starting values */
 	LX1 = tempxmin[0]; LX2 = tempxmax[0]; NX = tempxsteps[0]; 
@@ -860,6 +862,8 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	FP1 = tempeqx[0]; 
 	FP2 = tempeqy[0];
 	KX = tempkx[0]; KY = tempky[0];
+	DEBUG = tempDEBUG[0];
+	VERBOSE = tempVERBOSE[0];
 	
 	count = 0;
 /* variables for edge handling */
