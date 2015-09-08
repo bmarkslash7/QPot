@@ -14,6 +14,8 @@
 #' @param filename String for the name of the file saved to the hard drive.  If filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively. 
 #' @param bounce By default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').
 #' @param bounce.edge If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
+#' @param k.x anisotropic factor for x.  See journal article.  Default is 20.
+#' @param k.y anisotropic factor for y.  See journal article.  Default is 20.
 #' @param verboseR NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential Rwrapper
 #' @param verboseC NOT IMPLEMENTED: Flag (default = FALSE) for printing out useful-for-everyone information in quasipotential.C
 #' @param debugC NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code 
@@ -41,7 +43,7 @@
 #'  y.rhs = equationy, y.start = yinit1, 
 #'  y.bound = ybounds, y.num.steps = ystepnumber)
 
-QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = FALSE, debugC = FALSE)
+QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = FALSE, debugC = FALSE, k.x = 20, k.y = 20)
 {
 # ----------------------------------------------------------------------
 # Break apart function parameters into things that C code will use
@@ -165,14 +167,15 @@ if (numofstepsx*numofstepsy > 7000*7000) {
 if (datasave == 1) {
 	#no R write; HD write
 	storage = 0;
-	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
+	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), as.integer(k.x), as.integer(k.y), PACKAGE="QPot")
 #	print(ls())
 	return(TRUE)
 }
 else if (datasave == 2) {
+	#DEFAULT
 	#R write; no HD write
 	storage <- array(1.0, dim=c(1,(numofstepsx*numofstepsy)))
-	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
+	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), as.integer(k.x), as.integer(k.y), PACKAGE="QPot")
 	storage = out2[[1]]
 	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
 	#1.0e+6 is the INFTY place holder in the C code
@@ -185,7 +188,7 @@ else if (datasave == 2) {
 else if (datasave == 3) {
 	# R write; HD write
 	storage <- array(1.0, dim=c(1,(numofstepsx*numofstepsy)))
-	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
+	out2 <- .C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), as.integer(k.x), as.integer(k.y), PACKAGE="QPot")
 	storage = out2[[1]]
 	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
 	#1.0e+6 is the INFTY place holder in the C code
@@ -197,7 +200,7 @@ else if (datasave == 3) {
 }
 else if (datasave == 4) {
 	# no R write; no HD write
-	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), PACKAGE="QPot")
+	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), as.integer(k.x), as.integer(k.y), PACKAGE="QPot")
 	return(TRUE)
 }
 else {print("datasave is not a possible number.  How did you get here?")}
