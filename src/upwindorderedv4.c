@@ -22,6 +22,7 @@
 /* Ordered Upwind Method */
 
 #include <stdio.h>
+#include <stdint.h> /*added to use int_fast64_t instead of long */
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
