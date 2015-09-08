@@ -61,7 +61,7 @@ double LY2 = 60.0; /* Same idea as LX2, but for the vertical direction */
 double FP1 = 6.60341; /* This is the x-coordinate of the initial point for the calculation (equilibirium or point on a limit cycle). */
 double FP2 = 3.04537; /* This is the y-coordinate of the initial point for the calculation (equilibirium or point on a limit cycle). */
 
-long KX=20, KY=20;
+int_fast64_t KX=20, KY=20;
 int DEBUG = 0;
 int VERBOSE = 0;
 
@@ -106,11 +106,11 @@ double length(double x,double y);
 void param(void);
 void ipoint(void);
 void ordered_upwind(void);
-struct mysol triangle_update(long ind,long ind0,long ind1);
-double one_pt_update(long ind,long ind0);
-void addtree(long ind); /* adds a node to the binary tree
+struct mysol triangle_update(int_fast64_t ind,int_fast64_t ind0,int_fast64_t ind1);
+double one_pt_update(int_fast64_t ind,int_fast64_t ind0);
+void addtree(int_fast64_t ind); /* adds a node to the binary tree
                          of the "considered" points */
-void updatetree(long ind); /* updates the binary tree */
+void updatetree(int_fast64_t ind); /* updates the binary tree */
 void deltree(void); /* deletes the root of the binary tree */
 struct mymatrix matrix_inverse(struct mymatrix matr);
 struct mymatrix matrix_product(struct mymatrix a,struct mymatrix b);
@@ -119,25 +119,25 @@ struct myvector matr_vec(struct mymatrix matr,struct myvector vec);
 double dotproduct(struct myvector a,struct myvector b);
 struct myvector ga_plus_b(double lam,struct myvector a,struct myvector b);
 double solve_quadratic(double a,double b,double c);
-struct myvector getpoint(long ind);
+struct myvector getpoint(int_fast64_t ind);
 /***************************************/
 
-/* const long nx1=NX-1, ny1=NY-1, nxy=NX*NY; */
-long nx1,ny1,nxy;
-long count=0; /* # of considered points */
+/* const int_fast64_t nx1=NX-1, ny1=NY-1, nxy=NX*NY; */
+int_fast64_t nx1,ny1,nxy;
+int_fast64_t count=0; /* # of considered points */
 double h,hx,hy;
 double *aB = 0; /* potential on the regular mesh */
 struct myvector *B = 0; /* exp(2 beta v) */
 int *ms = 0; /* Label for points in algorithm.  0 = 'Unknown', 1 = 'Considered', 2 = "in Accepted Front", 3 = "Accepted" */
 double *g = 0; /* g is an array that stores the answers */
 struct myvector *rcurr = 0; /* M grad g */
-long *pos = 0; /* pos(index of mesh pt) = position in binary tree */
-long *tree = 0; /* tree(position in the tree) = index of mesh pt */
+int_fast64_t *pos = 0; /* pos(index of mesh pt) = position in binary tree */
+int_fast64_t *tree = 0; /* tree(position in the tree) = index of mesh pt */
 double UPS, HUPS; /* unisotropy ratio. This measures how funky your vector field is. */
-long *acf = 0; /* vector of indexes of points in the accepted front */
-long *pacf = 0; /* position in the accepted front */
-/* const long neii[8]={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; neighbor's indices */
-long neii[8]; /*={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; neighbor's indices */
+int_fast64_t *acf = 0; /* vector of indexes of points in the accepted front */
+int_fast64_t *pacf = 0; /* position in the accepted front */
+/* const int_fast64_t neii[8]={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; neighbor's indices */
+int_fast64_t neii[8]; /*={1, NX+1, NX, NX-1, -1, -NX-1, -NX, -NX+1 }; neighbor's indices */
 double xa, ya, xb, yb; /* potential minima */
 char chfield = 'd';
 
@@ -159,7 +159,7 @@ double chrisx;
 double chrisy;
 
 void write_output(double *storage, int HDwrite, int Rwrite) {
-	long i,j,ind;
+	int_fast64_t i,j,ind;
 	double tempg;
 	FILE *fg;
 /*	ind=0; */
@@ -302,7 +302,7 @@ struct myvector myfieldchris(double x,double y) {
 /*************************************/
 
 void param() {
-    long i,j,ind;
+    int_fast64_t i,j,ind;
     double x,y;
     
     xa=FP1; ya=FP2;
@@ -344,14 +344,14 @@ void param() {
 /************************************/
 
 void ipoint() {
-    long i,j,ind,ind0,m,n,*indac;
-	long *ic,nac=0,nc=0;;
+    int_fast64_t i,j,ind,ind0,m,n,*indac;
+	int_fast64_t *ic,nac=0,nc=0;;
     double gtemp;
-    const long isur[4]={0, 1, NX+1, NX};
+    const int_fast64_t isur[4]={0, 1, NX+1, NX};
     struct myvector x,l;
     
 /*    Rprintf("DECLARED PARAMETERS IN ipoint()\n"); */
-    indac=(long *)malloc(4*sizeof(long));
+    indac=(int_fast64_t *)malloc(4*sizeof(int_fast64_t));
 /*    Rprintf("DECLARED indac IN ipoint()\n");*/
 
  /* v2: appears to convert the "current" value of x and y into an index value
@@ -387,13 +387,13 @@ void ipoint() {
 /*** ordered upwind method ***/
 
 void ordered_upwind(void) {
-    long i,j,k,m,ind,ind0,ind1m,ind1p,ii,jj,ind1,indupdate,kx,ky,i0,j0,i1,j1,mycount=0;
+    int_fast64_t i,j,k,m,ind,ind0,ind1m,ind1p,ii,jj,ind1,indupdate,kx,ky,i0,j0,i1,j1,mycount=0;
     int nc; /* # of points that become considered at the current cycle */
     double x0,x1,y0,y1,g0,g1,x,y,len0,len1;
-    long newind[8]; /* the indices of the new considered points */
+    int_fast64_t newind[8]; /* the indices of the new considered points */
     struct mysol sol;
     char newch, update;
-/*    const long KX=20, KY=20; removed to make a global variable */
+/*    const int_fast64_t KX=20, KY=20; removed to make a global variable */
     double gamma, bdotvec, det, avec, aux,a0,b0,a1,b1,HUPS;
     struct myvector vec, b, c, v0, v1;
     double xnewac, ynewac; /* x and y of the newly accepted point  */
@@ -549,7 +549,7 @@ void ordered_upwind(void) {
 /*********************************************/
 /*** triangle update ***/
 
-struct mysol triangle_update(long ind,long ind0,long ind1) {
+struct mysol triangle_update(int_fast64_t ind,int_fast64_t ind0,int_fast64_t ind1) {
     struct myvector x,x0,x1,l0,l1;
     struct myvector p0,p1,a,b,qa,qb,coefs,vec,gradg,phis;
     struct mymatrix pmatr,pinv,pinvT;
@@ -618,7 +618,7 @@ struct mysol triangle_update(long ind,long ind0,long ind1) {
 
 /*-----------*/
 
-double one_pt_update(long ind,long ind0) {
+double one_pt_update(int_fast64_t ind,int_fast64_t ind0) {
     struct myvector x,x0,l;
     double gtemp;
     
@@ -632,7 +632,7 @@ double one_pt_update(long ind,long ind0) {
 
 /*-------------*/
 
-struct myvector getpoint(long ind) {
+struct myvector getpoint(int_fast64_t ind) {
     struct myvector l;
 /* Rprintf("ALL VALUES IN GETPOINT: %li %g %i %g %g %g\n", ind, hx, NX, LX1, hy, LY1); */
 /* v2: takes an index value and converts it to an x,y value
@@ -723,9 +723,9 @@ double solve_quadratic(double a,double b,double c) {
 /**************************************************************/
 /************ FUNCTIONS RELATED TO THE BINARY TREE ***************/
 
-void addtree(long ind) {
-    long loc, ptemp;
-    long indp, indc;
+void addtree(int_fast64_t ind) {
+    int_fast64_t loc, ptemp;
+    int_fast64_t indp, indc;
     char ch;
     
     count++;
@@ -755,8 +755,8 @@ void addtree(long ind) {
 
 /*------------------------------------------------------------------*/
 
-void updatetree(long ind) {
-    long loc, lcc;
+void updatetree(int_fast64_t ind) {
+    int_fast64_t loc, lcc;
     double g0,g1,g2;
     
     g0=g[ind];
@@ -786,7 +786,7 @@ void updatetree(long ind) {
 
 /* deletes root of the binary tree */
 void deltree() {
-    long loc, ptemp, ind, lcc, ic, ic1, ic2, mind;
+    int_fast64_t loc, ptemp, ind, lcc, ic, ic1, ic2, mind;
     char chd, ch='n';;
     
     mind=tree[1];
@@ -944,13 +944,13 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	ms = malloc(sizeof(int)*NX*NY); 
 	g = malloc(sizeof(double)*NX*NY); 
 	rcurr = malloc(sizeof(myvector)*NX*NY);
-	pos = malloc(sizeof(long)*NX*NY); 
-	tree = malloc(sizeof(long)*NX*NY);
-	acf = malloc(sizeof(long)*2*(NX+NY)); 
-	pacf = malloc(sizeof(long)*NX*NY);
+	pos = malloc(sizeof(int_fast64_t)*NX*NY); 
+	tree = malloc(sizeof(int_fast64_t)*NX*NY);
+	acf = malloc(sizeof(int_fast64_t)*2*(NX+NY)); 
+	pacf = malloc(sizeof(int_fast64_t)*NX*NY);
 	
 	Rprintf("Completed Memory Allocation\n");
-    long i,j,ind;
+    int_fast64_t i,j,ind;
     clock_t CPUbegin;
     double cpu;
     
