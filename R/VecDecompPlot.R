@@ -33,7 +33,7 @@
 # VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 
 
-VecDecompPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type="equal", tail.length=1, ...){
+VecDecompPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...){
 		x.range <- max(x.bound)-min(x.bound)
 		y.range <- max(y.bound)-min(y.bound)
 
@@ -103,7 +103,7 @@ VecDecompPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.typ
 				x1 <- sub.x.val[j] + (dx.plot[j,i]/2)
 				y0 <- sub.y.val[i] - (dy.plot[j,i]/2)
 				y1 <- sub.y.val[i] + (dy.plot[j,i]/2)
-				arrows(x0,y0,x1,y1, ...)
+				arrows(x0,y0,x1,y1,length=head.length, ...)
 			}
 		}
 }
