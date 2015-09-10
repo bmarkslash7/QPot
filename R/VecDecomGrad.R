@@ -12,11 +12,11 @@
 # Need to decide how to handle e1.global in examples
 ########################################################################
 # #' e1.global <- matrix()
-# #' VDG <- VecDecompGrad(e1.global)
-# #' VecDecompPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# #' VDG <- VecDecomGrad(e1.global)
+# #' VecDecomPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 
 
-VecDecompGrad <- function(surface){
+VecDecomGrad <- function(surface){
 	qpr <- nrow(surface)
 	qpc <- ncol(surface)
 

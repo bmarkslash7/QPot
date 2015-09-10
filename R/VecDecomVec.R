@@ -13,12 +13,12 @@
 #' #Example 1 from article
 #' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
 #' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
-#' VDV <- VecDecompVec(x.num.steps=4100, y.num.steps=4100, x.rhs=equationx, 
+#' VDV <- VecDecomVec(x.num.steps=4100, y.num.steps=4100, x.rhs=equationx, 
 #'  y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-#' VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), 
+#' VecDecomPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), 
 #'  x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 
-VecDecompVec <- function(x.num.steps,y.num.steps,x.rhs,y.rhs,x.bound,y.bound){
+VecDecomVec <- function(x.num.steps,y.num.steps,x.rhs,y.rhs,x.bound,y.bound){
 	equations <- list(x.rhs,y.rhs)
 	x.val <- seq(min(x.bound),max(x.bound),length.out=x.num.steps)
 	y.val <- seq(min(y.bound),max(y.bound),length.out=y.num.steps)

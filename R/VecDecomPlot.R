@@ -1,7 +1,7 @@
 #' Plotting function for vector decomposition and remainder fields
 #'
 #' This function calculates the vector and remainder fields.
-#' @param field list output from \code{\link{VecDecompAll}}.
+#' @param field list output from \code{\link{VecDecomAll}}.
 #' @param dens two-element vector respectively specifying the number of respective arrows in the x and y directions.
 #' @param x.bound two-element vector for the x domain boundries used for the quasi-potential simulation.
 #' @param y.bound two-element vector for the y domain boundries used for the quasi-potential simulation.
@@ -17,23 +17,23 @@
 #' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
 #' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
 #' # 0.6.1 vector field
-#' VDV <- VecDecompVec(x.num.steps=4100, y.num.steps=4100, x.rhs=equationx,
+#' VDV <- VecDecomVec(x.num.steps=4100, y.num.steps=4100, x.rhs=equationx,
 #'   y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-#' VecDecompPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+#' VecDecomPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 #'
 ########################################################################
 # This is off until we decide what to do about e1.global
 ########################################################################
 # # 0.6.2 gradient field	
-# VDG <- VecDecompGrad(e1.global)
-# VecDecompPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# VDG <- VecDecomGrad(e1.global)
+# VecDecomPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 #
 # # 0.6.3 remainder field
-# VDR <- VecDecompRem(surface=e1.global, x.rhs=equationx, y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-# VecDecompPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# VDR <- VecDecomRem(surface=e1.global, x.rhs=equationx, y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# VecDecomPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
 
 
-VecDecompPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...){
+VecDecomPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...){
 		x.range <- max(x.bound)-min(x.bound)
 		y.range <- max(y.bound)-min(y.bound)
 

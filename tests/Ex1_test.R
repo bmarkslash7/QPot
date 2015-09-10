@@ -26,10 +26,24 @@
 
 	# 0.2.3 time series plots
 		TSPlot(ts.ex1, deltat = model.deltat)
-		quartz() # new quartz device window
 		TSPlot(ts.ex1, deltat = model.deltat, dim = 2)
 		TSDensity(ts.ex1, dim = 1)
 		TSDensity(ts.ex1, dim = 2)
+
+		# plots for the paper figures
+			# print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
+			# # Ex1_TS_1D.png
+			# png(paste(print.wd,"Ex1_TS_1D.png",sep=""), width = 720, height = 480)
+			# TSPlot(ts.ex1, deltat = model.deltat)
+			# dev.off()
+			# # Ex1_TS_2D.png
+			# png(paste(print.wd,"Ex1_TS_2D.png",sep=""), width = 500, height = 500)
+			# TSPlot(ts.ex1, deltat = model.deltat, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(X)), ylab = expression(italic(Y)))
+			# dev.off()
+			# # Ex1_Dens_2D.png
+			# png(paste(print.wd,"Ex1_Dens_2D.png",sep=""), width = 500, height = 500)
+			# TSDensity(ts.ex1, deltat = model.deltat, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(X)), ylab = expression(italic(Y)), contour.lwd = 0.75)
+			# dev.off()
 
 
 ##### 0.3 local quasi-potential!!! #####
@@ -64,26 +78,58 @@
 
 ##### 0.6 vector field decompisition!!! #####
 	# 0.6.0 all fields
-	VDAll <- VecDecompAll(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-	VecDecompPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, x.lim = c(0, 11), y.lim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
-	VecDecompPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
-	VecDecompPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
+	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
+	VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, x.lim = c(0, 11), y.lim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
+	VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
+	VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
 
 
 	# 0.6.1 vector field
-	VDV <- VecDecompVec(x.num.steps = step.number.x, y.num.steps = step.number.y, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-		VecDecompPlot(field = list(VDV[,,1], VDV[,,2]), dens = c(50, 50), x.bound = bounds.x, y.bound=bounds.y, x.lim = c(0, 11), y.lim=c(0, 6), arrow.type="proportional", tail.length=0.75, head.length=0.03)
+	VDV <- VecDecomVec(x.num.steps = step.number.x, y.num.steps = step.number.y, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
+		VecDecomPlot(field = list(VDV[,,1], VDV[,,2]), dens = c(50, 50), x.bound = bounds.x, y.bound=bounds.y, x.lim = c(0, 11), y.lim=c(0, 6), arrow.type="proportional", tail.length=0.75, head.length=0.03)
 
 	# 0.6.2 gradient field	
-	VDG <- VecDecompGrad(ex1.global)
-		VecDecompPlot(field = list(VDG[,,1], VDG[,,2]), dens=c(50, 50), x.bound=bounds.x, y.bound = bounds.y, arrow.type = "proportional", head.length = 0.03, tail.length = 0.5)
+	VDG <- VecDecomGrad(ex1.global)
+		VecDecomPlot(field = list(VDG[,,1], VDG[,,2]), dens=c(50, 50), x.bound=bounds.x, y.bound = bounds.y, arrow.type = "proportional", head.length = 0.03, tail.length = 0.5)
 
 	# 0.6.3 remainder field
-	VDR <- VecDecompRem(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-		VecDecompPlot(field = list(VDR[,,1], VDR[,,2]), dens = c(50, 50), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.5, head.length = 0.03)
+	VDR <- VecDecomRem(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
+		VecDecomPlot(field = list(VDR[,,1], VDR[,,2]), dens = c(50, 50), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.5, head.length = 0.03)
 
+	# plots for the paper figure
+		print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
+			# # Ex1_VecDecom.png
+			png(paste(print.wd,"Ex1_VecDecom.png",sep=""), width = 720, height = 720)
+			par(mfrow=c(2,2),mar = c(0.5,0.5,0,0),oma=c(2.5,3.5,2,1))
+VecDecomPlot(g.field, density = c(25, 25), x.bound = c(-0.5, 20), y.bound=c(-0.5,20),x.lim=c(0,6),y.lim=c(0,6),length=0.02,xlab="",ylab="",arrow.type="proportional",tail.length=0.25,xaxt="n",yaxt="n",lwd=0.9)
+		axis(1,labels=F,tck=-0.015)
+		axis(2,tck=-0.015,labels=F,las=1)
+		mtext(0:6,2,at=0:6,line=0.5,las=1,cex=0.8)
+		mtext(expression(italic(Y)),2,line=1.75,las=1,cex=0.8)
+		mtext("Proportional arrow lengths",2,line=2.75)
+		mtext(expression(Gradient~field~(-nabla~phi(x,y))),3,line=0.1,las=1)
+	VecDecomPlot(r.field,density=c(25,25),x.bound=c(-0.5,20),y.bound=c(-0.5,20),x.lim=c(0,6),y.lim=c(0,6),length=0.02,xlab="",ylab="",arrow.type="proportional",tail.length=0.25,xaxt="n",yaxt="n",lwd=0.9)
+		axis(1,labels=F,tck=-0.015)
+		axis(2,labels=F,tck=-0.015)
+		mtext(expression(Remainder~field~(bold(r)(x,y))),3,line=0.1,las=1)
+	VecDecomPlot(g.field,density=c(25,25),x.bound=c(-0.5,20),y.bound=c(-0.5,20),x.lim=c(0,6),y.lim=c(0,6),length=0.02,xlab="",ylab="",arrow.type="equal",tail.length=0.2,lwd=0.9,xaxt="n",yaxt="n")
+		axis(1,labels=F,tck=-0.015)
+		axis(2,tck=-0.015,labels=F,las=1)
+		mtext(0:6,2,at=0:6,line=0.5,las=1,cex=0.8)
+		mtext(0:6,1,at=0:6,line=0.5,las=1,cex=0.8)
+		mtext(expression(italic(Y)),2,line=1.75,las=1,cex=0.8)
+		mtext(expression(italic(X)),1,line=1.75,cex=0.8)
+		mtext("Equal arrow lengths",2,line=2.75)
+	VecDecomPlot(r.field,density=c(25,25),x.bound=c(-0.5,20),y.bound=c(-0.5,20),x.lim=c(0,6),y.lim=c(0,6),length=0.02,xlab="",ylab="",arrow.type="equal",tail.length=0.2,yaxt="n",xaxt="n",lwd=0.9)
+		axis(1,labels=F,tck=-0.015)
+		axis(2,labels=F,tck=-0.015)
+		mtext(0:6,1,at=0:6,line=0.5,las=1,cex=0.8)
+		mtext(expression(italic(X)),1,line=1.75,cex=0.8)
+		dev.off()
 ##### 0.7 3D graphs!!! #####
-	dens.sub <- c(1000,1000)
+	library(rgl)
+	dens.sub <- c(4000,4000)
 	global.sub <- ex1.global[round(seq(1,nrow(ex1.global),length.out=dens.sub[1])) , round(seq(1,ncol(ex1.global),length.out=dens.sub[2]))]
-	global.sub[global.sub > 0.1] <- NA
-	persp(global.sub, xlab="", ylab="y", zlab="", theta=0, phi=42.5, d=5, expand=.6, zlim=c(0,0.11), xlim=c(0,.4), ylim=c(0.15,.3), lphi=30, ltheta=0, col="orange", shade=1.25, ticktype="detailed", border=NA, r=1)
+	# global.sub[global.sub > 0.02] <- NA # to cut off large values for a better view of the basin
+	persp3d(x = global.sub, col = "orange", expand = 1.1, xlim = c(0.05, 0.35), ylim = c(0.1, 0.3), zlim = c(0, 0.01), xlab = "X", ylab = "Y", zlab = intToUtf8(0x03A6))
+	# rgl.snapshot("/Users/christophermoore/Dropbox/QPRpackage/QPotPaper/Figures/Ex1_3D.png", fmt = "png", top = TRUE )

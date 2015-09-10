@@ -27,7 +27,7 @@
 #' # . . . or plot as two-dimensional plot
 #' TSDensity(ts.out.ex1, dim=2)
 
-	TSDensity <- function(mat , dim = 1 , contour.levels = 15 ,  col2d = c("blue" , "yellow" , "orange" , "red") , contour.lwd = 0.5 ,  contour.lines = TRUE){
+	TSDensity <- function(mat , dim = 1 , contour.levels = 15 ,  col2d = c("blue" , "yellow" , "orange" , "red") , contour.lwd = 0.5 ,  contour.lines = TRUE, ...){
 		if (dim ==1){
 			densA <- density(mat[,2] , na.rm = T)
 			densB <- density(mat[,3] , na.rm = T)
@@ -37,7 +37,7 @@
 			polygon(densA$x , densA$y, col = rgb(255,0,0,75,maxColorValue=255) , border = rgb(255,0,0,130,maxColorValue=255))
 			polygon(densB$x , densB$y, col = rgb(0,0,255,75,maxColorValue=255) , border = rgb(0,0,255,130,maxColorValue=255))
 			}
-		if (dim ==2) {
+		if (dim == 2) {
 #			require("MASS")	#Mass called in DESCRIPTION, Depends
 			kern.2d <- MASS::kde2d(mat[,2] , mat[,3])
 			x.max <- length(kern.2d$x)
@@ -46,7 +46,7 @@
 			y.range <- 1:y.max
 			contour.breaks <- seq(min(kern.2d$z) , max(kern.2d$z), length = contour.levels)
 			myRmap <- colorRampPalette(col2d)(contour.levels)
-			plot(0 , type = "n" , xlim = c(1 , x.max)  , ylim = c(1 , y.max) , las = 1  , xlab = colnames(mat)[2] , ylab = colnames(mat)[3] , xaxt = "n" , yaxt = "n")
+			plot(0 , type = "n" , xlim = c(1 , x.max)  , ylim = c(1 , y.max) , las = 1 ,  xaxt = "n" , yaxt = "n", ...)
 			.filled.contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap)
 			contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap , add = T ,  drawlabels = F)
 			if (contour.lines == T) {contour(x.range , y.range , kern.2d$z , levels = contour.breaks, drawlabels = F ,  add = TRUE , col = "black" , lwd = contour.lwd)}
@@ -74,12 +74,12 @@
 			y.range <- 1:y.max
 			contour.breaks <- seq(min(kern.2d$z) , max(kern.2d$z), length = contour.levels)
 			myRmap <- colorRampPalette(col2d)(contour.levels)
-			plot(0 , type = "n" , xlim = c(1 , x.max)  , ylim = c(1 , y.max) , las = 1  , xlab = colnames(mat)[2] , ylab = colnames(mat)[3] , xaxt = "n" , yaxt = "n")
+			plot(0 , type = "n" , xlim = c(1 , x.max)  , ylim = c(1 , y.max) , las = 1 ,  xaxt = "n" , yaxt = "n", ...)
 			.filled.contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap)
 			contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap , add = T , drawlabels=F)
 			if (contour.lines == T) {contour(x.range , y.range , kern.2d$z , levels = contour.breaks, drawlabels = F ,  add = TRUE , col = "black" , lwd = contour.lwd)}
 			par(new = TRUE)
-			plot(0, type = "n" , xlim = c(min(kern.2d$x), max(kern.2d$x)) , ylim = c(min(kern.2d$y), max(kern.2d$y)) , ylab = "" , xlab ="" , xaxt = "n" , yaxt = "n")
+			plot(0, type = "n" , xlim = c(min(kern.2d$x), max(kern.2d$x)) , ylim = c(min(kern.2d$y), max(kern.2d$y)) , xaxt = "n" , yaxt = "n", ...)
 			axis(1 , las = 1)
 			axis(2 , las = 1)
 		}

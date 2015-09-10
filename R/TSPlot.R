@@ -29,7 +29,7 @@
 #' # . . . or plot as two-dimensional plot
 #' TSPlot(ts.out.ex1, deltat=model.deltat, dim=2)
 
-	TSPlot <- function(mat, deltat , dim = 1 , y.lim = NA , x.lab = "time" , dens = TRUE , lwd = 2 , line.alpha = 130 , zero.axes = TRUE) {
+	TSPlot <- function(mat, deltat , dim = 1 , y.lim = NA , x.lab = "time" , dens = TRUE , lwd = 2 , line.alpha = 130 , zero.axes = TRUE, ...) {
 		if (dim ==1) {
 			if (table(is.infinite(mat))["FALSE"] != nrow(mat)*3 ) { # if Inf values in the timeseries
 					message("Simulation -> Inf. Try: (i) set exact y-axis limits using the y.lim argument and (ii) dens = FALSE")
@@ -99,7 +99,7 @@
 		} else { # dim != 1
 			x.lim <- c(min(mat[,2]) , max(mat[,2]))
 			y.lim <- c(min(mat[,3]) , max(mat[,3]))
-			plot(mat[,2] , mat[,3] , type = "n", las = 1 , xlab = colnames(mat)[2] , ylab = colnames(mat)[3] , ylim = y.lim , xlim = x.lim)
+			plot(mat[,2] , mat[,3] , type = "n", las = 1 , ylim = y.lim , xlim = x.lim, ...)
 			if (zero.axes == TRUE) {abline(v = 0 , h = 0 , col = "grey75" , lwd = 0.75 , lty = 1)}
 			lines(mat[,2] , mat[,3] , col = rgb(50,50,50,line.alpha,maxColorValue=255) , lwd = lwd)
 		}
