@@ -160,6 +160,8 @@ double chrisx;
 double chrisy;
 
 void write_output_original(void) {
+	FILE *fg;
+	int_fast64_t i,j,ind;
 	fg=fopen("Model3Eq1-original.txt", "w");
     Rprintf("File opened.\n");
     Rprintf("Using original write_output function\n");
@@ -173,6 +175,27 @@ void write_output_original(void) {
         fprintf(fg,"%.4e",g[(ind)]);
         ind++;
         fprintf(fg,"\n");
+    }
+    fclose(fg);
+}
+
+void write_output_for_R(void) {
+	FILE *fg;
+	int_fast64_t i,j,ind;
+	fg=fopen("Model3Eq1-original-for-R.txt", "w");
+    Rprintf("File opened.\n");
+    Rprintf("Using original write_output function\n");
+    
+    ind=0;
+    for( j=0; j<(NY); j++ ) {
+        for( i=0; i<(NX-1); i++ ) {
+            fprintf(fg,"%.4e\t",g[ind]);
+            storage[ind] = g[ind];
+            ind++;
+        }
+        fprintf(fg,"%.4e\n",g[(ind)]);
+        storage[ind] = g[ind];
+        ind++;
     }
     fclose(fg);
 }
@@ -1051,6 +1074,9 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		}
 		fclose(fg);
 */
+		break;
+	case 5: /* uses original code to write a file to the HD */
+		write_output_original();
 		break;
 	default:
 		Rprintf("Running testrun.  You are not saving any data.\n");

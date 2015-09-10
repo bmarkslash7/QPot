@@ -112,10 +112,11 @@ if ( (filename == 'NULL') && (save.to.HD == TRUE) && ( (abs(x.start) > 99999) ||
 if ((save.to.R == TRUE) && (save.to.HD == TRUE)) 		{datasave = 3}
 else if ((save.to.R == TRUE) && (save.to.HD == FALSE)) 	{datasave = 2}
 else if (isTRUE(save.to.HD))							{datasave = 1}
-else												{datasave = 4}
+else													{datasave = 4}
 if (save.to.HD == 'testrun')							{datasave = 4}
+if (save.to.HD == 'original')							{datasave = 5}
 if (verboseR) {print(paste("Variable datasave is: ", datasave, sep = ""))}
-
+print(paste("datasave = ", datasave,sep=""))
 
 # ----------------------------------------------------------------------
 # Determine what C code does at edges of x.bound and y.bound
@@ -203,6 +204,12 @@ else if (datasave == 4) {
 	# no R write; no HD write
 	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), as.integer(k.x), as.integer(k.y), as.integer(is.c.debugging), as.integer(is.c.loud), PACKAGE="QPot")
 	return(TRUE)
+}
+else if (datasave == 5) {
+	#uses original c code for file output
+	storage = 0;
+	print("Note that you have to hand manipulate these data")
+	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), as.integer(k.x), as.integer(k.y), as.integer(is.c.debugging), as.integer(is.c.loud), PACKAGE="QPot")
 }
 else {print("datasave is not a possible number.  How did you get here?")}
 
