@@ -98,6 +98,7 @@ struct mysol {
 int main(int argc, char **argv);
 void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky, int *tempDEBUG, int *tempVERBOSE);
 void write_output(double *storage, int HDwrite, int Rwrite);
+void write_output_original(void);
 
 /* struct myvector myfield(double x,double y); B */
 struct myvector myfieldchris(double x,double y);
@@ -158,6 +159,24 @@ struct myvector myfieldchris(double x,double y) {
 double chrisx;
 double chrisy;
 
+void write_output_original(void) {
+	fg=fopen("Model3Eq1-original.txt", "w");
+    Rprintf("File opened.\n");
+    Rprintf("Using original write_output function\n");
+    
+    ind=0;
+    for( j=0; j<(NY); j++ ) {
+        for( i=0; i<(NX-1); i++ ) {
+            fprintf(fg,"%.4e\t",g[ind]);
+            ind++;
+        }
+        fprintf(fg,"%.4e",g[(ind)]);
+        ind++;
+        fprintf(fg,"\n");
+    }
+    fclose(fg);
+}
+
 void write_output(double *storage, int HDwrite, int Rwrite) {
 	int_fast64_t i,j,ind;
 	double tempg;
@@ -192,7 +211,7 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 		}
 /*		ind++; */
 /*		if(HDwrite==1) {fprintf(fg,"\n");} */
-	}
+	} /* end for( j=0; j<(NY); j++ ) { */
 	if (HDwrite == 1) {fclose(fg);}
 } /* void write_output(int HDwrite, int Rwrite) */
 
