@@ -211,8 +211,8 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 	int TOTAL = NX*NY;
 /* Flipping these to see if the transpose works */
 /*		for( i=0; i<(NX-1); i++ ) { ORIGINAL */
-	for( i=0; i<(NX-1); i++) {
-		for( j=0; j<(NY); j++ ) {
+	for( i=0; i<(NX); i++) {
+		for( j=0; j<(NY-1); j++ ) {
 			ind = i + NX*j; /*(TOTAL-j) - i*NY;*/
 			if (g[ind] < INFTY) {
 				tempg = (1.0/2.0)*g[ind];
