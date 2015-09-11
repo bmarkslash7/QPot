@@ -5,7 +5,7 @@
 \title{Density plot from simulation of two-dimensional stochastic differential equations}
 \usage{
 TSDensity(mat, dim = 1, contour.levels = 15, col2d = c("blue", "yellow",
-  "orange", "red"), contour.lwd = 0.5, contour.lines = TRUE)
+  "orange", "red"), contour.lwd = 0.5, contour.lines = TRUE, ...)
 }
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}

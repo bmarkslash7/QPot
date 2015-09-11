@@ -5,7 +5,7 @@
 \title{Plot simulation of two-dimensional stochastic differential equations}
 \usage{
 TSPlot(mat, deltat, dim = 1, y.lim = NA, x.lab = "time", dens = TRUE,
-  lwd = 2, line.alpha = 130, zero.axes = TRUE)
+  lwd = 2, line.alpha = 130, zero.axes = TRUE, ...)
 }
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}

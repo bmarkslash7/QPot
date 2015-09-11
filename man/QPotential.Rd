@@ -8,8 +8,8 @@ QPotential(x.rhs = "NULL", x.start = "NULL", x.bound = "NULL",
   x.num.steps = "NULL", y.rhs = "NULL", y.start = "NULL",
   y.bound = "NULL", y.num.steps = "NULL", filename = "NULL",
   save.to.R = TRUE, save.to.HD = FALSE, bounce = "d",
-  bounce.edge = 0.01, verboseR = FALSE, verboseC = FALSE,
-  debugC = FALSE)
+  bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE,
+  k.x = 20, k.y = 20)
 }
 \arguments{
 \item{x.rhs}{A string containing the right hand side of the equation for x.}
@@ -40,9 +40,13 @@ QPotential(x.rhs = "NULL", x.start = "NULL", x.bound = "NULL",
 
 \item{verboseR}{NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential Rwrapper}
 
-\item{verboseC}{NOT IMPLEMENTED: Flag (default = FALSE) for printing out useful-for-everyone information in quasipotential.C}
+\item{verboseC}{NOT IMPLEMENTED: Flag (default = TRUE) for printing out useful-for-everyone information in quasipotential.C}
 
 \item{debugC}{NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code}
+
+\item{k.x}{Integer anisotropic factor for x.  See journal article.  Default is 20.}
+
+\item{k.y}{Integer anisotropic factor for y.  See journal article.  Default is 20.}
 }
 \value{
 filetoHD If save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
