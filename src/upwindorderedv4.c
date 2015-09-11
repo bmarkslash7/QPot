@@ -1,4 +1,4 @@
-/*
+ /*
  * upwindorderedMATHEVALv4
  * added in Ben Nolting's two boundary cases of bounce and default
  * replaced GNU libmatheval with expression_parser
@@ -207,10 +207,11 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 /*	ind=0; */
 	if (HDwrite == 1) {fg=fopen(filename, "w");}
 	int TOTAL = NX*NY;
-	for( j=0; j<(NY); j++ ) {
+/* Flipping these to see if the transpose works */
 /*		for( i=0; i<(NX-1); i++ ) { ORIGINAL */
-		for( i=0; i<(NX-1); i++) {
-			ind = j + NY*i; /*(TOTAL-j) - i*NY;*/
+	for( i=0; i<(NX-1); i++) {
+		for( j=0; j<(NY); j++ ) {
+			ind = i + NX*j; /*(TOTAL-j) - i*NY;*/
 			if (g[ind] < INFTY) {
 				tempg = (1.0/2.0)*g[ind];
 				if(HDwrite == 1) {fprintf(fg,"%.4e\t",tempg);}
@@ -223,7 +224,7 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 /*			ind++; */
 		}
 /* THIS PREVENTED AN EXTRA COLUMN FROM BEING MADE */
-		ind = j + (NX-1)*(NY);/*(TOTAL-j) - i*NY;*/
+		ind = i + (NX)*(NY-1);/*(TOTAL-j) - i*NY;*/
 		if (g[ind] < INFTY) {
 			tempg = (1.0/2.0)*g[ind];
 			if(HDwrite == 1) {fprintf(fg,"%.4e\n",tempg);}
