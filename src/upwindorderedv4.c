@@ -179,6 +179,7 @@ void write_output_original(void) {
     fclose(fg);
 }
 
+/*
 void write_output_for_R(void) {
 	FILE *fg;
 	int_fast64_t i,j,ind;
@@ -199,6 +200,7 @@ void write_output_for_R(void) {
     }
     fclose(fg);
 }
+*/
 
 void write_output(double *storage, int HDwrite, int Rwrite) {
 	int_fast64_t i,j,ind;
