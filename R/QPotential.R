@@ -186,6 +186,7 @@ else if (datasave == 2) {
 #	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
 #	rm(storage)
 #	return(tstorage)
+	storage[storage > ((1.0e+6) - 1)] = NA
 	return(storage)
 }
 else if (datasave == 3) {
@@ -200,6 +201,7 @@ else if (datasave == 3) {
 #	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
 #	rm(storage)
 #	return(tstorage)
+	storage[storage > ((1.0e+6) - 1)] = NA
 	return(storage)
 }
 else if (datasave == 4) {
