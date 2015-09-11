@@ -182,10 +182,11 @@ else if (datasave == 2) {
 	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
 	#1.0e+6 is the INFTY place holder in the C code
 	#it means that no QP value was computed
-	tstorage = t(storage)
-	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
-	rm(storage)
-	return(tstorage)
+#	tstorage = t(storage)
+#	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
+#	rm(storage)
+#	return(tstorage)
+	return(storage)
 }
 else if (datasave == 3) {
 	# R write; HD write
@@ -195,10 +196,11 @@ else if (datasave == 3) {
 	storage <- matrix(storage, nrow = x.num.steps, byrow = TRUE)
 	#1.0e+6 is the INFTY place holder in the C code
 	#it means that no QP value was computed
-	tstorage = t(storage)
-	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
-	rm(storage)
-	return(tstorage)
+#	tstorage = t(storage)
+#	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
+#	rm(storage)
+#	return(tstorage)
+	return(storage)
 }
 else if (datasave == 4) {
 	# no R write; no HD write
