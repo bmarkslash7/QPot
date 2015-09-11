@@ -1,4 +1,4 @@
-/*
+ /*
  * upwindorderedMATHEVALv4
  * added in Ben Nolting's two boundary cases of bounce and default
  * replaced GNU libmatheval with expression_parser
@@ -98,6 +98,7 @@ struct mysol {
 int main(int argc, char **argv);
 void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky, int *tempDEBUG, int *tempVERBOSE);
 void write_output(double *storage, int HDwrite, int Rwrite);
+void write_output_original(void);
 
 /* struct myvector myfield(double x,double y); B */
 struct myvector myfieldchris(double x,double y);
@@ -158,6 +159,49 @@ struct myvector myfieldchris(double x,double y) {
 double chrisx;
 double chrisy;
 
+void write_output_original(void) {
+	FILE *fg;
+	int_fast64_t i,j,ind;
+	fg=fopen("Model3Eq1-original.txt", "w");
+    Rprintf("File opened.\n");
+    Rprintf("Using original write_output function\n");
+    
+    ind=0;
+    for( j=0; j<(NY); j++ ) {
+        for( i=0; i<(NX-1); i++ ) {
+            fprintf(fg,"%.4e\t",g[ind]);
+            ind++;
+        }
+        fprintf(fg,"%.4e",g[(ind)]);
+        ind++;
+        fprintf(fg,"\n");
+    }
+    fclose(fg);
+}
+
+/*
+void write_output_for_R(void) {
+	FILE *fg;
+	int_fast64_t i,j,ind;
+	fg=fopen("Model3Eq1-original-for-R.txt", "w");
+    Rprintf("File opened.\n");
+    Rprintf("Using original write_output function\n");
+    
+    ind=0;
+    for( j=0; j<(NY); j++ ) {
+        for( i=0; i<(NX-1); i++ ) {
+            fprintf(fg,"%.4e\t",g[ind]);
+            storage[ind] = g[ind];
+            ind++;
+        }
+        fprintf(fg,"%.4e\n",g[(ind)]);
+        storage[ind] = g[ind];
+        ind++;
+    }
+    fclose(fg);
+}
+*/
+
 void write_output(double *storage, int HDwrite, int Rwrite) {
 	int_fast64_t i,j,ind;
 	double tempg;
@@ -165,10 +209,11 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 /*	ind=0; */
 	if (HDwrite == 1) {fg=fopen(filename, "w");}
 	int TOTAL = NX*NY;
-	for( j=0; j<(NY); j++ ) {
+/* Flipping these to see if the transpose works */
 /*		for( i=0; i<(NX-1); i++ ) { ORIGINAL */
-		for( i=0; i<(NX-1); i++) {
-			ind = j + NY*i; /*(TOTAL-j) - i*NY;*/
+	for( i=0; i<(NX); i++) {
+		for( j=0; j<(NY-1); j++ ) {
+			ind = i + NX*j; /*(TOTAL-j) - i*NY;*/
 			if (g[ind] < INFTY) {
 				tempg = (1.0/2.0)*g[ind];
 				if(HDwrite == 1) {fprintf(fg,"%.4e\t",tempg);}
@@ -181,7 +226,7 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 /*			ind++; */
 		}
 /* THIS PREVENTED AN EXTRA COLUMN FROM BEING MADE */
-		ind = j + (NX-1)*(NY);/*(TOTAL-j) - i*NY;*/
+		ind = i + (NX)*(NY-1);/*(TOTAL-j) - i*NY;*/
 		if (g[ind] < INFTY) {
 			tempg = (1.0/2.0)*g[ind];
 			if(HDwrite == 1) {fprintf(fg,"%.4e\n",tempg);}
@@ -192,7 +237,7 @@ void write_output(double *storage, int HDwrite, int Rwrite) {
 		}
 /*		ind++; */
 /*		if(HDwrite==1) {fprintf(fg,"\n");} */
-	}
+	} /* end for( j=0; j<(NY); j++ ) { */
 	if (HDwrite == 1) {fclose(fg);}
 } /* void write_output(int HDwrite, int Rwrite) */
 
@@ -915,7 +960,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	
 /* Determine filename if file saved to harddrive */
 	int datasave = tempdatasave[0]; /*what type of save do we need to do? data to R, data to HD, data to both */
-	Rprintf("Creating file name.\n");
+	if (VERBOSE) {Rprintf("Creating file name.\n");}
 	int lengthfilename = templengthfilename[0];
 	if (lengthfilename == 0) {
 	/* use default naming scheme */
@@ -937,7 +982,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		filenamebuff[lengthfilename] = '\0';
 		filename = filenamebuff;
 	}
-	Rprintf("File name created.\n");
+	if (VERBOSE) {Rprintf("File name created.\n");}
 
 /* The workhorse */
 	nx1=NX-1; ny1=NY-1; nxy=NX*NY;
@@ -954,30 +999,30 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	acf = malloc(sizeof(int_fast64_t)*2*(NX+NY)); 
 	pacf = malloc(sizeof(int_fast64_t)*NX*NY);
 	
-	Rprintf("Completed Memory Allocation\n");
+	if (VERBOSE) {Rprintf("Completed Memory Allocation\n");}
     int_fast64_t i,j,ind;
     clock_t CPUbegin;
     double cpu;
     
-    Rprintf("equationx = %s\n", xbuff);
-	Rprintf("equationy = %s\n", ybuff);
+    if (VERBOSE) {Rprintf("equationx = %s\n", xbuff);}
+	if (VERBOSE) {Rprintf("equationy = %s\n", ybuff);}
     
     param();
-    Rprintf("Finished Loading Parameters\n");
+    if (VERBOSE) {Rprintf("Finished Loading Parameters\n");}
     CPUbegin=clock();
     ipoint();
-    Rprintf("Finished ipoint() function\n");
+    if (VERBOSE) {Rprintf("Finished ipoint() function\n");}
     ordered_upwind();
     cpu=(clock()-CPUbegin)/((double)CLOCKS_PER_SEC);
-    Rprintf("Finished ordered_upwind() function\n");
-    Rprintf("cputime = %g\n",cpu);
     
+    if (VERBOSE) {Rprintf("Finished ordered_upwind() function\n");}
+    if (VERBOSE) {Rprintf("cputime = %g\n",cpu);}
     
 /* Write data to use some where, some how */
 	switch(datasave) {
 	case 1: /* does not save to R, only saves to hard drive */
-		Rprintf("File opened.\n");
-		Rprintf("In datasave case 1\n");
+		if (VERBOSE) {Rprintf("File opened.\n");}
+		if (VERBOSE) {Rprintf("In datasave case 1\n");}
 		write_output(storage,1,0);
 /* Working on code to transpose g[] as it writes to HD and R */    
 /*		fg=fopen(filename, "w");
@@ -997,8 +1042,8 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 */
 		break;
 	case 2: /* saves to R, but does not save to hard drive */
-		Rprintf("Saves only to R\n");
-		Rprintf("In datasave case 2\n");
+		if (VERBOSE) {Rprintf("Saves only to R\n");}
+		if (VERBOSE) {Rprintf("In datasave case 2\n");}
 		write_output(storage,0,1);
 /*		ind=0;
 		for( j=0; j<(NY); j++ ) {
@@ -1012,8 +1057,8 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 */
 		break;
 	case 3:	/* saves to R and saves to hard drive */
-		Rprintf("In datasave case 3\n");
-		Rprintf("File opened.\n");
+		if (VERBOSE) {Rprintf("In datasave case 3\n");}
+		if (VERBOSE) {Rprintf("File opened.\n");}
 		write_output(storage,1,1);
 /*		fg=fopen(filename, "w");
 		ind=0;
@@ -1033,8 +1078,11 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		fclose(fg);
 */
 		break;
+	case 5: /* uses original code to write a file to the HD */
+		write_output_original();
+		break;
 	default:
-		Rprintf("Running testrun.  You are not saving any data.\n");
+		if (VERBOSE) {Rprintf("Running testrun.  You are not saving any data.\n");}
 		break;
 	}
 	
@@ -1046,7 +1094,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	free(xbuff); free(ybuff); 
     free(aB); free(B); free(ms); free(g); free(rcurr); free(pos); free(tree); free(acf); free(pacf); 
 
-	Rprintf("Successful.  Exiting C code\n");
+	if (VERBOSE) {Rprintf("Successful.  Exiting C code\n");}
 }
 
 
