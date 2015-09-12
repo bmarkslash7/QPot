@@ -116,7 +116,7 @@ else													{datasave = 4}
 if (save.to.HD == 'testrun')							{datasave = 4}
 if (save.to.HD == 'original')							{datasave = 5}
 if (verboseR) {print(paste("Variable datasave is: ", datasave, sep = ""))}
-print(paste("datasave = ", datasave,sep=""))
+#print(paste("datasave = ", datasave,sep=""))
 
 # ----------------------------------------------------------------------
 # Determine what C code does at edges of x.bound and y.bound
