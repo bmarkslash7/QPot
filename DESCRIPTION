@@ -3,7 +3,7 @@ Version: 0.1
 Date: 2015-07-27
 Title: Quasi-Potential Analysis for Stochastic Differential Equations
 Authors@R: c(
-	person("Christopher", "Moore", role = c("aut", "cph"), email = ""),
+	person("Christopher", "Moore", role = c("aut", "cph"), email = "life.dispersing@gmail.com"),
 	person("Christopher", "Stieha", role = c("aut", "cre", "cph"), email = "stieha@hotmail.com"),
 	person("Ben", "Nolting", role = c("aut", "ctb", "cph"), email = ""),
 	person("Maria", "Cameron", role = c("aut", "ctb", "cph"), email = ""),
