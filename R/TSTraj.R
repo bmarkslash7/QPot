@@ -4,9 +4,8 @@
 #' @param y0 the a two-element vector of the initial conditions for the state variables.
 #' @param time numeric value indicating the total time over which the simulation is to be run.
 #' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}.
-# @param func function containing deterministic equations formatted as \pkg{deSolve}.
 #' @param x.rhs A string containing the right hand side of the equation for x.
-#' @param y.rhs A string containing the right hand side of the y equation.
+#' @param y.rhs A string containing the right hand side of the equation for y.
 #' @param parms a named vector of paramters and their respective values for the deterministic equations.
 #' @param sigma numberic value specifying the noise intensity.
 #' @param lower.bound numeric value specifying a lower bound in the simulation.
