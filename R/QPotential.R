@@ -5,7 +5,7 @@
 #' @param x.start The starting value of x, usually the x value of the current equilibrium.
 #' @param x.bound The x boundaries denoted at c(minimum, maximum).
 #' @param x.num.steps The number of steps between the minimum and maximum x value defined in x range.
-#' @param y.rhs A string containing the right hand side of the y equation.
+#' @param y.rhs A string containing the right hand side of the equation for y.
 #' @param y.start The starting value of y, usually the y value of the current equilibrium.
 #' @param y.bound The y boundaries denoted at c(minimum, maximum).
 #' @param y.num.steps The number of steps between the minimum and maximum y value defined in y range.
