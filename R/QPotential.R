@@ -1,32 +1,31 @@
 #' Wrapper for call to quasipotential computation using the upwind ordered method
 #' 
 #' 
-#' @param x.rhs A string containing the right hand side of the equation for x.
-#' @param x.start The starting value of x, usually the x value of the current equilibrium.
-#' @param x.bound The x boundaries denoted at c(minimum, maximum).
-#' @param x.num.steps The number of steps between the minimum and maximum x value defined in x range.
-#' @param y.rhs A string containing the right hand side of the equation for y.
-#' @param y.start The starting value of y, usually the y value of the current equilibrium.
-#' @param y.bound The y boundaries denoted at c(minimum, maximum).
-#' @param y.num.steps The number of steps between the minimum and maximum y value defined in y range.
-#' @param save.to.R Output the matrix of results for the upwind-ordered method to the current R session.  The default is not to write the matrix to the R session.  save.to.R=TRUE writes the output matrix to the R session.
-#' @param save.to.HD Write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is TRUE.
-#' @param filename String for the name of the file saved to the hard drive.  If filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively. 
-#' @param bounce By default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').
-#' @param bounce.edge If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
-#' @param k.x Integer anisotropic factor for x.  See journal article.  Default is 20.
-#' @param k.y Integer anisotropic factor for y.  See journal article.  Default is 20.
+#' @param x.rhs a string containing the right hand side of the equation for x.
+#' @param x.start the starting value of x, usually the x value of the current equilibrium.
+#' @param x.bound the x boundaries denoted at c(minimum, maximum).
+#' @param x.num.steps the number of steps between the minimum and maximum x value defined in x range.
+#' @param y.rhs a string containing the right hand side of the equation for y.
+#' @param y.start the starting value of y, usually the y value of the current equilibrium.
+#' @param y.bound the y boundaries denoted at c(minimum, maximum).
+#' @param y.num.steps the number of steps between the minimum and maximum y value defined in y range.
+#' @param save.to.R output the matrix of results for the upwind-ordered method to the current R session.  The default is to write the matrix to the R session.  save.to.R=FALSE prevents the output from being written to the R session.
+#' @param save.to.HD write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is FALSE.
+#' @param filename string for the name of the file saved to the hard drive.  If filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively. 
+#' @param bounce by default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the default action (bounce = 'd'), only positive values to be tested (bounce = 'p'), or reflection near the boundaries (bounce = 'b').
+#' @param bounce.edge if bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
+#' @param k.x integer anisotropic factor for x.  See journal article.  Default is 20.
+#' @param k.y integer anisotropic factor for y.  See journal article.  Default is 20.
+#' @param verboseC flag (default = TRUE) for printing out useful-for-everyone information in quasipotential.C
 #' @param verboseR NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential Rwrapper
-#' @param verboseC NOT IMPLEMENTED: Flag (default = TRUE) for printing out useful-for-everyone information in quasipotential.C
 #' @param debugC NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code 
-#' @return filetoHD If save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
-#' @return filetoR If save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
+#' @return filetoHD if save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
+#' @return filetoR if save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
 #'
 #' @examples
-#' #Example 1, Equilibrium 1 from article
 #' #Equations
-#' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
-#' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#' equationx = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
+#' equationy = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
 #' #Boundaries of the x and y state space
 #' xbounds = c(-0.5, 20.0)
 #' ybounds = c(-0.5, 20.0)
@@ -71,8 +70,8 @@ if (x.num.steps == 'NULL') {stop("Need the number of steps in x range. Define x.
 lengthequationx	<- nchar(x.rhs)
 if (length(x.bound) < 2) stop("Not enough values for x range in parameter x.bound.")
 if (length(x.bound) > 2) stop("Too many values for x range in parameter x.bound.")
-lowerboundsx	<- x.bound[1]
-upperboundsx	<- x.bound[2]
+lowerboundsx	<- min(x.bound) #x.bound[1]
+upperboundsx	<- max(x.bound) #x.bound[2]
 
 # ----------------------------------------------------------------------
 # check if any component of y is missing
@@ -85,7 +84,8 @@ if ( (length(y.bound) == 1) && (y.bound == 'NULL') ) {lowerboundsy <- 0; upperbo
 if (y.bound[1] != 'NULL') {
 	if (length(y.bound) < 2) stop("Not enough values for y range in variable y.bound.")
 	if (length(y.bound) > 2) stop("Too many values for y range in variable y.bound.")
-	lowerboundsy <- y.bound[1]; upperboundsy	<- y.bound[2]
+	lowerboundsy <- min(y.bound) #y.bound[1]; 
+	upperboundsy <- max(y.bound) #y.bound[2]
 } # end of if y.bound != 'NULL 
 if (y.bound[1] == 'NULL') stop('No minimum and maximum y values.  Parameter y.bound not defined')
 #The numofstepsy cannot equal 1, because hy=(LY2-LY1)/(NY-1), where NY is numofsteps
