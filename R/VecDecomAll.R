@@ -2,8 +2,8 @@
 #'
 #' This function calculates the vector, gradient, and remainder fields.
 #' @param surface matrix output from QPGlobal.
-#' @param x.rhs COPY FROM QPOTENTIAL().
-#' @param y.rhs COPY FROM QPOTENTIAL().
+#' @param x.rhs A string containing the right hand side of the equation for x.
+#' @param y.rhs A string containing the right hand side of the equation for y.
 #' @param x.bound two-element vector with respective minimum and maximum x values.
 #' @param y.bound two-element vector with respective minimum and maximum y values.
 #' @keywords vector field, remainder field
