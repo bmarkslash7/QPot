@@ -1,45 +1,47 @@
 #' Simulate two-dimensional stochastic differential equations
 #'
 #' This function allows you to simulate two-dimensional stochastic differential equations.
-#' @param y0 the a two-element vector of the initial conditions for the state variables.
+#' @param y0 the a two-element vector of the initial conditions for the state variables. Elements must be assigned as objects (see Example below).
 #' @param time numeric value indicating the total time over which the simulation is to be run.
 #' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}.
 #' @param x.rhs A string containing the right hand side of the equation for x.
 #' @param y.rhs A string containing the right hand side of the equation for y.
-#' @param parms a named vector of paramters and their respective values for the deterministic equations.
-#' @param sigma numberic value specifying the noise intensity.
+#' @param parms n-element vector of objects representing unvalued paramters in the equation. If parameter values are values in the equation, then default is \code{parms = NA}.
+#' @param sigma numeric value specifying the noise intensity.
 #' @param lower.bound numeric value specifying a lower bound in the simulation.
 #' @param upper.bound numeric value specifying an upper bound in the simulation.
+#' @return returns a matrix with three columns (timestep, x values, and y values) with a legth of \code{time/deltat} (2*e4 in the examples below).
 #' @keywords Stochastic simulation
 #' 
 #' @examples
 #' # First, the parameter values
-#' state <- c(x = 3 , y = 3)
-#' model.sigma <- 0.1
-#' model.deltat <- 0.005
+#'	model.state <- c(x = 3, y = 3)
+#'	model.sigma <- 0.2
+#'	model.deltat <- 0.005
+#'	model.time <- 100
 #'
 #' # Second, write out the deterministic skeleton of the equations to be simulated
-#' #Example 1 from article
-#' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
-#' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
+#	#Example 1 from article
+#'	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0 + x*x)"
+#	equationy <- "((0.476*x*x*y)/(1 + x*x)) - 0.112590*y*y"
 #'
 #' # Third, Run it
-#' LVModelOut <- TSTraj(y0=state, time=250, deltat=model.deltat, 
-#' x.rhs=equationx, y.rhs=equationy, sigma=model.sigma)
+#	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#		x.rhs = equationx, y.rhs = equationy, sigma = model.sigma)
 #'
 #' #Can also input x.rhs and y.rhs as strings that contain parameter names
 #' #and include parms with names and values of parameters
-#' model.state <- c(x=1 , y=2)
-#' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-#' model.sigma <- 0.05
-#' model.time <- 1000
-#' model.deltat <- 0.2
+#	model.state <- c(x = 1, y = 2)
+#' model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, kappa = 1, gamma = 0.476, mu = 0.112509)
+#	model.sigma <- 0.2
+#	model.time <- 100
+#	model.deltat <- 0.005
 #'
-#' test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
-#' test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+#	test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
+#	test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
 #'
-#' ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat, 
-#'   x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
+#	ModelOut.parms <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#		x.rhs = test.eqn.x, y.rhs = test.eqn.y, parms = model.parms, sigma = model.sigma)
 
 
 TSTraj <- function(y0, time, deltat, x.rhs, y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA) {
