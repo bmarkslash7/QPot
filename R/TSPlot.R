@@ -1,3 +1,34 @@
+#' Plot simulation of two-dimensional stochastic differential equations
+#'
+#' This function allows you to plot the simulation of simulate two-dimensional stochastic differential equations from \code{\link{TSTraj}}
+#' @param mat a matrix output from \code{\link{TSTraj}}.
+#' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}, used in the function to recaluculate axes if applicable.
+#' @param dim dimensions of the plot; \code{dim=1} to plot a timeseries with \code{X} and \code{Y} on the ordinate axis or \code{dim=2} to plot the trjectories in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).
+#' @param y.lim for \code{dim=1}, allows user to specify the range of the y-axis as a two-element vector.
+#' @param x.lab for \code{dim=1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}
+#' @param dens if \code{dens=TRUE}, plots a horizontal one-dimensional density plot adjacent to the timerseries.
+#' @param lwd line width.
+#' @param line.alpha transparency of lines from 0--255.
+#' @param zero.axes if TRUE, then axes plotted at \code{X=0} and \code{Y=0}.
+#' @keywords plot stochastic simulations
+#' 
+#' @examples
+#' model.state <- c(x=1 , y=2)
+#' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+#' model.sigma <- 0.05
+#' model.time <- 100
+#' model.deltat <- 0.2
+#'
+#' test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
+#' test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+#'
+#' ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat, 
+#'   x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
+#' # Plot as one-dimensional plot
+#' TSPlot(ts.out.ex1, deltat=model.deltat)
+#' # . . . or plot as two-dimensional plot
+#' TSPlot(ts.out.ex1, deltat=model.deltat, dim=2)
+
 TSPlot <- function(mat, deltat, dim = 1, xlim = 'NULL', ylim = 'NULL', x.lab = "time", dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE, ...) {
 		if (missing(deltat) == TRUE) {stop("deltat is missing and needed to compute steps and 1-D hist.  Please specify.")}
 		global.min <- min(mat[,2:3], na.rm = T)
