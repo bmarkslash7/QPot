@@ -3,44 +3,53 @@
 #' This function allows you to create density plots for the simulation of two-dimensional stochastic differential equations in \code{\link{TSTraj}}
 #' @param mat a matrix output from \code{\link{TSTraj}}.
 #' @param dim dimensions of the plot; \code{dim=1} plots simple density histogram or \code{dim=2} plots the density in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).
+#' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
+#' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
 #' @param contour.levels the number of contour levels for the two-dimensional plots (i.e., when \code{dim=2}).
 #' @param col2d vector of colors to be used in the plot.
 #' @param contour.lwd line width of contour lines if \code{contour.lines=TRUE}.
 #' @param contour.lines if TRUE, then black countour lines added to the graph.
-#' @param ... passes arguments to \code{\link{plot}}.
-#' @keywords Density plot of stochastic simulations
+#' @param ... passes arguments to \code{\link{kde2d}} and \code{\link{plot}}.
+#' @keywords plot stochastic simulations
 #' 
 #' @examples
-#' model.state <- c(x=1 , y=2)
-#' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-#' model.sigma <- 0.05
-#' model.time <- 100
-#' model.deltat <- 0.2
+#' # First, the parameter values, as found in \code{\link{TSTraj}}
+#'	model.state <- c(x = 3, y = 3)
+#'	model.sigma <- 0.2
+#'	model.deltat <- 0.005
+#'	model.time <- 100
 #'
-#' test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
-#' test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+#' # Second, write out the deterministic skeleton of the equations to be simulated, as found in \code{\link{TSTraj}}
+#	#Example 1 from article
+#'	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0 + x*x)"
+#	equationy <- "((0.476*x*x*y)/(1 + x*x)) - 0.112590*y*y"
 #'
-#' ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat, 
-#'   x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
-#'
-#' # Plot as one-dimensional plot
-#' TSDensity(ts.out.ex1, dim=1)
-#' # . . . or plot as two-dimensional plot
-#' TSDensity(ts.out.ex1, dim=2)
+#' # Third, run it, as found in \code{\link{TSTraj}}
+#	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#		x.rhs = equationx, y.rhs = equationy, sigma = model.sigma)
+# # Fourth, plot it:
+#	# in 1D
+#	TSDensity(ModelOut, dim = 1)
+#	# in 2D
+#	TSDensity(ModelOut, dim = 2)
 
-	TSDensity <- function(mat , dim = 1 , contour.levels = 15 ,  col2d = c("blue" , "yellow" , "orange" , "red") , contour.lwd = 0.5 ,  contour.lines = TRUE, ...){
+	TSDensity <- function(mat, dim = 1, xlim = 'NULL', ylim = 'NULL', contour.levels = 15,  col2d = c("blue", "yellow", "orange", "red") , contour.lwd = 0.5, contour.lines = TRUE, ...){
 		if (dim ==1){
 			densA <- density(mat[,2] , na.rm = T)
 			densB <- density(mat[,3] , na.rm = T)
-			y.lims <- c(min(c(densA$y, densB$y)) , max(c(densA$y, densB$y)))
-			x.lims <- c(min(c(densA$x, densB$x)) , max(c(densA$x, densB$x)))
-			plot(0 , type = "n" , ylab = "Density" , xlab = "State variables" , las = 1 , xlim = x.lims , ylim = y.lims)
+			if (missing(xlim)) {xlim = c(min(c(densA$x, densB$x)) , max(c(densA$x, densB$x)))}
+			if (missing(ylim)) {ylim = c(min(c(densA$y, densB$y)) , max(c(densA$y, densB$y)))}
+			plot(0 , type = "n" , ylab = "Density" , xlab = "State variables" , las = 1 , xlim = xlim , ylim = ylim, ...)
 			polygon(densA$x , densA$y, col = rgb(255,0,0,75,maxColorValue=255) , border = rgb(255,0,0,130,maxColorValue=255))
 			polygon(densB$x , densB$y, col = rgb(0,0,255,75,maxColorValue=255) , border = rgb(0,0,255,130,maxColorValue=255))
 			}
 		if (dim == 2) {
 #			require("MASS")	#Mass called in DESCRIPTION, Depends
-			kern.2d <- MASS::kde2d(mat[,2] , mat[,3])
+			if(missing(xlim) | missing(ylim)){
+				kern.2d <- MASS::kde2d(mat[,2] , mat[,3], ...)
+				} else {
+				kern.2d <- MASS::kde2d(mat[,2] , mat[,3], lims = c(min(xlim), max(xlim), min(ylim), max(ylim)), ...)	
+				}
 			x.max <- length(kern.2d$x)
 			y.max <- length(kern.2d$y)
 			x.range <- 1:x.max
@@ -49,26 +58,34 @@
 			myRmap <- colorRampPalette(col2d)(contour.levels)
 			plot(0 , type = "n" , xlim = c(1 , x.max)  , ylim = c(1 , y.max) , las = 1 ,  xaxt = "n" , yaxt = "n", ...)
 			.filled.contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap)
-			contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap , add = T ,  drawlabels = F)
+			contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap , add = T , drawlabels=F)
 			if (contour.lines == T) {contour(x.range , y.range , kern.2d$z , levels = contour.breaks, drawlabels = F ,  add = TRUE , col = "black" , lwd = contour.lwd)}
+
 			par(new = TRUE)
-			plot(0, type = "n" , xlim = c(min(kern.2d$x), max(kern.2d$x)) , ylim = c(min(kern.2d$y), max(kern.2d$y)) , ylab = "" , xlab ="" , xaxt = "n" , yaxt = "n")
-			axis(1 , las = 1)
-			axis(2 , las = 1)
+			if(missing(xlim) != missing(ylim)) {stop("Both xlim and ylim must be specified, or neither")}
+			if(missing(xlim)) {xlim <- c(min(kern.2d$x), max(kern.2d$x))}
+			if(missing(ylim)) {ylim <- c(min(kern.2d$y), max(kern.2d$y))}
+			plot(0, type = "n" , xlim = xlim , ylim = ylim , ylab = "" , xlab ="" , xaxt = "n" , yaxt = "n")
+			axis(1 , ...)
+			axis(2 , ...)
 		}
 		if (dim != 1 & dim !=2 & dim != "both") { warning("Incorrect number of dimensions") }
 		if (dim == "both") {
 			par(mfrow=c(1,2))
 			densA <- density(mat[,2] , na.rm = T)
 			densB <- density(mat[,3] , na.rm = T)
-			y.lims <- c(min(c(densA$y, densB$y)) , max(c(densA$y, densB$y)))
-			x.lims <- c(min(c(densA$x, densB$x)) , max(c(densA$x, densB$x)))
-			plot(0 , type = "n" , ylab = "Density" , xlab = "State variables" , las = 1 , xlim = x.lims , ylim = y.lims)
-			polygon(densA$x , densA$y, col = rgb(255,0,0,75,maxColorValue=255) , border = rgb(255,0,0,130,maxColorValue=255))
-			polygon(densB$x , densB$y, col = rgb(0,0,255,75,maxColorValue=255) , border = rgb(0,0,255,130,maxColorValue=255))
+			if (missing(xlim)) {xlim = c(min(c(densA$x, densB$x)) , max(c(densA$x, densB$x)))}
+			if (missing(ylim)) {ylim = c(min(c(densA$y, densB$y)) , max(c(densA$y, densB$y)))}
+			plot(0 , type = "n" , ylab = "Density" , xlab = "State variables" , las = 1 , xlim = xlim , ylim = ylim, ...)
+			polygon(densA$x , densA$y, col = rgb(255,0,0,75,NULL,255) , border = rgb(255,0,0,130,NULL,255))
+			polygon(densB$x , densB$y, col = rgb(0,0,255,75,NULL,255) , border = rgb(0,0,255,130,NULL,255))
 
 #			require("MASS")
-			kern.2d <- MASS::kde2d(mat[,2] , mat[,3])
+			if(missing(xlim) | missing(ylim)){
+				kern.2d <- MASS::kde2d(mat[,2] , mat[,3], ...)
+				} else {
+				kern.2d <- MASS::kde2d(mat[,2] , mat[,3], lims = c(min(xlim), max(xlim), min(ylim), max(ylim)), ...)	
+				}
 			x.max <- length(kern.2d$x)
 			y.max <- length(kern.2d$y)
 			x.range <- 1:x.max
@@ -80,8 +97,11 @@
 			contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap , add = T , drawlabels=F)
 			if (contour.lines == T) {contour(x.range , y.range , kern.2d$z , levels = contour.breaks, drawlabels = F ,  add = TRUE , col = "black" , lwd = contour.lwd)}
 			par(new = TRUE)
+			if(missing(xlim) != missing(ylim)) {stop("Both xlim and ylim must be specified, or neither")}
+			if(missing(xlim)) {xlim <- c(min(kern.2d$x), max(kern.2d$x))}
+			if(missing(ylim)) {ylim <- c(min(kern.2d$y), max(kern.2d$y))}
 			plot(0, type = "n" , xlim = c(min(kern.2d$x), max(kern.2d$x)) , ylim = c(min(kern.2d$y), max(kern.2d$y)) , xaxt = "n" , yaxt = "n", ...)
-			axis(1 , las = 1)
-			axis(2 , las = 1)
+			axis(1 , ...)
+			axis(2 , ...)
 		}
 	}
