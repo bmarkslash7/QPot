@@ -9,6 +9,7 @@
 #' @param y.lim I DO NOT KNOW BUT NOW devtools::check() IS OK
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
 #' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
+#' @param head.length THIS NEEDS WORDS
 #' @param ... passes arguments to both \code{\link{plot}} and \code{\link{arrows}}.
 #' @keywords vector field plot, remainder field plot
 #' 

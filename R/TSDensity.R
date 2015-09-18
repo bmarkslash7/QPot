@@ -7,6 +7,7 @@
 #' @param col2d vector of colors to be used in the plot.
 #' @param contour.lwd line width of contour lines if \code{contour.lines=TRUE}.
 #' @param contour.lines if TRUE, then black countour lines added to the graph.
+#' @param ... passes arguments to \code{\link{plot}}.
 #' @keywords Density plot of stochastic simulations
 #' 
 #' @examples

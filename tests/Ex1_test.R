@@ -1,6 +1,7 @@
 # Below is a pipe every 10 characters.  The R Journal suggests that code is wrapped around 80 characters
 #*********|*********|*********|*********|*********|*********|*********|*********
-
+require(QPot)
+require(rgl)
 
 ##### 0.1 preperation #####
 	# 0.1.0 clean up and set seed
