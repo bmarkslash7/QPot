@@ -4,7 +4,8 @@
 #' @param mat a matrix output from \code{\link{TSTraj}}.
 #' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}, used in the function to recaluculate axes if applicable.
 #' @param dim dimensions of the plot; \code{dim=1} to plot a timeseries with \code{X} and \code{Y} on the ordinate axis or \code{dim=2} to plot the trjectories in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).
-#' @param y.lim for \code{dim=1}, allows user to specify the range of the y-axis as a two-element vector.
+#' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
+#' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
 #' @param x.lab for \code{dim=1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}
 #' @param dens if \code{dens=TRUE}, plots a horizontal one-dimensional density plot adjacent to the timerseries.
 #' @param lwd line width.
@@ -13,24 +14,28 @@
 #' @keywords plot stochastic simulations
 #' 
 #' @examples
-#' model.state <- c(x=1 , y=2)
-#' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-#' model.sigma <- 0.05
-#' model.time <- 100
-#' model.deltat <- 0.2
+#' # First, the parameter values, as found in \code{\link{TSTraj}}
+#'	model.state <- c(x = 3, y = 3)
+#'	model.sigma <- 0.2
+#'	model.deltat <- 0.005
+#'	model.time <- 100
 #'
-#' test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
-#' test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+#' # Second, write out the deterministic skeleton of the equations to be simulated, as found in \code{\link{TSTraj}}
+#	#Example 1 from article
+#'	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0 + x*x)"
+#	equationy <- "((0.476*x*x*y)/(1 + x*x)) - 0.112590*y*y"
 #'
-#' ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat, 
-#'   x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
-#' # Plot as one-dimensional plot
-#' TSPlot(ts.out.ex1, deltat=model.deltat)
-#' # . . . or plot as two-dimensional plot
-#' TSPlot(ts.out.ex1, deltat=model.deltat, dim=2)
+#' # Third, run it, as found in \code{\link{TSTraj}}
+#	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#		x.rhs = equationx, y.rhs = equationy, sigma = model.sigma)
+# # Fourth, plot it:
+#	# in 1D
+#	TSPlot(ModelOut, deltat = model.deltat, dim = 1)
+#	# in 2D
+#	TSPlot(ModelOut, deltat = model.deltat, dim = 2)
 
 TSPlot <- function(mat, deltat, dim = 1, xlim = 'NULL', ylim = 'NULL', x.lab = "time", dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE, ...) {
-		if (missing(deltat) == TRUE) {stop("deltat is missing and needed to compute steps and 1-D hist.  Please specify.")}
+		if (missing(deltat) == TRUE) {stop("deltat is missing and needed to compute steps and 1D hist.  Please specify.")}
 		global.min <- min(mat[,2:3], na.rm = T)
 		global.max <- max(mat[,2:3], na.rm = T)
 		x.min <- min(mat[,2], na.rm = T)
@@ -38,8 +43,9 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = 'NULL', ylim = 'NULL', x.lab = "
 		y.min <- min(mat[,3], na.rm = T)
 		y.max <- max(mat[,3], na.rm = T)
 		if (dim == 1) {
-			if (table(is.infinite(mat))["FALSE"] != nrow(mat)*3 ) { # if Inf values in the timeseries
-					message("Simulation -> Inf. Try: (i) set exact y-axis limits using the y.lim argument and (ii) dens = FALSE")
+			if(any(xlim != 'NULL')) {warning("'xlim' cannot be adjusted in this function because of calculations used in switching between displaying time and step")}
+			if (table(is.infinite(mat))["FALSE"] != nrow(mat)*ncol(mat) ) { # if Inf values in the timeseries
+					warning("Simulation -> Inf. Try: (i) set exact y-axis limits using the ylim argument and (ii) dens = FALSE")
 				if (missing(ylim)) {
 					ylim = c(global.min, global.max)
 						if(dens == TRUE) {par(fig=c(0,0.775,0,1), new=FALSE , oma = rep(1,4))}
@@ -104,10 +110,17 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = 'NULL', ylim = 'NULL', x.lab = "
 						axis(4 , las = 1)}
 			}
 		} else { # dim != 1
-			if(missing(xlim)) {xlim = c(min(mat[,2]) , max(mat[,2]))}
-			if(missing(ylim)) {ylim = c(min(mat[,3]) , max(mat[,3]))}
-			plot(mat[,2] , mat[,3] , type = "n", las = 1 , ylim = ylim , xlim = xlim, ...)
-			if (zero.axes == TRUE) {abline(v = 0 , h = 0 , col = "grey75" , lwd = 0.75 , lty = 1)}
-			lines(mat[,2] , mat[,3] , col = rgb(50,50,50,line.alpha,NULL,255) , lwd = lwd)
+			if (table(is.infinite(mat))["FALSE"] != nrow(mat)*ncol(mat) ) {
+				if(missing(xlim)) {stop("'Inf' detected and the plot cannot set axis limits. Try manually setting axis limits with xlim and ylim.")}
+				plot(mat[,2] , mat[,3] , type = "n", las = 1 , ylim = ylim , xlim = xlim, ...)
+				if (zero.axes == TRUE) {abline(v = 0 , h = 0 , col = "grey75" , lwd = 0.75 , lty = 1)}
+				lines(mat[,2] , mat[,3] , col = rgb(50,50,50,line.alpha,NULL,255) , lwd = lwd)
+			} else {
+				if(missing(xlim)) {xlim = c(x.min, x.max)}
+				if(missing(ylim)) {ylim = c(y.min, y.max)}
+				plot(mat[,2] , mat[,3] , type = "n", las = 1 , ylim = ylim , xlim = xlim, ...)
+				if (zero.axes == TRUE) {abline(v = 0 , h = 0 , col = "grey75" , lwd = 0.75 , lty = 1)}
+				lines(mat[,2] , mat[,3] , col = rgb(50,50,50,line.alpha,NULL,255) , lwd = lwd)				
+			}
 		}
-		}
+	}
