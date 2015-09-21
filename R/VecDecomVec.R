@@ -7,16 +7,21 @@
 #' @param y.rhs A string containing the right hand side of the equation for y.
 #' @param x.bound two-element vector with respective minimum and maximum x values.
 #' @param y.bound two-element vector with respective minimum and maximum y values.
-#' @keywords vector field decompoosition, vector field
 #' 
 #' @examples
-#' #Example 1 from article
-#' equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
-#' equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
-#' VDV <- VecDecomVec(x.num.steps=4100, y.num.steps=4100, x.rhs=equationx, 
-#'  y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-#' VecDecomPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), 
-#'  x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+#' # First, the system of equations
+#' 	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
+#' 	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
+#' 
+#' # Second, shared parameters for each quasi-potential run
+#' 	xbounds <- c(-0.5, 20.0)
+#' 	ybounds <- c(-0.5, 20.0)
+#' 	xstepnumber <- 1000
+#' 	ystepnumber <- 1000
+#'
+#' # Third, create the deterministic skeleton vector field
+#' 	VDV <- VecDecomVec(x.num.steps = xstepnumber, y.num.steps = ystepnumber, x.rhs = equationx, 
+#' 	y.rhs = equationy, x.bound = xbounds, y.bound = ybounds)
 
 VecDecomVec <- function(x.num.steps,y.num.steps,x.rhs,y.rhs,x.bound,y.bound){
 	equations <- list(x.rhs,y.rhs)
