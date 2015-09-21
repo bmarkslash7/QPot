@@ -7,12 +7,33 @@
 #' @param x.bound A two-element vector with the minimum and maximum x values used for computing the quasi-potential.
 #' @param y.bound A two-element vector with the minimum and maximum y values used for computing the quasi-potential.
 #' @keywords Global quasi-potential
+#'
+#' @examples
+#' # First, System of equations
+#' 	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
+#' 	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
 #' 
-########################################################################
-# COMMENTED OUT FOR PASSING devtools::check() - DECLARE local.1 and local.2
-########################################################################
-# #' @examples 
-# #' QPGlobal(list(local.1,local.2),c(0,4),c(0,4),c(-1,5),c(-1,5))
+#' # Second, shared parameters for each quasi-potential run
+#' 	xbounds <- c(-0.5, 20.0)
+#' 	ybounds <- c(-0.5, 20.0)
+#' 	xstepnumber <- 1000
+#' 	ystepnumber <- 1000
+#' 
+#' # Third, first local quasi-potential run
+#' 	xinit1 <- 1.40491
+#' 	yinit1 <- 2.80808
+#' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
+#' 
+#' # Fourth, second local quasi-potential run
+#' 	xinit2 <- 4.9040
+#' 	yinit2 <- 4.06187
+#' 	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber)
+#' 
+#' # Fifth, determine global quasi-potential 
+#' 	unst.x <- c(0, 4.2008)
+#' 	unst.y <- c(0, 4.0039)
+#' 	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = bounds.x, y.bound = bounds.y)
+
 
 QPGlobal <- function(local.surfaces , unstable.eq.x , unstable.eq.y , x.bound , y.bound) {
 	n.surfaces <- length(local.surfaces)
