@@ -23,24 +23,20 @@
 #' @return filetoR if save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
 #'
 #' @examples
-#' #Equations
-#' equationx = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
-#' equationy = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
-#' #Boundaries of the x and y state space
-#' xbounds = c(-0.5, 20.0)
-#' ybounds = c(-0.5, 20.0)
-#' # Step number
-#' # In the examples, these are 4100
-#' # set to a smaller number for this example
-#' xstepnumber = 1000
-#' ystepnumber = 1000
-#' # Equilibrium x and y values for Equilibrium 1 in Example 1
-#' xinit1 = 1.40491
-#' yinit1 = 2.80808
-#' storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, 
-#'  x.bound = xbounds, x.num.steps = xstepnumber, 
-#'  y.rhs = equationy, y.start = yinit1, 
-#'  y.bound = ybounds, y.num.steps = ystepnumber)
+#' # First, System of equations
+#' 	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
+#' 	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
+#' 
+#' # Second, shared parameters for each quasi-potential run
+#' 	xbounds <- c(-0.5, 20.0)
+#' 	ybounds <- c(-0.5, 20.0)
+#' 	xstepnumber <- 1000
+#' 	ystepnumber <- 1000
+#' 
+#' # Third, a local quasi-potential run
+#' 	xinit1 <- 1.40491
+#' 	yinit1 <- 2.80808
+#' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
 
 QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20)
 {
