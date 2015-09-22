@@ -44,7 +44,7 @@ This function allows you to find the global quasi-potential values for several l
 # Fifth, determine global quasi-potential
 	unst.x <- c(0, 4.2008)
 	unst.y <- c(0, 4.0039)
-	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = bounds.x, y.bound = bounds.y)
+	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, y.bound = ybounds)
 }
 \keyword{Global}
 \keyword{quasi-potential}
