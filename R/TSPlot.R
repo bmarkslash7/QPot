@@ -11,6 +11,7 @@
 #' @param lwd line width.
 #' @param line.alpha transparency of lines from 0--255.
 #' @param zero.axes if TRUE, then axes plotted at \code{X=0} and \code{Y=0}.
+#' @param ... passes arguments to \code{\link{plot}}.
 #' @keywords plot stochastic simulations
 #' 
 #' @examples

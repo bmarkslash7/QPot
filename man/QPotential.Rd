@@ -12,69 +12,64 @@ QPotential(x.rhs = "NULL", x.start = "NULL", x.bound = "NULL",
   k.x = 20, k.y = 20)
 }
 \arguments{
-\item{x.rhs}{A string containing the right hand side of the equation for x.}
+\item{x.rhs}{a string containing the right hand side of the equation for x.}
 
-\item{x.start}{The starting value of x, usually the x value of the current equilibrium.}
+\item{x.start}{the starting value of x, usually the x value of the current equilibrium.}
 
-\item{x.bound}{The x boundaries denoted at c(minimum, maximum).}
+\item{x.bound}{the x boundaries denoted at c(minimum, maximum).}
 
-\item{x.num.steps}{The number of steps between the minimum and maximum x value defined in x range.}
+\item{x.num.steps}{the number of steps between the minimum and maximum x value defined in x range.}
 
-\item{y.rhs}{A string containing the right hand side of the y equation.}
+\item{y.rhs}{a string containing the right hand side of the equation for y.}
 
-\item{y.start}{The starting value of y, usually the y value of the current equilibrium.}
+\item{y.start}{the starting value of y, usually the y value of the current equilibrium.}
 
-\item{y.bound}{The y boundaries denoted at c(minimum, maximum).}
+\item{y.bound}{the y boundaries denoted at c(minimum, maximum).}
 
-\item{y.num.steps}{The number of steps between the minimum and maximum y value defined in y range.}
+\item{y.num.steps}{the number of steps between the minimum and maximum y value defined in y range.}
 
-\item{filename}{String for the name of the file saved to the hard drive.  If filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively.}
+\item{filename}{string for the name of the file saved to the hard drive.  If filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively.}
 
-\item{save.to.R}{Output the matrix of results for the upwind-ordered method to the current R session.  The default is not to write the matrix to the R session.  save.to.R=TRUE writes the output matrix to the R session.}
+\item{save.to.R}{output the matrix of results for the upwind-ordered method to the current R session.  The default is to write the matrix to the R session.  save.to.R=FALSE prevents the output from being written to the R session.}
 
-\item{save.to.HD}{Write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is TRUE.}
+\item{save.to.HD}{write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is FALSE.}
 
-\item{bounce}{By default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the (d)efault action, only (p)ositive values to be tested, or reflection near the boundaries (bounce = 'b').}
+\item{bounce}{by default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the default action (bounce = 'd'), only positive values to be tested (bounce = 'p'), or reflection near the boundaries (bounce = 'b').}
 
-\item{bounce.edge}{If bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01}
+\item{bounce.edge}{if bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01}
 
 \item{verboseR}{NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential Rwrapper}
 
-\item{verboseC}{NOT IMPLEMENTED: Flag (default = TRUE) for printing out useful-for-everyone information in quasipotential.C}
+\item{verboseC}{flag (default = TRUE) for printing out useful-for-everyone information in quasipotential.C}
 
 \item{debugC}{NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code}
 
-\item{k.x}{Integer anisotropic factor for x.  See journal article.  Default is 20.}
+\item{k.x}{integer anisotropic factor for x.  See journal article.  Default is 20.}
 
-\item{k.y}{Integer anisotropic factor for y.  See journal article.  Default is 20.}
+\item{k.y}{integer anisotropic factor for y.  See journal article.  Default is 20.}
 }
 \value{
-filetoHD If save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
+filetoHD if save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
 
-filetoR If save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
+filetoR if save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
 }
 \description{
 Wrapper for call to quasipotential computation using the upwind ordered method
 }
 \examples{
-#Example 1, Equilibrium 1 from article
-#Equations
-equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
-equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
-#Boundaries of the x and y state space
-xbounds = c(-0.5, 20.0)
-ybounds = c(-0.5, 20.0)
-# Step number
-# In the examples, these are 4100
-# set to a smaller number for this example
-xstepnumber = 1000
-ystepnumber = 1000
-# Equilibrium x and y values for Equilibrium 1 in Example 1
-xinit1 = 1.40491
-yinit1 = 2.80808
-storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1,
- x.bound = xbounds, x.num.steps = xstepnumber,
- y.rhs = equationy, y.start = yinit1,
- y.bound = ybounds, y.num.steps = ystepnumber)
+# First, System of equations
+	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
+	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
+
+# Second, shared parameters for each quasi-potential run
+	xbounds <- c(-0.5, 20.0)
+	ybounds <- c(-0.5, 20.0)
+	xstepnumber <- 1000
+	ystepnumber <- 1000
+
+# Third, a local quasi-potential run
+	xinit1 <- 1.40491
+	yinit1 <- 2.80808
+	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
 }
 

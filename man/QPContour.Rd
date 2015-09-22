@@ -4,18 +4,22 @@
 \alias{QPContour}
 \title{Contour plot of quasi-potential surfaces}
 \usage{
-QPContour(surface, dens, x.bound, y.bound, n.filled.contour = 25,
-  n.contour.lines = 25, c.parm = 1, col.contour, contour.lines = TRUE,
-  ...)
+QPContour(surface, dens, x.bound, y.bound, xlim = "NULL", ylim = "NULL",
+  n.filled.contour = 25, n.contour.lines = 25, c.parm = 1, col.contour,
+  contour.lines = TRUE, ...)
 }
 \arguments{
-\item{surface}{the surface to be plotted, from \code{\link{QPGlobal}}}
+\item{surface}{the surface to be plotted, from \code{\link{QPGlobal}}.}
 
 \item{dens}{vector respectively for the number of \code{x} and \code{y} points to be plotted.}
 
-\item{x.bound}{two-element vector for the surface's minimum and maximum x values}
+\item{x.bound}{two-element vector for the surface's minimum and maximum x values.}
 
-\item{y.bound}{two-element vector for the surface's minimum and maximum y values}
+\item{y.bound}{two-element vector for the surface's minimum and maximum y values.}
+
+\item{xlim}{numeric vectors of length 2, giving the x coordinate range.}
+
+\item{ylim}{numeric vectors of length 2, giving the y coordinates range.}
 
 \item{n.filled.contour}{numeric value for the nubmber of breaks in the filled contour.}
 
@@ -34,5 +38,34 @@ This function allows you to plot quasi-potential surfaces
 }
 \details{
 Because, in general, capturing the topological features can be subtle, we implemented a feature in \code{\link{QPContour}} to keep the filled.contour region while changing the contour lines.  Specifically, filled.contour takes the range of the surface values (\eqn{\phi}), divides by the number of the specified contours (i.e., \code{n.filled.contour}), and creates a contour at each break, which happenes to be equal across the range.  But because visualizing some topology may (i) require looking between contour breaks and (ii) adding contour lines would overload the plot with lines, we use an equation to modify the distribution of contour lines.  Namely, adjusting the \code{c} argument in the \code{\link{QPContour}} function adjusts the \eqn{c} paramter in the following equation: \deqn{max_\phi \times (\frac{x}{n-1})^c.}.  This allows the user to keep the same number of contour lines (i.e., specified with \code{n.contour.lines}), but focus them toward the troughs or peaks of the surfaces. At \eqn{c=1}, the contour lines correspond to the filled.contour breaks.  If \eqn{c > 1}, then the contour lines become more concentrated towards the trough.  Similarly, if \eqn{c < 1}, then the contour lines are more focused at the peaks of the surface.  As an example: \cr \figure{Example3.png}.
+}
+\examples{
+# First, System of equations
+	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
+	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
+
+# Second, shared parameters for each quasi-potential run
+	xbounds <- c(-0.5, 20.0)
+	ybounds <- c(-0.5, 20.0)
+	xstepnumber <- 1000
+	ystepnumber <- 1000
+
+# Third, first local quasi-potential run
+	xinit1 <- 1.40491
+	yinit1 <- 2.80808
+	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
+
+# Fourth, second local quasi-potential run
+	xinit2 <- 4.9040
+	yinit2 <- 4.06187
+	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber)
+
+# Fifth, determine global quasi-potential
+	unst.x <- c(0, 4.2008)
+	unst.y <- c(0, 4.0039)
+	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, y.bound = ybounds)
+
+# Sixth, contour of the quasi-potential
+	QPContour(ex1.global, dens = c(500,500), x.bound = xbounds, y.bound = ybounds, c.parm = 5)
 }
 

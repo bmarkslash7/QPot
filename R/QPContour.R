@@ -39,7 +39,7 @@
 #' # Fifth, determine global quasi-potential 
 #' 	unst.x <- c(0, 4.2008)
 #' 	unst.y <- c(0, 4.0039)
-#' 	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = bounds.x, y.bound = bounds.y)
+#' 	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, y.bound = ybounds)
 #' 
 #' # Sixth, contour of the quasi-potential
 #' 	QPContour(ex1.global, dens = c(500,500), x.bound = xbounds, y.bound = ybounds, c.parm = 5)

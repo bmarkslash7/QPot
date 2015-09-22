@@ -4,13 +4,18 @@
 \alias{TSDensity}
 \title{Density plot from simulation of two-dimensional stochastic differential equations}
 \usage{
-TSDensity(mat, dim = 1, contour.levels = 15, col2d = c("blue", "yellow",
-  "orange", "red"), contour.lwd = 0.5, contour.lines = TRUE, ...)
+TSDensity(mat, dim = 1, xlim = "NULL", ylim = "NULL",
+  contour.levels = 15, col2d = c("blue", "yellow", "orange", "red"),
+  contour.lwd = 0.5, contour.lines = TRUE, ...)
 }
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}
 
 \item{dim}{dimensions of the plot; \code{dim=1} plots simple density histogram or \code{dim=2} plots the density in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).}
+
+\item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
+
+\item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
 
 \item{contour.levels}{the number of contour levels for the two-dimensional plots (i.e., when \code{dim=2}).}
 
@@ -19,30 +24,24 @@ TSDensity(mat, dim = 1, contour.levels = 15, col2d = c("blue", "yellow",
 \item{contour.lwd}{line width of contour lines if \code{contour.lines=TRUE}.}
 
 \item{contour.lines}{if TRUE, then black countour lines added to the graph.}
+
+\item{...}{passes arguments to \code{\link{kde2d}} and \code{\link{plot}}.}
 }
 \description{
 This function allows you to create density plots for the simulation of two-dimensional stochastic differential equations in \code{\link{TSTraj}}
 }
 \examples{
-model.state <- c(x=1 , y=2)
-model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-model.sigma <- 0.05
-model.time <- 100
-model.deltat <- 0.2
+# First, the parameter values, as found in \\code{\\link{TSTraj}}
+	model.state <- c(x = 3, y = 3)
+	model.sigma <- 0.2
+	model.deltat <- 0.005
+	model.time <- 100
 
-test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
-test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+# Second, write out the deterministic skeleton of the equations to be simulated, as found in \\code{\\link{TSTraj}}
+	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0 + x*x)"
 
-ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat,
-  x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
-
-# Plot as one-dimensional plot
-TSDensity(ts.out.ex1, dim=1)
-# . . . or plot as two-dimensional plot
-TSDensity(ts.out.ex1, dim=2)
+# Third, run it, as found in \\code{\\link{TSTraj}}
 }
-\keyword{Density}
-\keyword{of}
 \keyword{plot}
 \keyword{simulations}
 \keyword{stochastic}

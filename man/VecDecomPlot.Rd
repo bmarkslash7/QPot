@@ -4,11 +4,11 @@
 \alias{VecDecomPlot}
 \title{Plotting function for vector decomposition and remainder fields}
 \usage{
-VecDecomPlot(field, dens, x.bound, y.bound, x.lim, y.lim,
+VecDecomPlot(field, dens, x.bound, y.bound, xlim = "NULL", ylim = "NULL",
   arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...)
 }
 \arguments{
-\item{field}{list output from \code{\link{VecDecomAll}}.}
+\item{field}{list output from \code{\link{VecDecomAll}}, \code{\link{VecDecomVec}}, \code{\link{VecDecomGrad}}, or \code{\link{VecDecomRem}}.}
 
 \item{dens}{two-element vector respectively specifying the number of respective arrows in the x and y directions.}
 
@@ -16,13 +16,15 @@ VecDecomPlot(field, dens, x.bound, y.bound, x.lim, y.lim,
 
 \item{y.bound}{two-element vector for the y domain boundries used for the quasi-potential simulation.}
 
-\item{x.lim}{I DO NOT KNOW BUT NOW devtools::check() IS OK}
+\item{xlim}{numeric vectors of length 2, giving the x coordinate range.}
 
-\item{y.lim}{I DO NOT KNOW BUT NOW devtools::check() IS OK}
+\item{ylim}{numeric vectors of length 2, giving the y coordinate range.}
 
 \item{arrow.type}{sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".}
 
 \item{tail.length}{multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).}
+
+\item{head.length}{THIS NEEDS WORDS}
 
 \item{...}{passes arguments to both \code{\link{plot}} and \code{\link{arrows}}.}
 }
@@ -30,13 +32,41 @@ VecDecomPlot(field, dens, x.bound, y.bound, x.lim, y.lim,
 This function calculates the vector and remainder fields.
 }
 \examples{
-#Example 1 from article
-equationx = "1.5*x*(1.0-(x/45.0))-(y*x*5.0)/(18.0+x)"
-equationy = "-4.0*y+((10.0*x*y)/(18.0+x))"
-# 0.6.1 vector field
-VDV <- VecDecomVec(x.num.steps=4100, y.num.steps=4100, x.rhs=equationx,
-  y.rhs=equationy, x.bound=c(-0.5,20), y.bound=c(-0.5,20))
-VecDecomPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound=c(-0.5,20), y.bound=c(-0.5,20))
+# First, system of equations
+	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
+	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
+
+# Second, shared parameters for each quasi-potential run
+	xbounds <- c(-0.5, 20.0)
+	ybounds <- c(-0.5, 20.0)
+	xstepnumber <- 1000
+	ystepnumber <- 1000
+
+# Third, first local quasi-potential run
+	xinit1 <- 1.40491
+	yinit1 <- 2.80808
+	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
+
+# Fourth, second local quasi-potential run
+	xinit2 <- 4.9040
+	yinit2 <- 4.06187
+	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber)
+
+# Fifth, determine global quasi-potential
+	unst.x <- c(0, 4.2008)
+	unst.y <- c(0, 4.0039)
+	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, y.bound = ybounds)
+
+# Sixth, decompose the global quasi-potential into the deterministic skeleton, gradient, and remainder vector fields
+VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equationx, y.rhs = equationy, x.bound = xbounds, y.bound = ybounds)
+
+# Seventh, plot all three vector fields
+	# The deterministic skeleton vector field
+	VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25,25), x.bound = xbounds, y.bound = ybounds, tail.length = 0.75, head.length = 0.05)
+	# The gradient vector field
+	VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25,25), x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
+	# The remainder vector field
+	VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25,25), x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
 }
 \keyword{field}
 \keyword{plot}

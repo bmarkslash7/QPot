@@ -4,8 +4,9 @@
 \alias{TSPlot}
 \title{Plot simulation of two-dimensional stochastic differential equations}
 \usage{
-TSPlot(mat, deltat, dim = 1, y.lim = NA, x.lab = "time", dens = TRUE,
-  lwd = 2, line.alpha = 130, zero.axes = TRUE, ...)
+TSPlot(mat, deltat, dim = 1, xlim = "NULL", ylim = "NULL",
+  x.lab = "time", dens = TRUE, lwd = 2, line.alpha = 130,
+  zero.axes = TRUE, ...)
 }
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}
@@ -14,7 +15,9 @@ TSPlot(mat, deltat, dim = 1, y.lim = NA, x.lab = "time", dens = TRUE,
 
 \item{dim}{dimensions of the plot; \code{dim=1} to plot a timeseries with \code{X} and \code{Y} on the ordinate axis or \code{dim=2} to plot the trjectories in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).}
 
-\item{y.lim}{for \code{dim=1}, allows user to specify the range of the y-axis as a two-element vector.}
+\item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
+
+\item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
 
 \item{x.lab}{for \code{dim=1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}}
 
@@ -25,26 +28,23 @@ TSPlot(mat, deltat, dim = 1, y.lim = NA, x.lab = "time", dens = TRUE,
 \item{line.alpha}{transparency of lines from 0--255.}
 
 \item{zero.axes}{if TRUE, then axes plotted at \code{X=0} and \code{Y=0}.}
+
+\item{...}{passes arguments to \code{\link{plot}}.}
 }
 \description{
 This function allows you to plot the simulation of simulate two-dimensional stochastic differential equations from \code{\link{TSTraj}}
 }
 \examples{
-model.state <- c(x=1 , y=2)
-model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-model.sigma <- 0.05
-model.time <- 100
-model.deltat <- 0.2
+# First, the parameter values, as found in \\code{\\link{TSTraj}}
+	model.state <- c(x = 3, y = 3)
+	model.sigma <- 0.2
+	model.deltat <- 0.005
+	model.time <- 100
 
-test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
-test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
+# Second, write out the deterministic skeleton of the equations to be simulated, as found in \\code{\\link{TSTraj}}
+	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0 + x*x)"
 
-ts.out.ex1 <- TSTraj(y0= model.state, time=model.time, deltat=model.deltat,
-  x.rhs=test.eqn.x, y.rhs= test.eqn.y, parms=model.parms, sigma=model.sigma)
-# Plot as one-dimensional plot
-TSPlot(ts.out.ex1, deltat=model.deltat)
-# . . . or plot as two-dimensional plot
-TSPlot(ts.out.ex1, deltat=model.deltat, dim=2)
+# Third, run it, as found in \\code{\\link{TSTraj}}
 }
 \keyword{plot}
 \keyword{simulations}
