@@ -31,7 +31,7 @@
 #' 	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, y.bound = ybounds)
 #' 
 #' # Sixth, creat the gradient vector field
-#' 	VDG <- VecDecomGrad(ex1.global)
+#' 	VDG <- VecDecomGrad(surface = ex1.global)
 
 
 VecDecomGrad <- function(surface){
