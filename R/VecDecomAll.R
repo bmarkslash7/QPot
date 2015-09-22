@@ -34,7 +34,7 @@
 #' 	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, y.bound = ybounds)
 #' 
 #' # Sixth, decompose the global quasi-potential into the deterministic skeleton, gradient, and remainder vector fields
-#' 	VDAll <- VecDecompAll(surface = ex1.global, x.rhs = equationx, y.rhs = equationy, 
+#' 	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equationx, y.rhs = equationy, 
 #' 	x.bound = xbounds, y.bound = ybounds)
 
 VecDecomAll <- function(surface,x.rhs,y.rhs,x.bound,y.bound){
