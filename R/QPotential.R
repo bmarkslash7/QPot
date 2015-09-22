@@ -36,7 +36,9 @@
 #' # Third, a local quasi-potential run
 #' 	xinit1 <- 1.40491
 #' 	yinit1 <- 2.80808
-#' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
+#' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, 
+#'		x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, 
+#'		y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
 
 QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20)
 {

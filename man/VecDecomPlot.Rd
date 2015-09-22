@@ -45,28 +45,39 @@ This function calculates the vector and remainder fields.
 # Third, first local quasi-potential run
 	xinit1 <- 1.40491
 	yinit1 <- 2.80808
-	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
+	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1,
+		x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy,
+		y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
 
 # Fourth, second local quasi-potential run
 	xinit2 <- 4.9040
 	yinit2 <- 4.06187
-	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2, x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber)
+	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2,
+		x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy,
+		y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber)
 
 # Fifth, determine global quasi-potential
 	unst.x <- c(0, 4.2008)
 	unst.y <- c(0, 4.0039)
-	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, y.bound = ybounds)
+	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2),
+		unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds,
+		y.bound = ybounds)
 
-# Sixth, decompose the global quasi-potential into the deterministic skeleton, gradient, and remainder vector fields
-VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equationx, y.rhs = equationy, x.bound = xbounds, y.bound = ybounds)
+# Sixth, decompose the global quasi-potential into the
+# deterministic skeleton, gradient, and remainder vector fields
+VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equationx, y.rhs = equationy,
+		x.bound = xbounds, y.bound = ybounds)
 
 # Seventh, plot all three vector fields
 	# The deterministic skeleton vector field
-	VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25,25), x.bound = xbounds, y.bound = ybounds, tail.length = 0.75, head.length = 0.05)
+	VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25,25),
+		x.bound = xbounds, y.bound = ybounds, tail.length = 0.75, head.length = 0.05)
 	# The gradient vector field
-	VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25,25), x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
+	VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25,25),
+		x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
 	# The remainder vector field
-	VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25,25), x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
+	VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25,25),
+		x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
 }
 \keyword{field}
 \keyword{plot}

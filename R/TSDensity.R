@@ -19,7 +19,8 @@
 #'	model.deltat <- 0.005
 #'	model.time <- 100
 #'
-#' # Second, write out the deterministic skeleton of the equations to be simulated, as found in \code{\link{TSTraj}}
+#' # Second, write out the deterministic skeleton of the equations to be simulated, 
+#' # as found in \code{\link{TSTraj}}
 #	#Example 1 from article
 #'	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0 + x*x)"
 #	equationy <- "((0.476*x*x*y)/(1 + x*x)) - 0.112590*y*y"
