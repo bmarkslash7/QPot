@@ -50,37 +50,33 @@
 #' 	# The remainder vector field
 #' 	VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25,25), x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
 
-
-VecDecomPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...){
+VecDecomPlot <- function(field, dens, x.bound, y.bound, xlim = 'NULL', ylim = 'NULL', arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...){
 		x.range <- max(x.bound)-min(x.bound)
 		y.range <- max(y.bound)-min(y.bound)
-
 		row.range <- nrow(field[[1]])-1
 		col.range <- ncol(field[[1]])-1
 
-	if(missing(x.lim) | missing(y.lim)) {
-		row.min <- min(which(field[[1]] != 0 , arr.ind = T)[,1])
-		row.max <- max(which(field[[1]] != 0 , arr.ind = T)[,1])
-		col.min <- min(which(field[[1]] != 0 , arr.ind = T)[,2])
-		col.max <- max(which(field[[1]] != 0 , arr.ind = T)[,2])
-
-		x.min <- ((row.min-1)/row.range)*x.range + min(x.bound)
-		x.max <- ((row.max-1)/row.range)*x.range + min(x.bound)
-		y.min <- ((col.min-1)/col.range)*y.range + min(y.bound)
-		y.max <- ((col.max-1)/col.range)*y.range + min(y.bound)
-
-		x.win <- c(x.min,x.max)
-		y.win <- c(y.min,y.max)
-
-	} else {
-		x.win <- x.lim
-		y.win <- y.lim
-	
-		row.min <- (min(x.win)-min(x.bound))/x.range*row.range + 1
-		row.max <- (max(x.win)-min(x.bound))/x.range*row.range + 1
-		col.min <- (min(y.win)-min(y.bound))/y.range*col.range + 1
-		col.max <- (max(y.win)-min(y.bound))/y.range*col.range + 1
-	}
+		if(missing(xlim) == F & missing(ylim) == F) {
+		row.min <- (min(xlim)-min(x.bound))/x.range*row.range + 1
+		row.max <- (max(xlim)-min(x.bound))/x.range*row.range + 1
+		col.min <- (min(ylim)-min(y.bound))/y.range*col.range + 1
+		col.max <- (max(ylim)-min(y.bound))/y.range*col.range + 1
+		} else {
+			if(missing(xlim)) {
+				row.min <- min(which(field[[1]] != 0 , arr.ind = T)[,1])
+				row.max <- max(which(field[[1]] != 0 , arr.ind = T)[,1])
+				x.min <- ((row.min-1)/row.range)*x.range + min(x.bound)
+				x.max <- ((row.max-1)/row.range)*x.range + min(x.bound)
+				xlim <- c(x.min,x.max)
+				}
+			if(missing(ylim)) {
+				col.min <- min(which(field[[1]] != 0 , arr.ind = T)[,2])
+				col.max <- max(which(field[[1]] != 0 , arr.ind = T)[,2])
+				y.min <- ((col.min-1)/col.range)*y.range + min(y.bound)
+				y.max <- ((col.max-1)/col.range)*y.range + min(y.bound)
+				ylim <- c(y.min,y.max)
+				}
+			}
 
  	sub.x <- seq(row.min, row.max, length.out=dens[1])
 	sub.y <- seq(col.min, col.max, length.out=dens[2])
@@ -91,14 +87,14 @@ VecDecomPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type
 	dx.sub <- field[[1]][sub.x, sub.y]
 	dy.sub <- field[[2]][sub.x, sub.y]
 
-	if(arrow.type=="proportional"){
+	if(arrow.type == "proportional"){
 	dx.rel <- (dx.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
 	dy.rel <- (dy.sub/max(((dx.sub^2)+(dy.sub^2))^0.5, na.rm = T))
 	dx.plot <- dx.rel*tail.length
 	dy.plot <- dy.rel*tail.length
 	}
 
-	if(arrow.type=="equal"){
+	if(arrow.type == "equal"){
 	dx.even <- dx.sub/((dx.sub^2)+(dy.sub^2))^0.5
 	dy.even <- dy.sub/(((dx.sub^2)+(dy.sub^2))^0.5)
 	dx.plot <- dx.even*tail.length
@@ -114,7 +110,7 @@ VecDecomPlot <- function(field, dens, x.bound, y.bound, x.lim, y.lim, arrow.type
  	qpr <- nrow(dx.plot)
 	qpc <- ncol(dy.plot)
 
-	plot(0 , type = "n" , xlim = x.win , ylim = y.win , las = 1, ...)
+	plot(0 , type = "n" , xlim = xlim , ylim = ylim , las = 1, ...)
 	for (j in 1:qpr){
 			for (i in 1:qpc){
 				x0 <- sub.x.val[j] - (dx.plot[j,i]/2)
