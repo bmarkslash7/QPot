@@ -5,8 +5,8 @@
 #' @param dens two-element vector respectively specifying the number of respective arrows in the x and y directions.
 #' @param x.bound two-element vector for the x domain boundries used for the quasi-potential simulation.
 #' @param y.bound two-element vector for the y domain boundries used for the quasi-potential simulation.
-#' @param x.lim numeric vectors of length 2, giving the x coordinate range.
-#' @param y.lim numeric vectors of length 2, giving the y coordinate range.
+#' @param xlim numeric vectors of length 2, giving the x coordinate range.
+#' @param ylim numeric vectors of length 2, giving the y coordinate range.
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
 #' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
 #' @param head.length THIS NEEDS WORDS
