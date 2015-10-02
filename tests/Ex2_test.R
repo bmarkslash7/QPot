@@ -33,19 +33,19 @@ ts.ex2 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.r
 		TSDensity(ts.ex2, dim = 2)
 
 		# plots for the paper figures
-			# print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
-			# # Ex2_TS_1D.png
-			# png(paste(print.wd,"Ex2_TS_1D.png",sep=""), width = 720, height = 480)
-			# TSPlot(ts.ex2, deltat = model.deltat)
-			# dev.off()
-			# # Ex2_TS_2D.png
-			# png(paste(print.wd,"Ex2_TS_2D.png",sep=""), width = 500, height = 500)
-			# TSPlot(ts.ex2, deltat = model.deltat, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)))
-			# dev.off()
-			# # Ex2_Dens_2D.png
-			# png(paste(print.wd,"Ex2_Dens_2D.png",sep=""), width = 500, height = 500)
-			# TSDensity(ts.ex2, deltat = model.deltat, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), contour.lwd = 0.75)
-			# dev.off()
+			print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
+			# Ex2_TS_1D.png
+			png(paste(print.wd,"Ex2_TS_1D.png",sep=""), width = 720, height = 480)
+			TSPlot(ts.ex2, deltat = model.deltat)
+			dev.off()
+			# Ex2_TS_2D.png
+			png(paste(print.wd,"Ex2_TS_2D.png",sep=""), width = 500, height = 500)
+			TSPlot(ts.ex2, deltat = model.deltat, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), xlim = c(2.5, 6.5), ylim = c(2.5, 6.5))
+			dev.off()
+			# Ex2_Dens_2D.png
+			png(paste(print.wd,"Ex2_Dens_2D.png",sep=""), width = 500, height = 500)
+			TSDensity(ts.ex2, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), contour.lwd = 0.75, xlim = c(2.5, 6.5), ylim = c(2.5, 6.5))
+			dev.off()
 
 ##### 0.3 local quasi-potential!!! #####
 		equation.x = "-(y-5) + 0.2*(x-4)*(1-(x-4)^2-(y-5)^2)"
@@ -68,7 +68,7 @@ eq1.qp <- QPotential(x.rhs = equation.x, x.start = xinit, x.bound = bounds.x, x.
 QPContour(eq1.qp, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 10, xlab=expression(italic(x)), ylab=expression(italic(y)))
 	# figure for the paper
 		# print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
-		# # Ex2_QP_contour.png
+		# Ex2_QP_contour.png
 		# png(paste(print.wd,"Ex2_QP_contour.png",sep=""), width = 500, height = 500)
 		# QPContour(eq1.qp, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 10, xlab=expression(italic(x)), ylab=expression(italic(y)))
 		# dev.off()

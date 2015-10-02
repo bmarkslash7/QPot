@@ -31,20 +31,20 @@
 		TSDensity(ts.ex3, dim = 1)
 		TSDensity(ts.ex3, dim = 2 , contour.levels = 20 , contour.lwd = 0.1)
 
-		# # plots for the paper figures
-			# print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
-			# # Ex3_TS_1D.png
-			# png(paste(print.wd,"Ex3_TS_1D.png",sep=""), width = 720, height = 480)
-			# TSPlot(ts.ex3, deltat = model.deltat)
-			# dev.off()
-			# # Ex3_TS_2D.png
-			# png(paste(print.wd,"Ex3_TS_2D.png",sep=""), width = 500, height = 500)
-			# TSPlot(ts.ex3, deltat = model.deltat, dim = 2, line.alpha = 25, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), zero.axes = F)
-			# dev.off()
-			# # Ex3_Dens_2D.png
-			# png(paste(print.wd,"Ex3_Dens_2D.png",sep=""), width = 500, height = 500)
-			# TSDensity(ts.ex3, deltat = model.deltat, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), contour.lwd = 0.75)
-			# dev.off()
+		# plots for the paper figures
+			print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
+			# Ex3_TS_1D.png
+			png(paste(print.wd,"Ex3_TS_1D.png",sep=""), width = 720, height = 480)
+			TSPlot(ts.ex3, deltat = model.deltat)
+			dev.off()
+			# Ex3_TS_2D.png
+			png(paste(print.wd,"Ex3_TS_2D.png",sep=""), width = 500, height = 500)
+			TSPlot(ts.ex3, deltat = model.deltat, dim = 2, line.alpha = 25, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), zero.axes = F, xlim = c(-3, 3), ylim = c(-3, 3))
+			dev.off()
+			# Ex3_Dens_2D.png
+			png(paste(print.wd,"Ex3_Dens_2D.png",sep=""), width = 500, height = 500)
+			TSDensity(ts.ex3, deltat = model.deltat, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), contour.lwd = 0.5, xlim = c(-3, 3), ylim = c(-3, 3))
+			dev.off()
 
 
 ##### 0.3 local quasi-potential!!! #####
@@ -71,11 +71,11 @@ ex3.global <- QPGlobal(local.surfaces = list(eq1.local, eq2.local),unstable.eq.x
 QPContour(ex3.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 1)
 
 	# figure for the paper
-		# print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
-		# # Ex3_QP_contour.png
-		# png(paste(print.wd,"Ex3_QP_contour.png",sep=""), width = 500, height = 500)
-		# QPContour(ex3.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5, xlab=expression(italic(x)), ylab=expression(italic(y)))
-		# dev.off()
+		print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
+		# Ex3_QP_contour.png
+		png(paste(print.wd,"Ex3_QP_contour.png",sep=""), width = 500, height = 500)
+		QPContour(ex3.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5, xlab=expression(italic(x)), ylab=expression(italic(y)))
+		dev.off()
 
 
 ##### 0.6 vector field decompisition!!! #####

@@ -49,7 +49,7 @@
 			if(missing(xlim) | missing(ylim)){
 				kern.2d <- MASS::kde2d(mat[,2] , mat[,3], ...)
 				} else {
-				kern.2d <- MASS::kde2d(mat[,2] , mat[,3], lims = c(min(xlim), max(xlim), min(ylim), max(ylim)), ...)	
+				kern.2d <- MASS::kde2d(mat[,2] , mat[,3], lims = c(min(xlim), max(xlim), min(ylim), max(ylim)))	
 				}
 			x.max <- length(kern.2d$x)
 			y.max <- length(kern.2d$y)
@@ -57,7 +57,7 @@
 			y.range <- 1:y.max
 			contour.breaks <- seq(min(kern.2d$z) , max(kern.2d$z), length = contour.levels)
 			myRmap <- colorRampPalette(col2d)(contour.levels)
-			plot(0 , type = "n" , xlim = c(1 , x.max)  , ylim = c(1 , y.max) , las = 1 ,  xaxt = "n" , yaxt = "n", ...)
+			plot(0 , type = "n" , xlim = c(1 , x.max)  , ylim = c(1 , y.max) , las = 1 ,  xaxt = "n" , yaxt = "n", xlab = "", ylab = "")
 			.filled.contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap)
 			contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap , add = T , drawlabels=F)
 			if (contour.lines == T) {contour(x.range , y.range , kern.2d$z , levels = contour.breaks, drawlabels = F ,  add = TRUE , col = "black" , lwd = contour.lwd)}
@@ -66,7 +66,7 @@
 			if(missing(xlim) != missing(ylim)) {stop("Both xlim and ylim must be specified, or neither")}
 			if(missing(xlim)) {xlim <- c(min(kern.2d$x), max(kern.2d$x))}
 			if(missing(ylim)) {ylim <- c(min(kern.2d$y), max(kern.2d$y))}
-			plot(0, type = "n" , xlim = xlim , ylim = ylim , ylab = "" , xlab ="" , xaxt = "n" , yaxt = "n")
+			plot(0, type = "n" , xlim = xlim , ylim = ylim, xaxt = "n" , yaxt = "n", ...)
 			axis(1 , ...)
 			axis(2 , ...)
 		}
