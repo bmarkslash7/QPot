@@ -27,7 +27,9 @@
 ts.ex2 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
 
 	# 0.2.3 time series plots
+		temp.default.par <- par()
 		TSPlot(ts.ex2, deltat = model.deltat)
+		par(temp.default.par)
 		TSPlot(ts.ex2, deltat = model.deltat, dim = 2, line.alpha = 25)
 		TSDensity(ts.ex2, dim = 1)
 		TSDensity(ts.ex2, dim = 2)
