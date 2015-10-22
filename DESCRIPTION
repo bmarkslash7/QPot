@@ -1,6 +1,6 @@
 Package: QPot
 Version: 1.0
-Date: 2015-07-27
+Date: 2015-10-22
 Title: Quasi-Potential Analysis for Stochastic Differential Equations
 Authors@R: c(
 	person("Christopher", "Moore", role = c("aut"), email = "life.dispersing@gmail.com"),
@@ -8,14 +8,8 @@ Authors@R: c(
 	person("Ben", "Nolting", role = c("aut"), email = ""),
 	person("Maria", "Cameron", role = c("aut"), email = ""),
 	person("Karen", "Abbott", role = c("aut"), email = ""),
-	person("James", "Gregson", role = ("cph"), email = "", comment = "wrote the expression_parser library: https://github.com/jamesgregson/expression_parser")
+	person("James", "Gregson", role = ("cph"), email = "", comment = "author of expression_parser library: https://github.com/jamesgregson/expression_parser")
 	)
-Author: Christopher Moore [aut],
-	Christopher Stieha [aut, cre],
-	Ben Nolting [aut],
-	Maria Cameron [aut],
-	Karen Abbott [aut],
-	James Gregson [cph]
 Depends: R (>= 3.0.2)
 Imports: MASS
 Maintainer: Christopher Stieha <stieha@hotmail.com>
