@@ -14,19 +14,19 @@ B. C. Nolting and K. C. Abbott. *Accepted.* Balls, cups, and quasi-potentials: q
 
 ### Functions ###
 
-* Model2String()	convert equations in function form to strings
+* Model2String()	converts equations in function format to strings
 * QPContour()		creates a contour plot of the quasi-potential
 * QPGlobal()		creates a global quasi-potential surface
 * QPInterp()		evaluates the quasi-potential at point (x,y)
-* QPotential()	computes the quasi-potential 
+* QPotential()		computes the quasi-potential 
 * TSDensity()		creates a density plot of population trajectories from TSTraj()
-* TSPlot()		plots population trajectories from TSTraj()
-* TSTraj()		simulates a time series based off the equations
-* VecDecomAll()	returns three vector fields: VecDecomGrad(), VecDecomRem(), VecDecompVec()
+* TSPlot()			plots population trajectories from TSTraj()
+* TSTraj()			simulates a time series based off the equations
+* VecDecomAll()		returns three vector fields: VecDecomGrad(), VecDecomRem(), VecDecompVec()
 * VecDecomGrad()	vector field of the negative gradient of the quasi-potential
-* VecDecomRem()	vector field of the remainder
+* VecDecomRem()		vector field of the remainder
 * VecDecomPlot()	plots the vector field
-* VecDecomVec()	vector field of deterministic skeleton
+* VecDecomVec()		vector field of deterministic skeleton
 
 ### Notation for mathematical equations ###
 
