@@ -14,19 +14,19 @@ B. C. Nolting and K. C. Abbott. *Accepted.* Balls, cups, and quasi-potentials: q
 
 ### Functions ###
 
-Model2String()	convert equations in function form to strings
-QPContour()		creates a contour plot of the quasi-potential
-QPGlobal()		creates a global quasi-potential surface
-QPInterp()		evaluates the quasi-potential at point (x,y)
-QPotential()	computes the quasi-potential 
-TSDensity()		creates a density plot of population trajectories from TSTraj()
-TSPlot()		plots population trajectories from TSTraj()
-TSTraj()		simulates a time series based off the equations
-VecDecomAll()	returns three vector fields: VecDecomGrad(), VecDecomRem(), VecDecompVec()
-VecDecomGrad()	vector field of the negative gradient of the quasi-potential
-VecDecomRem()	vector field of the remainder
-VecDecomPlot()	plots the vector field
-VecDecomVec()	vector field of deterministic skeleton
+* Model2String()	convert equations in function form to strings
+* QPContour()		creates a contour plot of the quasi-potential
+* QPGlobal()		creates a global quasi-potential surface
+* QPInterp()		evaluates the quasi-potential at point (x,y)
+* QPotential()	computes the quasi-potential 
+* TSDensity()		creates a density plot of population trajectories from TSTraj()
+* TSPlot()		plots population trajectories from TSTraj()
+* TSTraj()		simulates a time series based off the equations
+* VecDecomAll()	returns three vector fields: VecDecomGrad(), VecDecomRem(), VecDecompVec()
+* VecDecomGrad()	vector field of the negative gradient of the quasi-potential
+* VecDecomRem()	vector field of the remainder
+* VecDecomPlot()	plots the vector field
+* VecDecomVec()	vector field of deterministic skeleton
 
 ### Notation for mathematical equations ###
 
@@ -50,7 +50,7 @@ See http://jamesgregson.blogspot.com/2012/06/mathematical-expression-parser-in-c
 With the equations and parameters, there are two stable equilibria.
 
 #### 0.2 Initialization ####
-
+```R
 require(QPot)
 require(rgl)
 
@@ -62,7 +62,7 @@ model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, kappa = 1
 model.sigma <- 0.05
 model.time <- 12500
 model.deltat <- 0.025
-
+```
 #### 0.2.2 Time series ####
 
 ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
