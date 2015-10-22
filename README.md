@@ -64,16 +64,18 @@ model.time <- 12500
 model.deltat <- 0.025
 ```
 #### 0.2.2 Time series ####
-
+```R
 ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
-
+```
 #### 0.2.3 Time series plots ####
+```R
 TSPlot(ts.ex1, deltat = model.deltat)
 TSPlot(ts.ex1, deltat = model.deltat, dim = 2)
 TSDensity(ts.ex1, dim = 1)
 TSDensity(ts.ex1, dim = 2)
-
+```
 #### 0.3 Compute the local quasi-potentials ####
+```R
 equation.x = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
 equation.y = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
 bounds.x = c(-0.5, 20.0)
@@ -88,17 +90,20 @@ eq2.y = 4.06187
 eq1.local <- QPotential(x.rhs = equation.x, x.start = eq1.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = equation.y, y.start = eq1.y,  y.bound = bounds.y, y.num.steps = step.number.y)
 
 eq2.local <- QPotential(x.rhs = equation.x, x.start = eq2.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = equation.y, y.start = eq2.y, y.bound = bounds.y, y.num.steps = step.number.y)
-
+```
 
 #### 0.4 global quasi-potential ####
+```R
 ex1.global <- QPGlobal(local.surfaces = list(eq1.local, eq2.local), unstable.eq.x = c(0, 4.2008), unstable.eq.y = c(0, 4.0039), x.bound = bounds.x, y.bound = bounds.y)
-
+```
 
 #### 0.5 Quasi-potential visualization ####
+```R
 QPContour(surface = ex1.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5)
+```
 
 #### 0.6 Vector field decomposition!!! ####
-
+```R
 VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
 
 VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, x.lim = c(0, 11), y.lim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
@@ -106,22 +111,29 @@ VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25, 25), x.bound = b
 VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
 
 VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
-
+```
 
 #### 0.6.1 vector field ####
+```R
 VDV <- VecDecomVec(x.num.steps = step.number.x, y.num.steps = step.number.y, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
 
 VecDecomPlot(field = list(VDV[,,1], VDV[,,2]), dens = c(50, 50), x.bound = bounds.x, y.bound=bounds.y, x.lim = c(0, 11), y.lim=c(0, 6), arrow.type="proportional", tail.length=0.75, head.length=0.03)
+```
 
-#### 0.6.2 gradient field ####	
+#### 0.6.2 gradient field ####
+```R
 VDG <- VecDecomGrad(ex1.global)
 
 VecDecomPlot(field = list(VDG[,,1], VDG[,,2]), dens=c(50, 50), x.bound=bounds.x, y.bound = bounds.y, arrow.type = "proportional", head.length = 0.03, tail.length = 0.5)
+```
 
 #### 0.6.3 remainder field ####
+```R
 VDR <- VecDecomRem(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
+```
 
 #### 0.7 3D graphs ####
+```R
 require(rgl)
 
 dens.sub <- c(4000,4000)
@@ -129,7 +141,7 @@ dens.sub <- c(4000,4000)
 global.sub <- ex1.global[round(seq(1,nrow(ex1.global),length.out=dens.sub[1])) , round(seq(1,ncol(ex1.global),length.out=dens.sub[2]))]
 
 persp3d(x = global.sub, col = "orange", expand = 1.1, xlim = c(0.05, 0.35), ylim = c(0.1, 0.3), zlim = c(0, 0.01), xlab = "X", ylab = "Y", zlab = intToUtf8(0x03A6))
-
+```
  
 
 
