@@ -52,7 +52,6 @@ With the equations and parameters, there are two stable equilibria.  This exampl
 #### 0.2 Initialization ####
 ```R
 require(QPot)
-require(rgl)
 
 var.eqn.x <- "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa+(x^2)))"
 var.eqn.y <- "((gamma*(x^2)*y)/(kappa+(x^2))) - mu*(y^2)"
@@ -61,7 +60,7 @@ model.state <- c(x = 1, y = 2)
 model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, 
 					kappa = 1, mu = 0.112509)
 model.sigma <- 0.05
-model.time <- 12500
+model.time <- 1000
 model.deltat <- 0.025
 ```
 #### 0.2.2 Time series ####

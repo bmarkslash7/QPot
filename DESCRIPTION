@@ -3,18 +3,18 @@ Version: 1.0
 Date: 2015-07-27
 Title: Quasi-Potential Analysis for Stochastic Differential Equations
 Authors@R: c(
-	person("Christopher", "Moore", role = c("aut", "cph"), email = "life.dispersing@gmail.com"),
-	person("Christopher", "Stieha", role = c("aut", "cre", "cph"), email = "stieha@hotmail.com"),
-	person("Ben", "Nolting", role = c("aut", "ctb", "cph"), email = ""),
-	person("Maria", "Cameron", role = c("aut", "ctb", "cph"), email = ""),
-	person("Karen", "Abbott", role = c("ctb"), email = ""),
-	person("James Gregson", role = ("ctb"), email = "")
+	person("Christopher", "Moore", role = c("aut"), email = "life.dispersing@gmail.com"),
+	person("Christopher", "Stieha", role = c("aut", "cre"), email = "stieha@hotmail.com"),
+	person("Ben", "Nolting", role = c("aut"), email = ""),
+	person("Maria", "Cameron", role = c("aut"), email = ""),
+	person("Karen", "Abbott", role = c("aut"), email = ""),
+	person("James Gregson", role = ("cph), email = "", comment = "wrote the expression_parser library: https://github.com/jamesgregson/expression_parser")
 	)
-Author: Christopher Moore [aut, cph],
-	Christopher Stieha [aut, cre, cph],
-	Ben Nolting [aut, ctb, cph],
-	Maria Cameron [aut, ctb, cph],
-	Karen Abbott [ctb],
+Author: Christopher Moore [aut],
+	Christopher Stieha [aut, cre],
+	Ben Nolting [aut],
+	Maria Cameron [aut],
+	Karen Abbott [aut],
 	James Gregson [cph]
 Depends: R (>= 3.0.2)
 Imports: MASS
