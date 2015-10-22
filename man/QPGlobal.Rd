@@ -28,8 +28,8 @@ This function allows you to find the global quasi-potential values for several l
 # Second, shared parameters for each quasi-potential run
 	xbounds <- c(-0.5, 20.0)
 	ybounds <- c(-0.5, 20.0)
-	xstepnumber <- 1000
-	ystepnumber <- 1000
+	xstepnumber <- 500
+	ystepnumber <- 500
 
 # Third, first local quasi-potential run
 	xinit1 <- 1.40491
