@@ -9,6 +9,7 @@ Authors@R: c(
 	person("Maria", "Cameron", role = c("aut", "ctb", "cph"), email = ""),
 	person("Karen", "Abbott", role = c("ctb"), email = ""),
 	person("James Gregson", role = ("ctb"), email = "")
+	)
 Author: Christopher Moore [aut, cph],
 	Christopher Stieha [aut, cre, cph],
 	Ben Nolting [aut, ctb, cph],

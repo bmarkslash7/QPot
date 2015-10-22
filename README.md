@@ -47,7 +47,7 @@ See http://jamesgregson.blogspot.com/2012/06/mathematical-expression-parser-in-c
 
 ### Example 1 from article submitted to R Journal ###
 
-With the equations and parameters, there are two stable equilibria.
+With the equations and parameters, there are two stable equilibria.  This example simulates the time series (0.2.2 Time series), computes the local quasi-potential around the two equilibria (0.3 Compute the local quasi-potentials) and combines the two local quasi-potential to make the global quasi-potential (0.4 global quasi-potential).  These results can be viewed using a variety of functions (section 0.6 to 0.7). 
 
 #### 0.2 Initialization ####
 ```R
@@ -99,7 +99,7 @@ eq2.local <- QPotential(x.rhs = equation.x, x.start = eq2.x, x.bound = bounds.x,
 				y.bound = bounds.y, y.num.steps = step.number.y)
 ```
 
-#### 0.4 global quasi-potential ####
+#### 0.4 Global quasi-potential ####
 ```R
 ex1.global <- QPGlobal(local.surfaces = list(eq1.local, eq2.local), 
 						unstable.eq.x = c(0, 4.2008), unstable.eq.y = c(0, 4.0039), 
@@ -112,7 +112,7 @@ QPContour(surface = ex1.global, dens = c(1000, 1000),
 			x.bound = bounds.x, y.bound = bounds.y, c.parm = 5)
 ```
 
-#### 0.6 Vector field decomposition!!! ####
+#### 0.6 Vector field decomposition ####
 ```R
 VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equation.x, 
 					y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
