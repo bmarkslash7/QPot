@@ -164,7 +164,8 @@ require(rgl)
 
 dens.sub <- c(4000,4000)
 
-global.sub <- ex1.global[round(seq(1,nrow(ex1.global),length.out=dens.sub[1])), round(seq(1,ncol(ex1.global),length.out=dens.sub[2]))]
+global.sub <- ex1.global[round(seq(1,nrow(ex1.global),length.out=dens.sub[1])),
+						round(seq(1,ncol(ex1.global),length.out=dens.sub[2]))]
 
 persp3d(x = global.sub, col = "orange", expand = 1.1, xlim = c(0.05, 0.35), 
 		ylim = c(0.1, 0.3), zlim = c(0, 0.01), xlab = "X", ylab = "Y", 
