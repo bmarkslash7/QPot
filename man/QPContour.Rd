@@ -45,10 +45,10 @@ Because, in general, capturing the topological features can be subtle, we implem
 	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
 
 # Second, shared parameters for each quasi-potential run
-	xbounds <- c(-0.5, 20.0)
-	ybounds <- c(-0.5, 20.0)
-	xstepnumber <- 500
-	ystepnumber <- 500
+	xbounds <- c(-0.5, 10.0)
+	ybounds <- c(-0.5, 10.0)
+	xstepnumber <- 150
+	ystepnumber <- 150
 
 # Third, first local quasi-potential run
 	xinit1 <- 1.40491
@@ -72,7 +72,7 @@ Because, in general, capturing the topological features can be subtle, we implem
 		y.bound = ybounds)
 
 # Sixth, contour of the quasi-potential
-	QPContour(ex1.global, dens = c(500,500), x.bound = xbounds,
+	QPContour(ex1.global, dens = c(100,100), x.bound = xbounds,
 		y.bound = ybounds, c.parm = 5)
 }
 

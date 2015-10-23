@@ -19,10 +19,10 @@
 #' 	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
 #' 
 #' # Second, shared parameters for each quasi-potential run
-#' 	xbounds <- c(-0.5, 20.0)
-#' 	ybounds <- c(-0.5, 20.0)
-#' 	xstepnumber <- 500
-#' 	ystepnumber <- 500
+#' 	xbounds <- c(-0.5, 10.0)
+#' 	ybounds <- c(-0.5, 10.0)
+#' 	xstepnumber <- 100
+#' 	ystepnumber <- 100
 #' 
 #' # Third, first local quasi-potential run
 #' 	xinit1 <- 1.40491
