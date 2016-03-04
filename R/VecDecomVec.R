@@ -7,7 +7,9 @@
 #' @param y.rhs A string containing the right hand side of the equation for y.
 #' @param x.bound two-element vector with respective minimum and maximum x values.
 #' @param y.bound two-element vector with respective minimum and maximum y values.
-#' 
+#'
+#' @return returns an array of the deterministic skeleton vector field.  The array has three dimensions with the respective lengths of x.num.steps, y.num.steps, and the number of variables (always 2).  The two variables are the x-deterministic skeleton and the y-deterministic skeleton.
+#'
 #' @examples
 #' # First, the system of equations
 #' 	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"

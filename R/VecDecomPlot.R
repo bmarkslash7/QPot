@@ -9,10 +9,10 @@
 #' @param ylim numeric vectors of length 2, giving the y coordinate range.
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
 #' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
-#' @param head.length THIS NEEDS WORDS
+#' @param head.length length of the edges of the arrow head (in inches).
 #' @param ... passes arguments to both \code{\link{plot}} and \code{\link{arrows}}.
 #' @keywords vector field plot, remainder field plot
-#' 
+#'
 #' @examples
 #' # First, system of equations
 #' 	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
@@ -53,7 +53,7 @@
 #' # Seventh, plot all three vector fields
 #' 	# The deterministic skeleton vector field
 #' 	VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25,25), 
-#'		x.bound = xbounds, y.bound = ybounds, tail.length = 0.75, head.length = 0.05)
+#'		x.bound = xbounds, y.bound = ybounds, tail.length = 0.25, head.length = 0.05)
 #' 	# The gradient vector field
 #' 	VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25,25), 
 #'		x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
