@@ -38,6 +38,7 @@
 
 TSPlot <- function(mat, deltat, dim = 1, xlim = 'NULL', ylim = 'NULL', x.lab = "time", dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE, ...) {
 		if (missing(deltat) == TRUE) {stop("deltat is missing and needed to compute steps and 1D hist.  Please specify.")}
+		orig.par <- par()
 		global.min <- min(mat[,2:3], na.rm = T)
 		global.max <- max(mat[,2:3], na.rm = T)
 		x.min <- min(mat[,2], na.rm = T)
@@ -125,4 +126,5 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = 'NULL', ylim = 'NULL', x.lab = "
 				lines(mat[,2] , mat[,3] , col = rgb(50,50,50,line.alpha,NULL,255) , lwd = lwd)				
 			}
 		}
+	par(new = F, fig = orig.par$fig)
 	}
