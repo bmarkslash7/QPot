@@ -9,7 +9,8 @@
 #' @param col2d vector of colors to be used in the plot.
 #' @param contour.lwd line width of contour lines if \code{contour.lines=TRUE}.
 #' @param contour.lines if TRUE, then black countour lines added to the graph.
-#' @param ... passes arguments to \code{\link{kde2d}} and \code{\link{plot}}.
+#' @param kde2d.n number of grid points in each direction. Can be scalar or a length-2 integer vector.  Passes to argument \code{n} in \code{\link[MASS]{kde2d}}. 
+#' @param ... passes arguments to \code{\link{plot}}.
 #' @keywords plot stochastic simulations
 #' 
 #' @examples
