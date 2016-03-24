@@ -11,7 +11,7 @@
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
 #' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
 #' @param head.length length of the edges of the arrow head (in inches).
-#' @param ... passes arguments to both \code{\link{plot}} and \code{\link{arrows}}.
+#' @param ... passes arguments to both \code{\link{plot}}.
 #' @keywords vector field plot, detrministic skeleton vector field plot, gradient vector field plot, remainder vector field plot
 #'
 #' @examples
@@ -131,7 +131,7 @@ VecDecomPlot <- function(x.field, y.field, dens, x.bound, y.bound, xlim = 'NULL'
 				x1 <- sub.x.val[j] + (dx.plot[j,i]/2)
 				y0 <- sub.y.val[i] - (dy.plot[j,i]/2)
 				y1 <- sub.y.val[i] + (dy.plot[j,i]/2)
-				arrows(x0, y0, x1, y1, length = head.length, ...)
+				arrows(x0, y0, x1, y1, length = head.length)
 			}
 		}
 }
