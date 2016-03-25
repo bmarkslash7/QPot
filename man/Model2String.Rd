@@ -2,43 +2,38 @@
 % Please edit documentation in R/Model2String.R
 \name{Model2String}
 \alias{Model2String}
-\title{Converts equations with parameters to strings with numbers}
+\title{Inserts parameter values into equations}
 \usage{
-Model2String(model.function, parms = "NULL", x.lhs.term = "dx",
-  y.lhs.term = "dy", supress.print = FALSE, width.cutoff = 500)
+Model2String(model, parms = "NULL", deSolve.form = FALSE,
+  x.lhs.term = "dx", y.lhs.term = "dy", supress.print = FALSE,
+  width.cutoff = 500)
 }
 \arguments{
-\item{model.function}{function containing the differential equations as given to \code{\link{TSTraj}}}
+\item{model}{contains the differential equations as given to \code{\link{TSTraj}}.  Can either be a string or a function used by \code{deSolve}.}
 
-\item{parms}{a named vector of paramters and their respective values for the deterministic equations.}
+\item{parms}{a named vector of paramters and their respective values for the deterministic equations.  If left empty, Model2String will return the equation as a string.}
 
-\item{x.lhs.term}{string containing the left hand side of the first equation to search for, default is 'dx'}
+\item{deSolve.form}{if FALSE (default) interprets model as a string containing the rhs of the equation.  If TRUE, treats model as the function input into deSolve.}
 
-\item{y.lhs.term}{string containing the left hand side of the second equation to search for, default is 'dy'}
+\item{x.lhs.term}{string containing the left hand side of the first equation to search for if deSolve.form is TRUE. default is 'dx'}
+
+\item{y.lhs.term}{string containing the left hand side of the second equation to search for if deSolve.form is TRUE.  Default is 'dy'}
 
 \item{supress.print}{if FALSE (default), suppress output.  TRUE prints out equations converted to strings with parameters replaced with values}
 
 \item{width.cutoff}{width.cutoff parameter from \code{deparse} in package:base.  Determines the cutoff in bytes at which line breaking is tried.  Default is 500 with possible range of 2 to 500.}
 }
 \value{
-equations a list with two strings: the first is the x equation, the second is the y equation
+equations a list with strings of the equations with substituted parameter values.  If deSolve.form is TRUE, the first is the x equation, the second is the y equation
 }
 \description{
-Function that converts differential equations from function-format to string-format.  Specifically, it reads in a function, searches for the differential equations within the function, and returns a list of strings containing the differential equations from the function.   Will also replace parameters of those equations with numerical values.
+Converts differential equations from string-format (or function-format) with parameters to string-format with parameter values.  Specifically, Model2String reads in the equations, searches for the differential equations within the function, and replaces the parameters with numerical values.  Returns a list of strings containing the differential equations.
 }
 \examples{
-#deSolve-style function call:
-model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-ModelEquations <- function(t, state, parms) {
-	with(as.list(c(state, parms)), {
-dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
-dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
-list(c(dx,dy))
-})
-}
-
-Model2String(ModelEquations, parms = model.parms, x.lhs.term = 'dx', y.lhs.term = 'dy') 
-
+#First example with the right hand side of an equation
+test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
+model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1)
+equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms)
 
 #Second example with individual strings
 # Note the use of dx and dy
@@ -49,5 +44,17 @@ equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms,
  x.lhs.term = 'dx', y.lhs.term = 'dy')
 equations.as.strings.y <- Model2String(test.eqn.y, parms = model.parms, 
  x.lhs.term = 'dx', y.lhs.term = 'dy')
+
+#deSolve-style function call:
+model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
+ModelEquations <- function(t, state, parms) {
+	with(as.list(c(state, parms)), {
+dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+list(c(dx,dy))
+})
+}
+
+Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE, x.lhs.term = 'dx', y.lhs.term = 'dy') 
 }
 
