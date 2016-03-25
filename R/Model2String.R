@@ -5,9 +5,9 @@
 #' @param model.function function containing the differential equations as given to \code{\link{TSTraj}}
 #' @param parms a named vector of paramters and their respective values for the deterministic equations.
 #' @param x.lhs.term string containing the left hand side of the first equation to search for, default is 'dx'
-#' @param y.lhs.term string containing the left hand side of the second equation to search for, default is 'dx'
-#' @param supress.print Default it FALSE, supress output.  TRUE prints out equations from function
-#' @return equations a list with two elements, the first is the x equation, the second is the y equation
+#' @param y.lhs.term string containing the left hand side of the second equation to search for, default is 'dy'
+#' @param supress.print if FALSE (default), suppress output.  TRUE prints out equations converted to strings with parameters replaced with values
+#' @return equations a list with two strings: the first is the x equation, the second is the y equation
 #'
 #' @examples
 #' #deSolve-style function call:
