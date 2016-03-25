@@ -10,10 +10,15 @@ Authors@R: c(
 	person("Karen", "Abbott", role = c("aut"), email = ""),
 	person("James", "Gregson", role = ("cph"), email = "", comment = "author of expression_parser library: https://github.com/jamesgregson/expression_parser")
 	)
-Depends: R (>= 3.0.2)
-Imports: MASS
+Depends:
+    R (>= 3.0.2)
+Imports:
+    MASS
 Maintainer: Christopher Stieha <stieha@hotmail.com>
-Description: Tools to 1) simulate and visualize stochastic differential equations and 2) determine stability of equilibria using the ordered-upwind method to compute the quasi-potential.    
+Description: Tools to 1) simulate and visualize stochastic differential
+    equations and 2) determine stability of equilibria using the ordered-upwind
+    method to compute the quasi-potential.
 License: GPL-2
 URL: http://www.r-project.org, https://github.com/bmarkslash7/QPot
 BugReports: https://github.com/bmarkslash7/QPot/issues
+RoxygenNote: 5.0.0

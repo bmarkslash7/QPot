@@ -7,6 +7,7 @@
 #' @param x.lhs.term string containing the left hand side of the first equation to search for, default is 'dx'
 #' @param y.lhs.term string containing the left hand side of the second equation to search for, default is 'dy'
 #' @param supress.print if FALSE (default), suppress output.  TRUE prints out equations converted to strings with parameters replaced with values
+#' @param width.cutoff width.cutoff parameter from \code{deparse} in package:base.  Determines the cutoff in bytes at which line breaking is tried.  Default is 500 with possible range of 2 to 500.
 #' @return equations a list with two strings: the first is the x equation, the second is the y equation
 #'
 #' @examples
@@ -34,13 +35,13 @@
 #'  x.lhs.term = 'dx', y.lhs.term = 'dy')
 
 
-Model2String <- function(model.function, parms = 'NULL', x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE) {
+Model2String <- function(model.function, parms = 'NULL', x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE, width.cutoff = 500) {
 	if (!supress.print) {
 		print("Note: This function is supplied as duct tape.  Long equations, equations spanning multiple lines, equations with strange notation, etc, may not work.  Always check the output.")
 	}
 #	if (parms[1] == 'NULL') {stop("Need to define parms, the names and values of the model parameters")} 
 	
-	temp <- deparse(model.function, width.cutoff = 500)
+	temp <- deparse(model.function, width.cutoff = width.cutoff)
 # for some reason, inputing a string causes a " to be added
 	temp <- gsub(pattern = '\"', replacement = '', x = temp)
 
