@@ -3,6 +3,34 @@
 require(QPot)
 require(rgl)
 
+##### preparation #####
+	# 0.0.1 write a function to create a legend for contour plots
+	legend.col <- function(col, lev, xadj){ 
+		opar <- par
+		n <- length(col)
+		bx <- par("usr")
+		box.cx <- c(bx[2] + (bx[2] - bx[1]) / 1000 + 0, bx[2] + (bx[2] - bx[1]) / 1000 + (bx[2] - bx[1]) / 50)
+		box.cy <- c(bx[3], bx[3])
+		box.sy <- (bx[4] - bx[3]) / n
+		xx <- rep(box.cx, each = 2) + xadj
+		par(xpd = TRUE)
+		for(i in 1:n){
+			yy <- c(box.cy[1] + (box.sy * (i - 1)),
+			box.cy[1] + (box.sy * (i)),
+			box.cy[1] + (box.sy * (i)),
+			box.cy[1] + (box.sy * (i - 1)))
+			polygon(xx, yy, col = col[i], border = col[i])
+		}
+		par(new = TRUE)
+		plot(0, 0, type = "n", ylim = c(min(lev), max(lev)), yaxt = "n", ylab = "",
+		xaxt = "n", xlab = "", frame.plot = FALSE)
+		axis(side = 4, las = 2, tick = FALSE, line = (.25 + xadj))
+		par <- opar
+	}
+	# 0.0.2 preset color palettes for controus
+	tsdens.col <- c("lightsteelblue", "white", "indianred")
+	qp.col <- c("#FDE725FF", "#E3E418FF", "#C7E020FF", "#ABDC32FF", "#8FD744FF", "#75D054FF", "#5DC963FF", "#47C06FFF", "#35B779FF", "#28AE80FF", "#20A486FF", "#1F9A8AFF", "#21908CFF", "#24868EFF", "#287C8EFF", "#2C728EFF", "#31688EFF", "#355D8DFF", "#3B528BFF", "#404688FF", "#443A83FF", "#472D7BFF", "#481F71FF","#471163FF", "#440154FF")
+
 ##### 0.1 preperation #####
 	# 0.1.0 clean up and set seed
 	rm(list=ls())
@@ -34,24 +62,39 @@ require(rgl)
 		TSDensity(ts.ex1, dim = 2)
 
 		# plots for the paper figures
-			# print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
-			# # Ex1_TS_1D.png
-			# png(paste(print.wd,"Ex1_TS_1D.png",sep=""), width = 720, height = 480)
+		# time series, 1D
+			# png(file = paste(plotwd, "/Ex1_TS_1D.png", sep = ""), width = 600, height = 350)
 			# TSPlot(ts.ex1, deltat = model.deltat)
 			# dev.off()
-			# # Ex1_TS_2D.png
-			# png(paste(print.wd,"Ex1_TS_2D.png",sep=""), width = 500, height = 500)
-			# TSPlot(ts.ex1, deltat = model.deltat, xlim = c(0.5, 6), ylim = c(0.5, 6), dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)))
+		# time series, 2D
+			# png(file = paste(plotwd, "/Ex1_TS_2D.png", sep = ""), width = 400, height = 400)
+			# par(mar = rep(2, 4), oma = rep(3,4))
+			# TSPlot(ts.ex1, deltat = model.deltat, dim = 2, xlab ="", ylab = "", xlim = c(0.5, 6), ylim = c(0.5, 6), line.alpha = 50)
+			# mtext(expression(italic(x)), side = 1, line = 2.5)
+			# mtext(expression(italic(y)), side = 2, line = 2.5)
 			# dev.off()
-			# # Ex1_Dens_2D.png
-			# png(paste(print.wd,"Ex1_Dens_2D.png",sep=""), width = 500, height = 500)
-			# TSDensity(ts.ex1, xlim = c(0.5, 6), ylim = c(0.5, 6), dim = 2, xlab = expression(italic(x)), ylab = expression(italic(y)), contour.levels = 25, contour.lwd = 0.5)
+		# density, 2D
+			# k2 <- MASS::kde2d(ts.ex1[,2], ts.ex1[,3], n = 200)
+			# k2dns <- k2$z/sum(k2$z)
+			# k2cut <- cut(k2dns, 100, label = FALSE)
+			# crramp <- colorRampPalette(tsdens.col)
+			# colr <- crramp(100)
+			# png(file = paste(plotwd, "/Ex1_Dens_2D.png", sep = ""), width = 400, height = 400)
+			# par(mar = c(4, 4, 4 , 4))
+			# TSDensity(ts.ex1, dim = 2, xlab  ="", ylab = "", xlim = c(0.5, 6), ylim = c(0.5, 6), contour.levels = 25, contour.lines = T, las = 1, col2d = tsdens.col, contour.lwd = 0.2, kde2d.n = 200, xaxs = "i", yaxs = "i")
+			# legend.col(col = colr, lev = k2dns, xadj = 0.1)
+    			# mtext(expression(italic(x)), side = 1, line = 2.5)
+			# mtext(expression(italic(y)), side = 2, line = 2.5)
 			# dev.off()
 
 
 ##### 0.3 local quasi-potential!!! #####
-	equation.x = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
-	equation.y = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
+	equation.x <- Model2String(var.eqn.x, parms = model.parms)
+	# Could also input the values by hand and use this version
+	# equation.x = "1.54*x*(1.0-(x/10.14))-(y*(x^2))/(1.0+(x^2))"
+	equation.y <- Model2String(var.eqn.y, parms = model.parms,
+	supress.print =TRUE) # does not print to screen
+	# equation.y = "((0.476*(x^2)*y)/(1+(x^2)))-0.112509*(y^2)"
 	bounds.x = c(-0.5, 20.0)
 	bounds.y = c(-0.5, 20.0)
 	step.number.x = 4100
@@ -73,29 +116,26 @@ require(rgl)
 	QPContour(surface = ex1.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5)
 	# A paper-like graph
 		# par(mfrow = c(1, 2), mar = c(4, 2, 0.5, 0.5), oma = rep(3,4))
-		# QPContour(surface = ex1.global, dens = c(100, 100), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5, xlab = "", ylab = "", lwd = 0.5) #in the paper [ylim = c(0, 5), xlim = c(0, 8),]
-		# mtext(expression(italic(X)), side = 1, line = 2.5)
-		# mtext(expression(italic(Y)), side = 2, line = 2.5 , las = 1)
-		# QPContour(surface = ex1.global, dens = c(100, 100), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5, xlab = "", ylab = "", lwd = 0.5) #in the paper [ylim = c(0, 5), xlim = c(0, 8),]
-		# mtext(expression(italic(X)), side = 1, line = 2.5)
+		# k2dns <- seq(min(ex1.global, na.rm = T), max(ex1.global, na.rm = T), 0.001)
+		# k2cut <- cut(k2dns, 100, label = FALSE)
+		# crramp <- colorRampPalette(qp.col)
+		# colr <- crramp(100)
 
-	# figure for the paper
-	# print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
-	# png(paste(print.wd,"Ex1_QP_contour.png",sep="") , width = 800 , height = 400)
-	# par(mfrow=c(1,2) , mar = c(1, 1, 1, 1) , oma = c(3,3,0,0))
-	# QPContour(ex1.global,c(1000,1000),c(-0.5,20),c(-0.5,20),c.parm=1,lwd=0.5 , xlab = "" , ylab = "" ,n.contour.lines=25)
-	# mtext(expression(italic(y)),2,line=2.5,las=2)
-	# mtext(expression(italic(x)),1,line=2.5)
-	# QPContour(ex1.global,c(1000,1000),c(-0.5,20),c(-0.5,20),c.parm=4.5,lwd=0.5 , ylab = "" , xlab = "", n.contour.lines=25)
-	# mtext(expression(italic(x)),1,line=2.5)
-	# dev.off()
+		# png(file = paste(plotwd, "/Ex1_QP_contour.png", sep = ""), width = 800, height = 400)
+		# par(mfrow = c(1, 2), mar = c(4, 0, 2, 2), oma = c(0, 4, 2, 2))
+		# QPContour(surface = ex1.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 1, xlab = expression(italic("x")), ylab = "")
+		# mtext(text = expression(italic("y")), side = 2, line = 2.5, outer = T, at = 0.5)
+		# QPContour(surface = ex1.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5, xlab = expression(italic("x")), ylab = "")
+		# legend.col(col = colr, lev = k2dns, xadj = 0.1)
+		# dev.off()
+
 
 ##### 0.6 vector field decompisition!!! #####
 	# 0.6.0 all fields
 	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-	VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, x.lim = c(0, 11), y.lim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
-	VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
-	VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
+	VecDecomPlot(x.field = (VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, x.lim = c(0, 11), y.lim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
+	VecDecomPlot(x.field = (VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
+	VecDecomPlot(x.field = (VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
 
 
 	# 0.6.1 vector field
@@ -111,38 +151,23 @@ require(rgl)
 		VecDecomPlot(field = list(VDR[,,1], VDR[,,2]), dens = c(50, 50), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.5, head.length = 0.03)
 
 	# plots for the paper figure
-		print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
-		# # Ex1_VecDecom.png
-		# png(paste(print.wd,"Ex1_VecDecom.png",sep=""), width = 720, height = 720)
-		# par(mfrow=c(2,2),mar = c(1,1,1,1),oma=c(2.5,3.5,3,1))
-# VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25, 25), x.bound = c(-0.5, 20), y.bound=c(-0.5,20),head.length=0.02,xlab="",ylab="",arrow.type="proportional",tail.length=0.25,xaxt="n",yaxt="n",lwd=1)
-		# axis(1,labels=F,tck=-0.025)
-		# axis(2,tck=-0.025,labels=F)
-		# mtext(1:4,2,at=1:4,line=0.75,las=1,cex=0.8)
-		# mtext(expression(italic(y)),2,line=2,cex=0.9)
-		# mtext("Proportional arrow lengths",2,line=3.25)
-		# mtext(expression(Gradient~field~(-nabla~phi(x,y))),3,line=0.1,las=1)
+		# Paper vector decomposition plot
+			# png(file = paste(plotwd, "/Ex1_VecDecom.png", sep = ""), width = 500, height = 500)
+			# par(mfrow = c(2,2), mar = c(2,2,1,1), oma = c(3,3,1,1))
+			# VecDecomPlot(x.field = VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
+			# mtext(side = 3, text = expression(Gradient~field~(-nabla~phi(x, y))))
+			# mtext(side = 2, text = "Proportional arrow lengths", line = 3.75)
+			# mtext(side = 2, text = expression(italic(y)), line = 2.25)
+			# VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
+			# mtext(side = 3, text = expression(Remainder~field~(bold(r)(x, y))))
+			# VecDecomPlot(x.field = VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "equal", tail.length = 0.15, head.length = 0.025)
+			# mtext(side = 2, text = "Equal arrow lengths", line = 3.75)
+			# mtext(side = 2, text = expression(italic(y)), line = 2.25)
+			# mtext(side = 1, text = expression(italic(x)), line = 2.25)	
+			# VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "equal", tail.length = 0.15, head.length = 0.025)
+			# mtext(side = 1, text = expression(italic(x)), line = 2.25)
+			# dev.off()
 
-	# VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25, 25), x.bound = c(-0.5, 20), y.bound = c(-0.5, 20), head.length = 0.02, xlab = "", ylab = "", arrow.type = "proportional", tail.length = 0.25, xaxt = "n", yaxt = "n", lwd = 1)
-		# axis(1,labels=F,tck=-0.025)
-		# axis(2,labels=F,tck=-0.025)
-		# mtext(expression(Remainder~field~(bold(r)(x,y))),3,line=0.1,las=1)
-
-	# VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25, 25), x.bound = c(-0.5,20), y.bound = c(-0.5, 20), head.length = 0.02, xlab = "", ylab = "", arrow.type = "equal", tail.length = 0.2, lwd = 1, xaxt = "n", yaxt = "n")
-		# axis(1,labels=F,tck=-0.025)
-		# axis(2,tck=-0.025,labels=F,las=1)
-		# mtext(1:4,2,at=1:4,line=0.75,las=1,cex=0.8)
-		# mtext(seq(0,8,2),1,at=seq(0,8,2),line=0.75,las=1,cex=0.8)
-		# mtext(expression(italic(y)),2,line=2,cex=0.9)
-		# mtext(expression(italic(x)),1,line=2,cex=0.9)
-		# mtext("Equal arrow lengths",2,line=3.25)
-
-	# VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25, 25), x.bound = c(-0.5, 20), y.bound = c(-0.5, 20), head.length = 0.02, xlab="", ylab = "", arrow.type = "equal", tail.length = 0.2, yaxt ="n", xaxt = "n", lwd = 1)
-		# axis(1,labels=F,tck=-0.025)
-		# axis(2,labels=F,tck=-0.025)
-		# mtext(seq(0,8,2),1,at=seq(0,8,2),line=0.75,las=1,cex=0.9)
-		# mtext(expression(italic(x)),1,line=1.75,cex=0.9)
-		# dev.off()
 
 
 ##### 0.7 3D graphs!!! #####
@@ -151,4 +176,4 @@ require(rgl)
 	global.sub <- ex1.global[round(seq(1,nrow(ex1.global),length.out=dens.sub[1])) , round(seq(1,ncol(ex1.global),length.out=dens.sub[2]))]
 	# global.sub[global.sub > 0.02] <- NA # to cut off large values for a better view of the basin
 	persp3d(x = global.sub, col = "orange", expand = 1.1, xlim = c(0.05, 0.35), ylim = c(0.1, 0.3), zlim = c(0, 0.01), xlab = "X", ylab = "Y", zlab = intToUtf8(0x03A6))
-	# rgl.snapshot("/Users/christophermoore/Dropbox/QPRpackage/QPotPaper/Figures/Ex1_3D.png", fmt = "png", top = TRUE ) #to print view as a png
+	# rgl.snapshot(filename = paste(plotwd, "/Ex1_3D.png", sep = ""), fmt = "png", top = TRUE ) #to print view as a png
