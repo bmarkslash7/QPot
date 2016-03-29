@@ -125,12 +125,12 @@ QPContour(eq1.qp, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, 
 ##### 0.6 vector field decompisition!!! #####
 	# 0.6.1 vector field
 	VDV <- VecDecomVec(x.num.steps = step.number.x, y.num.steps = step.number.y, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-		VecDecomPlot(x.field = VDV[,,1], y.field = VDV[,,2], dens = c(25,25), x.bound = bounds.x, y.bound = bounds.y, tail.length = 0.5, head.length = 0.03, arrow.type = "proportional", x.lim = c(2, 6), y.lim = c(3, 7), xlab = expression(italic(X)), ylab = expression(italic(Y)))
+		VecDecomPlot(x.field = VDV[,,1], y.field = VDV[,,2], dens = c(25,25), x.bound = bounds.x, y.bound = bounds.y, tail.length = 0.5, head.length = 0.03, arrow.type = "proportional", xlim = c(2, 6), y.lim = c(3, 7), xlab = expression(italic(X)), ylab = expression(italic(Y)))
 
 	# 0.6.2 gradient field	
 	VDG <- VecDecomGrad(eq1.qp)
-		VecDecomPlot(x.field = VDG[,,1], y.field = VDG[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, tail.length = 0.2, head.length = 0.05 , arrow.type = "proportional", x.lim = c(2, 6), y.lim = c(3, 7), xlab = expression(italic(X)), ylab = expression(italic(Y)))
+		VecDecomPlot(x.field = VDG[,,1], y.field = VDG[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, tail.length = 0.2, head.length = 0.05 , arrow.type = "proportional", xlim = c(2, 6), ylim = c(3, 7), xlab = expression(italic(X)), ylab = expression(italic(Y)))
 
 	# 0.6.3 remainder field
 	VDR <- VecDecomRem(surface = eq1.qp, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.x)
-		VecDecomPlot(x.field = VDR[,,1], y.field = VDR[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.x , tail.length = 0.2 , head.length = 0.03 , arrow.type = "proportional", x.lim = c(2, 6), y.lim = c(3, 7), xlab = expression(italic(X)), ylab = expression(italic(Y)))
+		VecDecomPlot(x.field = VDR[,,1], y.field = VDR[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.x , tail.length = 0.2 , head.length = 0.03 , arrow.type = "proportional", xlim = c(2, 6), ylim = c(3, 7), xlab = expression(italic(X)), ylab = expression(italic(Y)))
