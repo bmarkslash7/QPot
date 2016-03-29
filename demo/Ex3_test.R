@@ -1,6 +1,34 @@
 # Below is a pipe every 10 characters.  The R Journal suggests that code is wrapped around 80 characters
 #*********|*********|*********|*********|*********|*********|*********|*********
 
+##### preparation #####
+	# 0.0.1 write a function to create a legend for contour plots
+	legend.col <- function(col, lev, xadj){ 
+		opar <- par
+		n <- length(col)
+		bx <- par("usr")
+		box.cx <- c(bx[2] + (bx[2] - bx[1]) / 1000 + 0, bx[2] + (bx[2] - bx[1]) / 1000 + (bx[2] - bx[1]) / 50)
+		box.cy <- c(bx[3], bx[3])
+		box.sy <- (bx[4] - bx[3]) / n
+		xx <- rep(box.cx, each = 2) + xadj
+		par(xpd = TRUE)
+		for(i in 1:n){
+			yy <- c(box.cy[1] + (box.sy * (i - 1)),
+			box.cy[1] + (box.sy * (i)),
+			box.cy[1] + (box.sy * (i)),
+			box.cy[1] + (box.sy * (i - 1)))
+			polygon(xx, yy, col = col[i], border = col[i])
+		}
+		par(new = TRUE)
+		plot(0, 0, type = "n", ylim = c(min(lev), max(lev)), yaxt = "n", ylab = "",
+		xaxt = "n", xlab = "", frame.plot = FALSE)
+		axis(side = 4, las = 2, tick = FALSE, line = (.25 + xadj))
+		par <- opar
+	}
+	# 0.0.2 preset color palettes for controus
+	tsdens.col <- c("lightsteelblue", "white", "indianred")
+	qp.col <- c("#FDE725FF", "#E3E418FF", "#C7E020FF", "#ABDC32FF", "#8FD744FF", "#75D054FF", "#5DC963FF", "#47C06FFF", "#35B779FF", "#28AE80FF", "#20A486FF", "#1F9A8AFF", "#21908CFF", "#24868EFF", "#287C8EFF", "#2C728EFF", "#31688EFF", "#355D8DFF", "#3B528BFF", "#404688FF", "#443A83FF", "#472D7BFF", "#481F71FF","#471163FF", "#440154FF")
+
 ##### 0.1 preperation #####
 	# clean up and set seed
 	rm(list=ls())
@@ -34,19 +62,30 @@
 		TSDensity(ts.ex3, dim = 2 , contour.levels = 20 , contour.lwd = 0.1)
 
 		# plots for the paper figures
-			print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
 			# Ex3_TS_1D.png
-			png(paste(print.wd,"Ex3_TS_1D.png",sep=""), width = 720, height = 480)
-			TSPlot(ts.ex3, deltat = model.deltat)
-			dev.off()
+				# png(file = paste(plotwd, "/Ex3_TS_1D.png", sep = ""), width = 600, height = 350)
+				# TSPlot(ts.ex3, deltat = model.deltat)
+				# dev.off()
 			# Ex3_TS_2D.png
-			png(paste(print.wd,"Ex3_TS_2D.png",sep=""), width = 500, height = 500)
-			TSPlot(ts.ex3, deltat = model.deltat, dim = 2, line.alpha = 25, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), zero.axes = F, xlim = c(-3, 3), ylim = c(-3, 3))
-			dev.off()
+				# png(file = paste(plotwd, "/Ex3_TS_2D.png", sep = ""), width = 400, height = 400)
+				# par(mar = rep(2, 4), oma = rep(3,4))
+				# TSPlot(ts.ex3, deltat = model.deltat, dim = 2, xlab ="", ylab = "", xlim = c(-2.5, 2.5), ylim = c(-2.5, 2.5), line.alpha = 25)
+				# mtext(expression(italic(x)), side = 1, line = 2.5)
+				# mtext(expression(italic(y)), side = 2, line = 2.5)
+				# dev.off()
 			# Ex3_Dens_2D.png
-			png(paste(print.wd,"Ex3_Dens_2D.png",sep=""), width = 500, height = 500)
-			TSDensity(ts.ex3, deltat = model.deltat, dim = 2, line.alpha = 50, lwd = 1, xlab = expression(italic(x)), ylab = expression(italic(y)), contour.lwd = 0.5, xlim = c(-3, 3), ylim = c(-3, 3))
-			dev.off()
+				# k2 <- MASS::kde2d(ts.ex3[,2], ts.ex3[,3], n = 200)
+				# k2dns <- k2$z/sum(k2$z)
+				# k2cut <- cut(k2dns, 100, label = FALSE)
+				# crramp <- colorRampPalette(tsdens.col)
+				# colr <- crramp(100)
+				# png(file = paste(plotwd, "/Ex3_Dens_2D.png", sep = ""), width = 400, height = 400)
+				# par(mar = c(4, 4, 5, 5))
+				# TSDensity(ts.ex3, dim = 2, xlab  ="", ylab = "", xlim = c(-3, 3), ylim = c(-3, 3), contour.levels = 20, contour.lines = T, las = 1, col2d = tsdens.col , contour.lwd = 0.1, kde2d.n = 200, xaxs = "i", yaxs = "i")
+				# legend.col(col = colr, lev = k2dns, xadj = 0.1)
+    				# mtext(expression(italic(x)), side = 1, line = 2.5)
+				# mtext(expression(italic(y)), side = 2, line = 2.5)
+				# dev.off()
 
 
 ##### 0.3 local quasi-potential!!! #####
@@ -73,31 +112,34 @@ ex3.global <- QPGlobal(local.surfaces = list(eq1.local, eq2.local),unstable.eq.x
 QPContour(ex3.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 1)
 
 	# figure for the paper
-		print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
-		# Ex3_QP_contour.png
-		png(paste(print.wd,"Ex3_QP_contour.png",sep=""), width = 500, height = 500)
-		QPContour(ex3.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5, xlab=expression(italic(x)), ylab=expression(italic(y)))
-		dev.off()
-
+		# png(file = paste(plotwd, "/Ex3_QP_contour.png", sep = ""), width = 400, height = 400)
+		# par(oma = c(0,1,0,2))
+		# QPContour(surface = ex3.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 4, xlab = expression(italic("x")), ylab = expression(italic("y")), n.contour.lines = 20)
+		# k2dns <- seq(min(ex3.global, na.rm = T), max(ex3.global, na.rm = T), 0.01)
+		# k2cut <- cut(k2dns, 100, label = FALSE)
+		# crramp <- colorRampPalette(qp.col)
+		# colr <- crramp(100)
+		# legend.col(col = colr, lev = k2dns, xadj = 0.1)
+		# dev.off()
 
 ##### 0.6 vector field decompisition!!! #####
 	# 0.6.0 all fields
 	VDAll <- VecDecomAll(surface = ex3.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-	VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "equal", tail.length = 0.2, head.length = 0.03)
-	VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 1/3, head.length = 0.03)
-	VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.5, head.length = 0.03)
+	VecDecomPlot(x.field = VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "equal", tail.length = 0.2, head.length = 0.03)
+	VecDecomPlot(x.field = VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 1/3, head.length = 0.03)
+	VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.5, head.length = 0.03)
 
 	# 0.6.1 vector field
 	VDV <- VecDecomVec(x.num.steps = step.number.y, y.num.steps= step.number.y, x.rhs=equation.x, y.rhs=equation.y, x.bound= bounds.x, y.bound= bounds.x)
-		VecDecomPlot(field=list(VDV[,,1],VDV[,,2]), dens=c(50,50), x.bound= bounds.x, y.bound=bounds.y , tail.length = 0.2 , length = 0.03)
+		VecDecomPlot(x.field=VDV[,,1], y.field=VDV[,,2], dens=c(50,50), x.bound= bounds.x, y.bound=bounds.y , tail.length = 0.2 , length = 0.03)
 
 	# 0.6.2 gradient field	
 	VDG <- VecDecomGrad(e3.global)
-		VecDecomPlot(field=list(VDG[,,1],VDG[,,2]), dens=c(25,25), x.bound= bounds.x, y.bound= bounds.y , tail.length = 0.5 , length = 0.03 , arrow.type = "proportional")
+		VecDecomPlot(x.field=VDG[,,1], y.field=VDG[,,2], dens=c(25,25), x.bound= bounds.x, y.bound= bounds.y , tail.length = 0.5 , length = 0.03 , arrow.type = "proportional")
 
 	# 0.6.3 remainder field
 	VDR <- VecDecomRem(surface=e3.global, x.rhs=equation.x, y.rhs=equation.y, x.bound=bounds.x, y.bound=bounds.y)
-		VecDecomPlot(field=list(VDR[,,1],VDR[,,2]), dens=c(25,25), x.bound= bounds.y, y.bound=bounds.y , tail.length = 0.5 , length = 0.03 , arrow.type = "proportional")
+		VecDecomPlot(x.field=VDR[,,1], y.field=VDR[,,2], dens=c(25,25), x.bound= bounds.y, y.bound=bounds.y , tail.length = 0.5 , length = 0.03 , arrow.type = "proportional")
 
 ##### 0.7 3D graphs!!! #####
 	library(rgl)
