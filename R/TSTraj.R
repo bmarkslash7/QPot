@@ -17,7 +17,7 @@
 #' # First, the parameter values
 #'	model.state <- c(x = 3, y = 3)
 #'	model.sigma <- 0.2
-#'	model.deltat <- 0.005
+#'	model.deltat <- 0.1
 #'	model.time <- 100
 #'
 #' # Second, write out the deterministic skeleton of the equations to be simulated
@@ -35,7 +35,7 @@
 #'	model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, kappa = 1, gamma = 0.476, mu = 0.112509)
 #'	model.sigma <- 0.2
 #'	model.time <- 100
-#'	model.deltat <- 0.005
+#'	model.deltat <- 0.1
 #'
 #'	test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
 #'	test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
