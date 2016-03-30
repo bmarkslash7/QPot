@@ -55,6 +55,7 @@ list(c(dx,dy))
 })
 }
 
-Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE, x.lhs.term = 'dx', y.lhs.term = 'dy') 
+Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE, 
+ x.lhs.term = 'dx', y.lhs.term = 'dy') 
 }
 

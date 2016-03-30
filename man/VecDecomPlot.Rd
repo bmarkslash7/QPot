@@ -68,7 +68,7 @@ This function plots various vector fields
 
 # Sixth, decompose the global quasi-potential into the 
 # deterministic skeleton, gradient, and remainder vector fields
-VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equationx, y.rhs = equationy, 
+	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equationx, y.rhs = equationy, 
 	x.bound = xbounds, y.bound = ybounds)
 
 # Seventh, plot all three vector fields

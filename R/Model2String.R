@@ -38,7 +38,8 @@
 #'	})
 #' }
 #'
-#' Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE, x.lhs.term = 'dx', y.lhs.term = 'dy') 
+#' Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE, 
+#'  x.lhs.term = 'dx', y.lhs.term = 'dy') 
 
 
 Model2String <- function(model, parms = 'NULL', deSolve.form = FALSE, x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE, width.cutoff = 500) {
