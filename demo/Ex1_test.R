@@ -133,22 +133,22 @@ require(rgl)
 ##### 0.6 vector field decompisition!!! #####
 	# 0.6.0 all fields
 	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-	VecDecomPlot(x.field = (VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), ylim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
-	VecDecomPlot(x.field = (VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
-	VecDecomPlot(x.field = (VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
-
+	VecDecomPlot(x.field = VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), ylim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
+	VecDecomPlot(x.field = VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
+	VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
 
 	# 0.6.1 vector field
-	VDV <- VecDecomVec(x.num.steps = step.number.x, y.num.steps = step.number.y, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-		VecDecomPlot(field = list(VDV[,,1], VDV[,,2]), dens = c(50, 50), x.bound = bounds.x, y.bound=bounds.y, xlim = c(0, 11), ylim=c(0, 6), arrow.type="proportional", tail.length=0.75, head.length=0.03)
+	VDV <- VecDecomVec(x.num.steps = step.number.y, y.num.steps= step.number.y, x.rhs=equation.x, y.rhs=equation.y, x.bound= bounds.x, y.bound= bounds.x)
+	VecDecomPlot(x.field=VDV[,,1], y.field=VDV[,,2], dens=c(25,25), x.bound= bounds.x, y.bound=bounds.y,
+		xlim = c(0, 11), ylim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
 
 	# 0.6.2 gradient field	
 	VDG <- VecDecomGrad(ex1.global)
-		VecDecomPlot(field = list(VDG[,,1], VDG[,,2]), dens=c(50, 50), x.bound=bounds.x, y.bound = bounds.y, arrow.type = "proportional", head.length = 0.03, tail.length = 0.5)
+		VecDecomPlot(x.field=VDG[,,1], y.field=VDG[,,2], dens=c(25,25), x.bound= bounds.x, y.bound= bounds.y , tail.length = 0.25, head.length = 0.025, arrow.type = "proportional")
 
 	# 0.6.3 remainder field
-	VDR <- VecDecomRem(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-		VecDecomPlot(field = list(VDR[,,1], VDR[,,2]), dens = c(50, 50), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.5, head.length = 0.03)
+	VDR <- VecDecomRem(surface=ex1.global, x.rhs=equation.x, y.rhs=equation.y, x.bound=bounds.x, y.bound=bounds.y)
+		VecDecomPlot(x.field=VDR[,,1], y.field=VDR[,,2], dens=c(25,25), x.bound= bounds.y, y.bound=bounds.y , tail.length = 0.35, head.length = 0.025, arrow.type = "proportional")
 
 	# plots for the paper figure
 		# Paper vector decomposition plot
