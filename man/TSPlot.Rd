@@ -38,7 +38,7 @@ This function allows you to plot the simulation of simulate two-dimensional stoc
 # First, the parameter values, as found in TSTraj
 model.state <- c(x = 3, y = 3)
 model.sigma <- 0.2
-model.deltat <- 0.01
+model.deltat <- 0.05
 model.time <- 100
 
 # Second, write out the deterministic skeleton of the equations to be simulated, 
