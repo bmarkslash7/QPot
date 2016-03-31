@@ -1,23 +1,23 @@
-#' Wrapper for call to quasipotential computation using the upwind ordered method
+#' Computes the quasi-potential for a system of stochastic differential equations using the upwind ordered method. 
 #' 
 #' 
 #' @param x.rhs a string containing the right hand side of the equation for x.
 #' @param x.start the starting value of x, usually the x value of the current equilibrium.
-#' @param x.bound the x boundaries denoted at c(minimum, maximum).
+#' @param x.bound the x boundaries denoted as c(minimum, maximum).
 #' @param x.num.steps the number of steps between the minimum and maximum x value defined in x range.
 #' @param y.rhs a string containing the right hand side of the equation for y.
 #' @param y.start the starting value of y, usually the y value of the current equilibrium.
-#' @param y.bound the y boundaries denoted at c(minimum, maximum).
+#' @param y.bound the y boundaries denoted as c(minimum, maximum).
 #' @param y.num.steps the number of steps between the minimum and maximum y value defined in y range.
-#' @param save.to.R output the matrix of results for the upwind-ordered method to the current R session.  The default is to write the matrix to the R session.  save.to.R=FALSE prevents the output from being written to the R session.
-#' @param save.to.HD write the matrix of results for the upwind-ordered method to the hard drive named filename.  Default is FALSE.
-#' @param filename string for the name of the file saved to the hard drive.  If filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively.  Matrix stored as a tab-delimited file.
-#' @param bounce by default, the upwind-ordered method stops when the boundaries are reached.  The bounce parameter allows the default action (bounce = 'd'), only positive values to be tested (bounce = 'p'), or reflection near the boundaries (bounce = 'b').
+#' @param save.to.R boolean to output the matrix of results for the upwind-ordered method to the current R session.  The default is to write the matrix to the R session.  save.to.R=FALSE prevents the output from being written to the R session.
+#' @param save.to.HD boolean to write the matrix of results for the upwind-ordered method to the hard drive in a file named filename.  Default is FALSE.
+#' @param filename string for the name of the file saved to the hard drive.  If save.to.HD=TRUE and filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively.  Matrix stored as a tab-delimited file.
+#' @param bounce by default, the upwind-ordered method stops when the boundaries are reached (x.bound and y.bound).  The bounce parameter allows the default action (bounce = 'd'), only positive values to be tested (bounce = 'p'), or reflection near the boundaries (bounce = 'b').
 #' @param bounce.edge if bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
 #' @param k.x integer anisotropic factor for x.  See journal article.  Default is 20.
 #' @param k.y integer anisotropic factor for y.  See journal article.  Default is 20.
-#' @param verboseC flag (default = TRUE) for printing out useful-for-everyone information in quasipotential.C
-#' @param verboseR NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential Rwrapper
+#' @param verboseC flag (default = TRUE) for printing out useful-for-everyone information from C code implementing the upwind-ordered method (quasipotential.C).
+#' @param verboseR NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential R wrapper.
 #' @param debugC NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code 
 #' @return filetoHD if save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
 #' @return filetoR if save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
@@ -39,6 +39,9 @@
 #' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, 
 #'		x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, 
 #'		y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
+#' # Visualize the quasi-potential
+#'	QPContour(storage.eq1, dens = c(xstepnumber, ystepnumber), 
+#'		x.bound = xbounds, y.bound = ybounds, c.parm = 5) 
 
 QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20)
 {
