@@ -1,11 +1,11 @@
 #' Vector decomposition and remainder fields
 #'
 #' This function calculates the remainder field.
-#' @param surface matrix output from QPGlobal.
+#' @param surface matrix output from \code{\link{QPGlobal}} or \code{\link{QPotential}}.
 #' @param x.rhs a string containing the right hand side of the equation for x.
 #' @param y.rhs a string containing the right hand side of the equation for y.
-#' @param x.bound two-element vector with respective minimum and maximum x values.
-#' @param y.bound two-element vector with respective minimum and maximum y values.
+#' @param x.bound the x boundaries denoted at c(minimum, maximum).
+#' @param y.bound the y boundaries denoted at c(minimum, maximum).
 #' @keywords vector field decompoosition, remainder field
 #' 
 #'

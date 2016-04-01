@@ -1,13 +1,13 @@
 #' Quasi-potential interpolation
 #'
 #' This function estimates the quasi-potential value for any x- and y-values
-#' @param X the value of the x to interpolate
-#' @param Y the value of the y to interpolate
-#' @param x.bound two-element vector with respective minimum and maximum x values.
-#' @param y.bound two-element vector with respective minimum and maximum y values.
-#' @param surface the surface to interpolated, from \code{\link{QPGlobal}}
+#' @param X the value of the x to interpolate.
+#' @param Y the value of the y to interpolate.
+#' @param x.bound a two-element vector with the minimum and maximum x values used for computing the quasi-potential.
+#' @param y.bound a two-element vector with the minimum and maximum y values used for computing the quasi-potential.
+#' @param surface the surface to interpolated, from \code{\link{QPGlobal}}.
 #' @keywords interpolation
-#' @details this function uses simple bilinear interpolation for estimattion of any x- and y-value.
+#' @details this function uses bilinear interpolation for estimattion of any x- and y-value.
 
 	QPInterp <- function(X, Y, x.bound, y.bound, surface) {
 		mat.row.min <- 1

@@ -1,16 +1,16 @@
 #' Plot simulation of two-dimensional stochastic differential equations
 #'
-#' This function allows you to plot the simulation of simulate two-dimensional stochastic differential equations from \code{\link{TSTraj}}
+#' This function plots the simulation of two-dimensional stochastic differential equations from \code{\link{TSTraj}}
 #' @param mat a matrix output from \code{\link{TSTraj}}.
 #' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}, used in the function to recaluculate axes if applicable.
-#' @param dim dimensions of the plot; \code{dim=1} to plot a timeseries with \code{X} and \code{Y} on the ordinate axis or \code{dim=2} to plot the trjectories in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).
+#' @param dim dimensions of the plot; \code{dim = 1} to plot a timeseries with X and Y on the ordinate axis or \code{dim = 2} to plot the trjectories in state space (i.e., X and Y respectively on the abscissa and ordinate axes).
 #' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
 #' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
-#' @param x.lab for \code{dim=1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}
-#' @param dens if \code{dens=TRUE}, plots a horizontal one-dimensional density plot adjacent to the timerseries.
-#' @param lwd line width.
+#' @param x.lab for \code{dim = 1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}
+#' @param dens if \code{dens = TRUE}, plots a horizontal one-dimensional density plot adjacent to the timerseries.
+#' @param lwd line width.  Defaults to 1.
 #' @param line.alpha transparency of lines from 0--255.
-#' @param zero.axes if TRUE, then axes plotted at \code{X=0} and \code{Y=0}.
+#' @param zero.axes if TRUE, then axes plotted at \code{X = 0} and \code{Y = 0}.
 #' @param ... passes arguments to \code{\link{plot}}.
 #' @keywords plot stochastic simulations
 #' 

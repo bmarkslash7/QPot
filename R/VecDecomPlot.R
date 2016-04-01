@@ -4,14 +4,15 @@
 #' @param x.field a two-dimensional array containing the x-values for the vector field, generated from \code{\link{VecDecomAll}}, \code{\link{VecDecomVec}}, \code{\link{VecDecomGrad}}, or \code{\link{VecDecomRem}}.
 #' @param y.field a two-dimensional array containing the y-values for the vector field, generated from \code{\link{VecDecomAll}}, \code{\link{VecDecomVec}}, \code{\link{VecDecomGrad}}, or \code{\link{VecDecomRem}}.
 #' @param dens two-element vector respectively specifying the number of respective arrows in the x and y directions.
-#' @param x.bound two-element vector for the x domain boundries used for the quasi-potential simulation.
-#' @param y.bound two-element vector for the y domain boundries used for the quasi-potential simulation.
+#' @param x.bound the x boundaries denoted at c(minimum, maximum) for the quasi-potential simulation.
+#' @param y.bound the y boundaries denoted at c(minimum, maximum) for the quasi-potential simulation.
 #' @param xlim numeric vectors of length 2, giving the x coordinate range.
 #' @param ylim numeric vectors of length 2, giving the y coordinate range.
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
 #' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
 #' @param head.length length of the edges of the arrow head (in inches).
 #' @param ... passes arguments to both \code{\link{plot}}.
+#' @details If \code{arrow.type = "proportional"}, a common warning, passed from \code{\link{arrows}}, will appear: "The direction of a zero-length arrow is indeterminate, and hence so is the direction of the arrowheads. To allow for rounding error, arrowheads are omitted (with a warning) on any arrow of length less than 1/1000 inch."  Either increase \code{tail.length} or increase the plot window to avoid this warning.
 #' @keywords vector field plot, detrministic skeleton vector field plot, gradient vector field plot, remainder vector field plot
 #'
 #' @examples

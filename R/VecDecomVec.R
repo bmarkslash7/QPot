@@ -1,12 +1,12 @@
 #' Vector decomposition and remainder fields
 #'
 #' This function calculates the vector field.
-#' @param x.num.steps The number of steps between the minimum and maximum x value defined in x range.
-#' @param y.num.steps The number of steps between the minimum and maximum y value defined in y range.
-#' @param x.rhs A string containing the right hand side of the equation for x.
-#' @param y.rhs A string containing the right hand side of the equation for y.
-#' @param x.bound two-element vector with respective minimum and maximum x values.
-#' @param y.bound two-element vector with respective minimum and maximum y values.
+#' @param x.num.steps the number of steps between the minimum and maximum x value defined in x range.
+#' @param y.num.steps the number of steps between the minimum and maximum y value defined in y range.
+#' @param x.rhs a string containing the right hand side of the equation for x.
+#' @param y.rhs a string containing the right hand side of the equation for y.
+#' @param x.bound the x boundaries denoted at c(minimum, maximum).
+#' @param y.bound the y boundaries denoted at c(minimum, maximum).
 #'
 #' @return returns an array of the deterministic skeleton vector field.  The array has three dimensions with the respective lengths of x.num.steps, y.num.steps, and the number of variables (always 2).  The two variables are the x-deterministic skeleton and the y-deterministic skeleton.
 #'
