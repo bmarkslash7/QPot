@@ -7,21 +7,21 @@
 QPInterp(X, Y, x.bound, y.bound, surface)
 }
 \arguments{
-\item{X}{the value of the x to interpolate}
+\item{X}{the value of the x to interpolate.}
 
-\item{Y}{the value of the y to interpolate}
+\item{Y}{the value of the y to interpolate.}
 
-\item{x.bound}{two-element vector with respective minimum and maximum x values.}
+\item{x.bound}{a two-element vector with the minimum and maximum x values used for computing the quasi-potential.}
 
-\item{y.bound}{two-element vector with respective minimum and maximum y values.}
+\item{y.bound}{a two-element vector with the minimum and maximum y values used for computing the quasi-potential.}
 
-\item{surface}{the surface to interpolated, from \code{\link{QPGlobal}}}
+\item{surface}{the surface to interpolated, from \code{\link{QPGlobal}}.}
 }
 \description{
 This function estimates the quasi-potential value for any x- and y-values
 }
 \details{
-this function uses simple bilinear interpolation for estimattion of any x- and y-value.
+this function uses bilinear interpolation for estimattion of any x- and y-value.
 }
 \keyword{interpolation}
 

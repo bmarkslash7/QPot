@@ -7,15 +7,15 @@
 VecDecomRem(surface, x.rhs, y.rhs, x.bound, y.bound)
 }
 \arguments{
-\item{surface}{matrix output from QPGlobal.}
+\item{surface}{matrix output from \code{\link{QPGlobal}} or \code{\link{QPotential}}.}
 
 \item{x.rhs}{a string containing the right hand side of the equation for x.}
 
 \item{y.rhs}{a string containing the right hand side of the equation for y.}
 
-\item{x.bound}{two-element vector with respective minimum and maximum x values.}
+\item{x.bound}{the x boundaries denoted at c(minimum, maximum).}
 
-\item{y.bound}{two-element vector with respective minimum and maximum y values.}
+\item{y.bound}{the y boundaries denoted at c(minimum, maximum).}
 }
 \value{
 returns an array of the remainder vector field.  The array has three dimensions with the respective lengths of the columns of the surface, the rows of the sruface, and the number of variables (always 2).  The two variables are the x-remainder and y-remainder.

@@ -13,9 +13,9 @@ QPContour(surface, dens, x.bound, y.bound, xlim = "NULL", ylim = "NULL",
 
 \item{dens}{vector respectively for the number of \code{x} and \code{y} points to be plotted.}
 
-\item{x.bound}{two-element vector for the surface's minimum and maximum x values.}
+\item{x.bound}{a two-element vector with the minimum and maximum x values used for computing the quasi-potential.}
 
-\item{y.bound}{two-element vector for the surface's minimum and maximum y values.}
+\item{y.bound}{a two-element vector with the minimum and maximum y values used for computing the quasi-potential.}
 
 \item{xlim}{numeric vectors of length 2, giving the x coordinate range.}
 
@@ -27,17 +27,17 @@ QPContour(surface, dens, x.bound, y.bound, xlim = "NULL", ylim = "NULL",
 
 \item{c.parm}{contour line adjustment (see details).}
 
-\item{col.contour}{a vector of colors used for the filled contour region.}
+\item{col.contour}{colors to interpolate; must be a valid argument to \code{\link{col2rgb}}.}
 
-\item{contour.lines}{if TRUE, then contour lines plotted over filled contour; vice versa if FALSE.}
+\item{contour.lines}{if \code{TRUE}, then contour lines plotted over filled contour; vice versa if \code{FALSE}.}
 
-\item{...}{passes arguments to both \code{\link{plot}} and \code{\link{contour}}.}
+\item{...}{passes arguments to \code{\link{plot}}.}
 }
 \description{
 This function allows users to create a contour plot of quasi-potential surfaces from \code{\link{QPGlobal}}
 }
 \details{
-Because, in general, capturing the topological features can be subtle, we implemented a feature in \code{\link{QPContour}} to keep the filled.contour region while changing the contour lines.  Specifically, filled.contour takes the range of the surface values (\eqn{\phi}), divides by the number of the specified contours (i.e., \code{n.filled.contour}), and creates a contour at each break, which happenes to be equal across the range.  But because visualizing some topology may (i) require looking between contour breaks and (ii) adding contour lines would overload the plot with lines, we use an equation to modify the distribution of contour lines.  Namely, adjusting the \code{c} argument in the \code{\link{QPContour}} function adjusts the \eqn{c} paramter in the following equation: \deqn{max_\phi \times \left(\frac{x}{n-1}\right)^c.}  This allows the user to keep the same number of contour lines (i.e., specified with \code{n.contour.lines}), but focus them toward the troughs or peaks of the surfaces. At \eqn{c=1}, the contour lines correspond to the filled.contour breaks.  If \eqn{c > 1}, then the contour lines become more concentrated towards the trough.  Similarly, if \eqn{c < 1}, then the contour lines are more focused at the peaks of the surface.  As an example: \cr \figure{Example3.png}.
+Because, in general, capturing the topological features of a surface can be subtle, we implemented a feature in \code{\link{QPContour}} to keep the filled contour region while changing the contour lines.  Specifically, \code{\link{filled.contour}} takes the range of the surface values (\eqn{\phi}), divides by the number of the specified contours (i.e., \code{n.filled.contour}), and creates a contour at each break, which happenes to be equal across the range.  But because visualizing some topology may (i) require looking between contour breaks and (ii) adding contour lines would overload the plot with lines, we use an equation to modify the distribution of contour lines.  Namely, adjusting the \code{c} argument in the \code{\link{QPContour}} function adjusts the \eqn{c} paramter in the following equation: \deqn{max_\phi \times \left(\frac{x}{n-1}\right)^c.}  This allows the user to keep the same number of contour lines (i.e., specified with \code{n.contour.lines}), but focus them toward the troughs or peaks of the surfaces. At \eqn{c=1}, the contour lines correspond to the filled.contour breaks.  If \eqn{c > 1}, then the contour lines become more concentrated towards the trough.  Similarly, if \eqn{c < 1}, then the contour lines are more focused at the peaks of the surface.  As an example, we change \eqn{c} : \cr \figure{Example3.png}.
 }
 \examples{
 # First, System of equations

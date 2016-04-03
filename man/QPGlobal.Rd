@@ -7,15 +7,15 @@
 QPGlobal(local.surfaces, unstable.eq.x, unstable.eq.y, x.bound, y.bound)
 }
 \arguments{
-\item{local.surfaces}{A list of local quasi-potential surfaces, each of which is stored in discretized form as a matrix.}
+\item{local.surfaces}{a list of local quasi-potential surfaces, each of which is stored in discretized form as a matrix.}
 
-\item{unstable.eq.x}{A vector of the x-coordinates of the unstable equilibria.  Must be in the same order as unstable.eq.y.}
+\item{unstable.eq.x}{a vector of the x-coordinates of the unstable equilibria.  Must be in the same order as unstable.eq.y.}
 
-\item{unstable.eq.y}{A vector of the y-coordinates of the unstable equilibria.  Must be in the same order as unstable.eq.x.}
+\item{unstable.eq.y}{a vector of the y-coordinates of the unstable equilibria.  Must be in the same order as unstable.eq.x.}
 
-\item{x.bound}{A two-element vector with the minimum and maximum x values used for computing the quasi-potential.}
+\item{x.bound}{a two-element vector with the minimum and maximum x values used for computing the quasi-potential.}
 
-\item{y.bound}{A two-element vector with the minimum and maximum y values used for computing the quasi-potential.}
+\item{y.bound}{a two-element vector with the minimum and maximum y values used for computing the quasi-potential.}
 }
 \description{
 This function allows you to find the global quasi-potential values for several local quasi-potential surfaces

@@ -15,9 +15,9 @@ VecDecomPlot(x.field, y.field, dens, x.bound, y.bound, xlim = "NULL",
 
 \item{dens}{two-element vector respectively specifying the number of respective arrows in the x and y directions.}
 
-\item{x.bound}{two-element vector for the x domain boundries used for the quasi-potential simulation.}
+\item{x.bound}{the x boundaries denoted at c(minimum, maximum) for the quasi-potential simulation.}
 
-\item{y.bound}{two-element vector for the y domain boundries used for the quasi-potential simulation.}
+\item{y.bound}{the y boundaries denoted at c(minimum, maximum) for the quasi-potential simulation.}
 
 \item{xlim}{numeric vectors of length 2, giving the x coordinate range.}
 
@@ -33,6 +33,9 @@ VecDecomPlot(x.field, y.field, dens, x.bound, y.bound, xlim = "NULL",
 }
 \description{
 This function plots various vector fields
+}
+\details{
+If \code{arrow.type = "proportional"}, a common warning, passed from \code{\link{arrows}}, will appear: "The direction of a zero-length arrow is indeterminate, and hence so is the direction of the arrowheads. To allow for rounding error, arrowheads are omitted (with a warning) on any arrow of length less than 1/1000 inch."  Either increase \code{tail.length} or increase the plot window to avoid this warning.
 }
 \examples{
 # First, system of equations

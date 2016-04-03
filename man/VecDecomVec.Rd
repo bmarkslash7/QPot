@@ -7,17 +7,17 @@
 VecDecomVec(x.num.steps, y.num.steps, x.rhs, y.rhs, x.bound, y.bound)
 }
 \arguments{
-\item{x.num.steps}{The number of steps between the minimum and maximum x value defined in x range.}
+\item{x.num.steps}{the number of steps between the minimum and maximum x value defined in x range.}
 
-\item{y.num.steps}{The number of steps between the minimum and maximum y value defined in y range.}
+\item{y.num.steps}{the number of steps between the minimum and maximum y value defined in y range.}
 
-\item{x.rhs}{A string containing the right hand side of the equation for x.}
+\item{x.rhs}{a string containing the right hand side of the equation for x.}
 
-\item{y.rhs}{A string containing the right hand side of the equation for y.}
+\item{y.rhs}{a string containing the right hand side of the equation for y.}
 
-\item{x.bound}{two-element vector with respective minimum and maximum x values.}
+\item{x.bound}{the x boundaries denoted at c(minimum, maximum).}
 
-\item{y.bound}{two-element vector with respective minimum and maximum y values.}
+\item{y.bound}{the y boundaries denoted at c(minimum, maximum).}
 }
 \value{
 returns an array of the deterministic skeleton vector field.  The array has three dimensions with the respective lengths of x.num.steps, y.num.steps, and the number of variables (always 2).  The two variables are the x-deterministic skeleton and the y-deterministic skeleton.

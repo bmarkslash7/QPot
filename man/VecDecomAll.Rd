@@ -7,15 +7,15 @@
 VecDecomAll(surface, x.rhs, y.rhs, x.bound, y.bound)
 }
 \arguments{
-\item{surface}{matrix output from QPGlobal.}
+\item{surface}{matrix output from \code{\link{QPGlobal}} or \code{\link{QPotential}}.}
 
-\item{x.rhs}{A string containing the right hand side of the equation for x.}
+\item{x.rhs}{a string containing the right hand side of the equation for x.}
 
-\item{y.rhs}{A string containing the right hand side of the equation for y.}
+\item{y.rhs}{a string containing the right hand side of the equation for y.}
 
-\item{x.bound}{two-element vector with respective minimum and maximum x values.}
+\item{x.bound}{the x boundaries denoted at c(minimum, maximum).}
 
-\item{y.bound}{two-element vector with respective minimum and maximum y values.}
+\item{y.bound}{the y boundaries denoted at c(minimum, maximum).}
 }
 \value{
 returns an array of all three vector fields: the deterministic skeleton, the negative gradient of the quasi-potential, and the remainder.  The array has three dimensions with the respective lengths of xstepnumber, ystepnumber, and 6.  The six are the x- and y-values for each of the three vector fields, as x-deterministic skeleton, y-deterministic skeleton, x-negative gradient of the quasi-potential, y-negative gradient of the quasi-potential, x-remainder, and y-remainder.

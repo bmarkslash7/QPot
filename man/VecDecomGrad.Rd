@@ -7,7 +7,7 @@
 VecDecomGrad(surface)
 }
 \arguments{
-\item{surface}{matrix output from QPGlobal.}
+\item{surface}{matrix output from \code{\link{QPGlobal}} or \code{\link{QPotential}}.}
 }
 \value{
 returns an array of the gradient vector field.  The array has three dimensions with the respective lengths of the columns of the surface, the rows of the sruface, and the number of variables (always 2).  The two variables are the x-negative gradient of the quasi-potential surface and the y-negative gradient of the quasi-potential surface.

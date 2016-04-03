@@ -11,26 +11,26 @@ TSDensity(mat, dim = 1, xlim = "NULL", ylim = "NULL",
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}
 
-\item{dim}{dimensions of the plot; \code{dim = 1} plots simple density histogram or \code{dim = 2} plots the density in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).}
+\item{dim}{dimensions of the plot; \code{dim = 1} plots simple density histogram or \code{dim = 2} plots the density in state space (i.e., X and Y respectively on the abscissa and ordinate axes).}
 
 \item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
 
 \item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
 
-\item{contour.levels}{the number of contour levels for the two-dimensional plots (i.e., when \code{dim=2}).}
+\item{contour.levels}{the number of contour levels for the two-dimensional plots (i.e., when \code{dim = 2}).}
 
 \item{col2d}{vector of colors to be used in the plot.}
 
-\item{contour.lwd}{line width of contour lines if \code{contour.lines=TRUE}.}
+\item{contour.lwd}{line width of contour lines if \code{contour.lines = TRUE}.}
 
-\item{contour.lines}{if TRUE, then black countour lines added to the graph.}
+\item{contour.lines}{if \code{TRUE}, then black countour lines added to the graph.}
 
 \item{kde2d.n}{number of grid points in each direction. Can be scalar or a length-2 integer vector.  Passes to argument \code{n} in \code{\link[MASS]{kde2d}}.}
 
 \item{...}{passes arguments to \code{\link{plot}}.}
 }
 \description{
-This function allows you to create density plots for the simulation of two-dimensional stochastic differential equations in \code{\link{TSTraj}}
+This function creates density plots for the simulation of two-dimensional stochastic differential equations from \code{\link{TSTraj}}
 }
 \examples{
 \dontrun{

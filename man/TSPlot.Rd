@@ -13,26 +13,26 @@ TSPlot(mat, deltat, dim = 1, xlim = "NULL", ylim = "NULL",
 
 \item{deltat}{numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}, used in the function to recaluculate axes if applicable.}
 
-\item{dim}{dimensions of the plot; \code{dim=1} to plot a timeseries with \code{X} and \code{Y} on the ordinate axis or \code{dim=2} to plot the trjectories in state space (i.e., \code{X} and \code{Y} respectively on the abscissa and ordinate axes).}
+\item{dim}{dimensions of the plot; \code{dim = 1} to plot a timeseries with X and Y on the ordinate axis or \code{dim = 2} to plot the trjectories in state space (i.e., X and Y respectively on the abscissa and ordinate axes).}
 
 \item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
 
 \item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
 
-\item{x.lab}{for \code{dim=1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}}
+\item{x.lab}{for \code{dim = 1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}}
 
-\item{dens}{if \code{dens=TRUE}, plots a horizontal one-dimensional density plot adjacent to the timerseries.}
+\item{dens}{if \code{dens = TRUE}, plots a horizontal one-dimensional density plot adjacent to the timerseries.}
 
-\item{lwd}{line width.}
+\item{lwd}{line width.  Defaults to 1.}
 
 \item{line.alpha}{transparency of lines from 0--255.}
 
-\item{zero.axes}{if TRUE, then axes plotted at \code{X=0} and \code{Y=0}.}
+\item{zero.axes}{if TRUE, then axes plotted at \code{X = 0} and \code{Y = 0}.}
 
 \item{...}{passes arguments to \code{\link{plot}}.}
 }
 \description{
-This function allows you to plot the simulation of simulate two-dimensional stochastic differential equations from \code{\link{TSTraj}}
+This function plots the simulation of two-dimensional stochastic differential equations from \code{\link{TSTraj}}
 }
 \examples{
 # First, the parameter values, as found in TSTraj
