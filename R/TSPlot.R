@@ -4,8 +4,8 @@
 #' @param mat a matrix output from \code{\link{TSTraj}}.
 #' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}, used in the function to recaluculate axes if applicable.
 #' @param dim dimensions of the plot; \code{dim = 1} to plot a timeseries with X and Y on the ordinate axis or \code{dim = 2} to plot the trjectories in state space (i.e., X and Y respectively on the abscissa and ordinate axes).
-#' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
-#' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
+#' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.
+#' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.
 #' @param xaxt.1D for \code{dim = 1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}
 #' @param dens if \code{dens = TRUE}, plots a horizontal one-dimensional density plot adjacent to the timerseries.
 #' @param lwd line width.  Defaults to 1.
@@ -38,10 +38,10 @@
 #'	# in 2D
 #'	TSPlot(ModelOut, deltat = model.deltat, dim = 2)
 
-TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = 'NULL', xaxt.1D = "time", dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE, xlab.2D = "X", ylab.2D  = "Y", ...) {
+TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = NULL, xaxt.1D = "time", dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE, xlab.2D = "X", ylab.2D  = "Y", ...) {
 		if (dim != 1 & dim != 2) {stop("Can only plot in 1 or 2 dimensions (i.e., dim must == 1 or 2)")}
 		if (missing(deltat) == TRUE) {stop("deltat is missing and needed to compute steps and 1D hist.  Please specify.")}
-		orig.par <- par()
+		orig.par <- par(no.readonly = T)
 		global.min <- min(mat[,2:3], na.rm = T)
 		global.max <- max(mat[,2:3], na.rm = T)
 		x.min <- min(mat[,2], na.rm = T)
@@ -49,13 +49,14 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = 'NULL', xaxt.1D = "
 		y.min <- min(mat[,3], na.rm = T)
 		y.max <- max(mat[,3], na.rm = T)
 		if (dim == 1) {
-			if (any(xlim != 'NULL')) {warning("'xlim' cannot be adjusted in this function because of calculations used in switching between displaying time and step")}
-			if (table(is.infinite(mat))["FALSE"] != nrow(mat)*ncol(mat) ) { # if Inf values in the timeseries
+			if (any(xlim != NULL)) {warning("'xlim' cannot be adjusted in this function because of calculations used in switching between displaying time and step")}
+			if (sum(!is.infinite(mat)) != nrow(mat)*ncol(mat) ) { # if Inf values in the timeseries
 					warning("Simulation -> Inf. Try: (i) set exact y-axis limits using the ylim argument and (ii) dens = FALSE")
 				if (missing(ylim)) {
 					ylim = c(global.min, global.max)
 						if (dens == TRUE) {par(fig=c(0,0.775,0,1), new=FALSE , oma = rep(1,4))}
-						ifelse(xaxt.1D == "step" , x.label <- "Step" , x.label <- "Time")
+						# ifelse(xaxt.1D == "step" , x.label <- "Step" , x.label <- "Time")
+						x.label <- if (xaxt.1D == "step") "Step" else "Time"
 					plot(mat[,1], type = "l" , ylim = ylim , las = 1 , xlab = x.label , ylab = "State variables" , col = rgb(255, 0, 0, line.alpha, NULL, 255) , lwd = lwd , xaxt = "n", ...)
 					lines(mat[,1] , mat[,3] , col = rgb(0,0,255,line.alpha,NULL,255) , lwd = lwd)
 					if (xaxt.1D == "step") {axis(1)
@@ -75,7 +76,8 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = 'NULL', xaxt.1D = "
 						axis(4 , las = 1)}
 				} else {
 						if(dens == TRUE) {par(fig=c(0,0.775,0,1), new=FALSE , oma = rep(1,4))}
-						ifelse(xaxt.1D == "step" , x.label <- "Step" , x.label <- "Time")
+						# ifelse(xaxt.1D == "step" , x.label <- "Step" , x.label <- "Time")
+						x.label <- if (xaxt.1D == "step") "Step" else "Time"
 					plot(mat[,1], type = "l", las = 1 , ylim = ylim, xlab = x.label , ylab = "State variables" , col = rgb(255,0,0,line.alpha,NULL,255) , lwd = lwd , xaxt = "n", ...)
 					lines(mat[,1] , mat[,3] , col = rgb(0,0,255,line.alpha,NULL,255) , lwd = lwd)
 						if (xaxt.1D == "step") {axis(1)
@@ -96,7 +98,8 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = 'NULL', xaxt.1D = "
 			} else { # No Inf values in timeseries
 					if (missing(ylim)) {ylim <- c(global.min, global.max)}
 						if(dens == TRUE) {par(fig=c(0,0.775,0,1), new = FALSE , oma = rep(1,4))}
-						ifelse(xaxt.1D == "step" , x.label <- "Step" , x.label <- "Time")
+						# ifelse(xaxt.1D == "step" , x.label <- "Step" , x.label <- "Time")
+						x.label <- if (xaxt.1D == "step") "Step" else "Time"
 					plot(mat[,1], type = "n", ylim = ylim , las = 1 , ylab = "State variables" , xlab = x.label , lwd = lwd , xaxt = "n", ...)
 					lines(mat[,1] , mat[,2] , col = rgb(255,0,0,line.alpha,NULL,255) , lwd = lwd)
 					lines(mat[,1] , mat[,3] , col = rgb(0,0,255,line.alpha,NULL,255) , lwd = lwd)
@@ -116,7 +119,7 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = 'NULL', xaxt.1D = "
 						axis(4 , las = 1)}
 			}
 		} else { # dim != 1
-			if (table(is.infinite(mat))["FALSE"] != nrow(mat)*ncol(mat) ) {
+			if (sum(!is.infinite(mat)) != nrow(mat)*ncol(mat) ) {
 				if(missing(xlim)) {stop("'Inf' detected and the plot cannot set axis limits. Try manually setting axis limits with xlim and ylim.")}
 				plot(mat[,2] , mat[,3] , type = "n", las = 1 , ylim = ylim , xlim = xlim, xlab = xlab.2D, ylab = ylab.2D, ...)
 				if (zero.axes == TRUE) {abline(v = 0 , h = 0 , col = "grey75" , lwd = 0.75 , lty = 1)}
@@ -129,5 +132,5 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = 'NULL', xaxt.1D = "
 				lines(mat[,2] , mat[,3] , col = rgb(50,50,50,line.alpha,NULL,255) , lwd = lwd)				
 			}
 		}
-	par(new = F, fig = orig.par$fig)
+	on.exit(par(orig.par))
 	}

@@ -5,8 +5,8 @@
 #' @param dens vector respectively for the number of \code{x} and \code{y} points to be plotted.
 #' @param x.bound a two-element vector with the minimum and maximum x values used for computing the quasi-potential.
 #' @param y.bound a two-element vector with the minimum and maximum y values used for computing the quasi-potential.
-#' @param xlim numeric vectors of length 2, giving the x coordinate range.
-#' @param ylim numeric vectors of length 2, giving the y coordinates range.
+#' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.
+#' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.
 #' @param n.filled.contour numeric value for the nubmber of breaks in the filled contour.
 #' @param n.contour.lines numeric value for the number of breaks in the contour lines.
 #' @param c.parm contour line adjustment (see details).

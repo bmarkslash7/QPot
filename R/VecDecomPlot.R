@@ -6,8 +6,8 @@
 #' @param dens two-element vector respectively specifying the number of respective arrows in the x and y directions.
 #' @param x.bound the x boundaries denoted at c(minimum, maximum) for the quasi-potential simulation.
 #' @param y.bound the y boundaries denoted at c(minimum, maximum) for the quasi-potential simulation.
-#' @param xlim numeric vectors of length 2, giving the x coordinate range.
-#' @param ylim numeric vectors of length 2, giving the y coordinate range.
+#' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.
+#' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
 #' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
 #' @param head.length length of the edges of the arrow head (in inches).
@@ -63,7 +63,7 @@
 #' 	VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25,25), 
 #'		x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
 
-VecDecomPlot <- function(x.field, y.field, dens, x.bound, y.bound, xlim = 'NULL', ylim = 'NULL', arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...){
+VecDecomPlot <- function(x.field, y.field, dens, x.bound, y.bound, xlim = NULL, ylim = NULL, arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...){
 
 		if(any(dim(x.field) != dim(y.field))){stop("x.field and y.field have at least one unequal dimension length")}
 		x.range <- max(x.bound)-min(x.bound)

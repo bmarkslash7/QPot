@@ -3,8 +3,8 @@
 #' This function creates density plots for the simulation of two-dimensional stochastic differential equations from \code{\link{TSTraj}}
 #' @param mat a matrix output from \code{\link{TSTraj}}.
 #' @param dim dimensions of the plot; \code{dim = 1} plots simple density histogram or \code{dim = 2} plots the density in state space (i.e., X and Y respectively on the abscissa and ordinate axes).
-#' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
-#' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.
+#' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.
+#' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.
 #' @param contour.levels the number of contour levels for the two-dimensional plots (i.e., when \code{dim = 2}).
 #' @param col2d vector of colors to be used in the plot.
 #' @param contour.lwd line width of contour lines if \code{contour.lines = TRUE}.
@@ -37,7 +37,7 @@
 #'	TSDensity(ModelOut, dim = 2, kde2d.n = 20, xlab = "")
 #' }
 
-	TSDensity <- function(mat, dim = 1, xlim = 'NULL', ylim = 'NULL', contour.levels = 15,  col2d = c("blue", "yellow", "orange", "red") , contour.lwd = 0.5, contour.lines = TRUE, kde2d.n = 100, ...){
+	TSDensity <- function(mat, dim = 1, xlim = NULL, ylim = NULL, contour.levels = 15,  col2d = c("blue", "yellow", "orange", "red") , contour.lwd = 0.5, contour.lines = TRUE, kde2d.n = 100, ...){
 		if (dim ==1){
 			densA <- density(mat[,2] , na.rm = T)
 			densB <- density(mat[,3] , na.rm = T)
