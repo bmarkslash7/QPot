@@ -38,9 +38,6 @@
 #'	# in 2D
 #'	TSPlot(ModelOut, deltat = model.deltat, dim = 2)
 
-TSPlot(ModelOut, deltat = model.deltat, dim = 1)
-TSPlot(ModelOut, deltat = model.deltat, dim = 2)
-
 TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = 'NULL', xaxt.1D = "time", dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE, xlab.2D = "X", ylab.2D  = "Y", ...) {
 		if (dim != 1 & dim != 2) {stop("Can only plot in 1 or 2 dimensions (i.e., dim must == 1 or 2)")}
 		if (missing(deltat) == TRUE) {stop("deltat is missing and needed to compute steps and 1D hist.  Please specify.")}
