@@ -9,7 +9,7 @@ QPotential(x.rhs = NULL, x.start = NULL, x.bound = NULL,
   y.num.steps = NULL, filename = NULL, save.to.R = TRUE,
   save.to.HD = FALSE, bounce = "d", bounce.edge = 0.01,
   verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20,
-  k.y = 20, INFTY = 1e+06)
+  k.y = 20, INFINITY = 1e+06)
 }
 \arguments{
 \item{x.rhs}{a string containing the right hand side of the equation for x.}
@@ -48,7 +48,7 @@ QPotential(x.rhs = NULL, x.start = NULL, x.bound = NULL,
 
 \item{k.y}{integer anisotropic factor for y.  See journal article.  Default is 20.}
 
-\item{INFTY}{largest possible quasi-potential value.  Default is 1,000,000}
+\item{INFINITY}{largest possible quasi-potential value.  If computed quasi-potential is ever greater than this number, program will stop.  Especially useful when bounce = 'b'.  Default is 1,000,000 with a tolerance of 1e-12}
 }
 \value{
 filetoHD if save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt

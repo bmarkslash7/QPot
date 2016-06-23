@@ -459,7 +459,7 @@ void ordered_upwind(void) {
         ms[ind]=2;
         deltree();
         mycount++;
-        if( i==2 || i==nx1-2 || j==2 || j== ny1-2 || g[ind] >= INFTY-1) {
+        if( i==2 || i==nx1-2 || j==2 || j== ny1-2 || g[ind] >= INFTY-TOL) { /*1) { */
             Rprintf("%ld\t(%ld\t%ld) is accepted, g=%.4f\n",mycount,i,j,g[ind]);
             Rprintf("Final count = %d\n",count);
             break; /* quit if we reach the boundary of the computational domain */
