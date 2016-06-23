@@ -63,7 +63,7 @@ double LY2 = 60.0; /* Same idea as LX2, but for the vertical direction */
 double FP1 = 6.60341; /* This is the x-coordinate of the initial point for the calculation (equilibirium or point on a limit cycle). */
 double FP2 = 3.04537; /* This is the y-coordinate of the initial point for the calculation (equilibirium or point on a limit cycle). */
 
-double INFTY 1.0e+6;
+double INFTY = 1.0e+6;
 
 int_fast64_t KX=20, KY=20;
 int DEBUG = 0;
