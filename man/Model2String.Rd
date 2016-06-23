@@ -27,7 +27,7 @@ Model2String(model = NULL, parms = NULL, deSolve.form = FALSE,
 equations: an array with strings of the equations with substituted parameter values.  If deSolve.form is TRUE, the first is the x equation, the second is the y equation.
 }
 \description{
-Converts differential equations from string-format (or function-format) with parameters (e.g. "a*x+b) to string-format with parameter values (e.g. 2*x+3).  Specifically, Model2String reads in the equations, searches for the differential equations within the function (if required), and replaces the parameters with numerical values given by the user.  Returns an array of strings containing the differential equations.
+Converts differential equations from string-format (or function-format) with parameters (e.g. "a*x+b) to string-format with parameter values (e.g. 2*x+3).  Specifically, Model2String reads in the equations, searches for the differential equations within the function (if required), and replaces the parameters with numerical values given by the user.  Returns an array of strings containing the differential equations.  This code is specifically given so that any problems can be found in R as opposed to receiving terse errors from the C code if this was built into the QPotential() function.
 }
 \examples{
 # First example with the right hand side of an equation

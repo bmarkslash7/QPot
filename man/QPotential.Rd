@@ -48,7 +48,7 @@ QPotential(x.rhs = NULL, x.start = NULL, x.bound = NULL,
 
 \item{k.y}{integer anisotropic factor for y.  See journal article.  Default is 20.}
 
-\item{INFTY}{largest possible quasi-potential value.  Default is 1.0e6}
+\item{INFTY}{largest possible quasi-potential value.  Default is 1,000,000}
 }
 \value{
 filetoHD if save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt

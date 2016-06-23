@@ -16,7 +16,7 @@
 #' @param bounce.edge if bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
 #' @param k.x integer anisotropic factor for x.  See journal article.  Default is 20.
 #' @param k.y integer anisotropic factor for y.  See journal article.  Default is 20.
-#' @param INFTY largest possible quasi-potential value.  Default is 1.0e6
+#' @param INFTY largest possible quasi-potential value.  Default is 1,000,000
 #' @param verboseC flag (default = TRUE) for printing out useful-for-everyone information from C code implementing the upwind-ordered method (quasipotential.C).
 #' @param verboseR NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential R wrapper.
 #' @param debugC NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code 
@@ -44,7 +44,7 @@
 #'	QPContour(storage.eq1, dens = c(xstepnumber, ystepnumber), 
 #'		x.bound = xbounds, y.bound = ybounds, c.parm = 5) 
 
-QPotential <- function (x.rhs = NULL, x.start = NULL, x.bound = NULL, x.num.steps = NULL, y.rhs = NULL, y.start = NULL, y.bound = NULL, y.num.steps = NULL, filename = NULL, save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20, INFTY = 1.0e6)
+QPotential <- function (x.rhs = NULL, x.start = NULL, x.bound = NULL, x.num.steps = NULL, y.rhs = NULL, y.start = NULL, y.bound = NULL, y.num.steps = NULL, filename = NULL, save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20, INFTY = 1000000)
 {
 # ----------------------------------------------------------------------
 # Break apart function parameters into things that C code will use
@@ -124,7 +124,7 @@ if (verboseR) {message("components to enable file saving")}
 #Save in whatever format the user wants
 #if (filename != 'NULL') {lengthfilename = nchar(filename)}
 if (!is.null(filename)) {lengthfilename = nchar(filename)}
-else 					{lengthfilename = 0}
+else 					{filename = "NULL"; lengthfilename = 0}
 
 #default filename has a restriction on the name size
 #if ( (filename == 'NULL') && (save.to.HD == TRUE) && ( (abs(x.start) > 99999) || (abs(y.start) > 99999) ) ) { stop('Cannot use default filename because program will crash.  Please supply filename')}
@@ -208,7 +208,7 @@ else if (datasave == 2) {
 #	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
 #	rm(storage)
 #	return(tstorage)
-	storage[storage > ((1.0e+6) - 1)] = NA
+	storage[storage > ((INFTY) - 1)] = NA
 	return(t(storage))
 }
 else if (datasave == 3) {
@@ -223,7 +223,7 @@ else if (datasave == 3) {
 #	tstorage[tstorage > ((1.0e+6) - 1)] = NA 
 #	rm(storage)
 #	return(tstorage)
-	storage[storage > ((1.0e+6) - 1)] = NA
+	storage[storage > ((INFTY) - 1)] = NA
 	return(t(storage))
 }
 else if (datasave == 4) {

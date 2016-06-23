@@ -36,9 +36,6 @@
 #define sgn(a) ((a) == 0 ? 0 : ((a) > 0  ? 1 : -1 ))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define min(a,b) ((a) <= (b) ? (a) : (b))
-/* 
- * #define INFTY 1.0e+6 /* This is the "maximum" value of the quasi-potential. It is also the default value... everything is initialized to this values before the solution computation starts. So points with unknown values have value 1.0e+6 */
-*/
 #define TOL 1.0e-12
 #define BETA 0.0
 #define BUFFERSIZE 1024	/* maximum size of the equation to be used */
@@ -100,7 +97,7 @@ struct mysol {
 } mysol;
 
 int main(int argc, char **argv);
-void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky, int *tempDEBUG, int *tempVERBOSE);
+void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky, int *tempDEBUG, int *tempVERBOSE, double *tempINFTY);
 void write_output(double *storage, int HDwrite, int Rwrite);
 void write_output_original(void);
 
