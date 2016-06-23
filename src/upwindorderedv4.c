@@ -36,7 +36,9 @@
 #define sgn(a) ((a) == 0 ? 0 : ((a) > 0  ? 1 : -1 ))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define min(a,b) ((a) <= (b) ? (a) : (b))
-#define INFTY 1.0e+6 /* This is the "maximum" value of the quasi-potential. It is also the default value... everything is initialized to this values before the solution computation starts. So points with unknown values have value 1.0e+6 */
+/* 
+ * #define INFTY 1.0e+6 /* This is the "maximum" value of the quasi-potential. It is also the default value... everything is initialized to this values before the solution computation starts. So points with unknown values have value 1.0e+6 */
+*/
 #define TOL 1.0e-12
 #define BETA 0.0
 #define BUFFERSIZE 1024	/* maximum size of the equation to be used */
@@ -60,6 +62,8 @@ double LY2 = 60.0; /* Same idea as LX2, but for the vertical direction */
 
 double FP1 = 6.60341; /* This is the x-coordinate of the initial point for the calculation (equilibirium or point on a limit cycle). */
 double FP2 = 3.04537; /* This is the y-coordinate of the initial point for the calculation (equilibirium or point on a limit cycle). */
+
+double INFTY 1.0e+6;
 
 int_fast64_t KX=20, KY=20;
 int DEBUG = 0;
@@ -900,7 +904,7 @@ void deltree() {
 
 
 /********************************************************/
-void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky, int *tempDEBUG, int *tempVERBOSE) {
+void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *tempxsteps, double *tempymin, double *tempymax, int *tempysteps, double *tempeqx, double *tempeqy, char **equationx, int *lenequationx, char **equationy, int *lenequationy, char **tempfilename, int *templengthfilename, int *tempdatasave, char **tempchfield, double *tempbounceedge, int *tempkx, int *tempky, int *tempDEBUG, int *tempVERBOSE, double *tempINFTY) {
 /* Assign function parameter values to variables defined in C code*/
 /* x range, y range, and starting values */
 	LX1 = tempxmin[0]; LX2 = tempxmax[0]; NX = tempxsteps[0]; 
@@ -910,6 +914,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	KX = tempkx[0]; KY = tempky[0];
 	DEBUG = tempDEBUG[0];
 	VERBOSE = tempVERBOSE[0];
+	INFTY = tempINFTY[0];
 	
 	if (VERBOSE) {
 		Rprintf("The upwind ordered method will be chatty\n");
@@ -1024,59 +1029,16 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 		if (VERBOSE) {Rprintf("File opened.\n");}
 		if (VERBOSE) {Rprintf("In datasave case 1\n");}
 		write_output(storage,1,0);
-/* Working on code to transpose g[] as it writes to HD and R */    
-/*		fg=fopen(filename, "w");
-		ind=0;
-		for( j=0; j<(NY); j++ ) {
-			for( i=0; i<(NX-1); i++ ) {
-				tempg = (1.0/2.0)*g[ind];
-				fprintf(fg,"%.4e\t",tempg);
-				ind++;
-			}
-			tempg = (1.0/2.0)*g[ind];
-			fprintf(fg,"%.4e",tempg);
-			ind++;
-			fprintf(fg,"\n");
-		}
-		fclose(fg);
-*/
 		break;
 	case 2: /* saves to R, but does not save to hard drive */
 		if (VERBOSE) {Rprintf("Saves only to R\n");}
 		if (VERBOSE) {Rprintf("In datasave case 2\n");}
 		write_output(storage,0,1);
-/*		ind=0;
-		for( j=0; j<(NY); j++ ) {
-			for( i=0; i<(NX-1); i++ ) {
-				storage[ind] = (1.0/2.0)*g[ind];
-				ind++;
-			}
-			storage[ind] = (1.0/2.0)*g[ind];
-			ind++;
-		}
-*/
 		break;
 	case 3:	/* saves to R and saves to hard drive */
 		if (VERBOSE) {Rprintf("In datasave case 3\n");}
 		if (VERBOSE) {Rprintf("File opened.\n");}
 		write_output(storage,1,1);
-/*		fg=fopen(filename, "w");
-		ind=0;
-		for( j=0; j<(NY); j++ ) {
-			for( i=0; i<(NX-1); i++ ) {
-				tempg = (1.0/2.0)*g[ind];
-				fprintf(fg,"%.4e\t",tempg);
-				storage[ind] = tempg;
-				ind++;
-			}
-			tempg = (1.0/2.0)*g[ind];
-			fprintf(fg,"%.4e",tempg);
-			storage[ind] = tempg;
-			ind++;
-			fprintf(fg,"\n");
-		}
-		fclose(fg);
-*/
 		break;
 	case 5: /* uses original code to write a file to the HD */
 		write_output_original();

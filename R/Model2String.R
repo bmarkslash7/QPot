@@ -42,10 +42,11 @@
 #'  x.lhs.term = 'dx', y.lhs.term = 'dy') 
 
 
-Model2String <- function(model, parms = NULL, deSolve.form = FALSE, x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE, width.cutoff = 500) {
+Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE, width.cutoff = 500) {
 	if (!supress.print) {
 		message("Note: This function is supplied as duct tape.  Long equations, equations spanning multiple lines, equations with strange notation, etc, may not work.  Always check the output.")
 	}
+	if (is.null(model)) {stop("No equation supplied to function Model2String")}
 	
 	if (deSolve.form == TRUE) {
 
