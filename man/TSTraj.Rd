@@ -4,11 +4,15 @@
 \alias{TSTraj}
 \title{Simulate two-dimensional stochastic differential equations}
 \usage{
-TSTraj(y0, time, deltat, x.rhs, y.rhs, parms = NA, sigma, lower.bound = NA,
-  upper.bound = NA)
+TSTraj(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs,
+  y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA)
 }
 \arguments{
-\item{y0}{a two-element vector of the initial conditions for the state variables. Elements must be assigned as objects (see Example below).}
+\item{init.x}{initial condition for the x state variable}
+
+\item{init.y}{initial condition for the y state variable}
+
+\item{y0}{instead of init.x and init.y, can assign a two-element vector of the initial conditions for the state variables. Elements must be assigned as objects (see Example below).}
 
 \item{time}{numeric value indicating the total time over which the simulation is to be run.}
 

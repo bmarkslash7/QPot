@@ -1,7 +1,9 @@
 #' Simulate two-dimensional stochastic differential equations
 #'
 #' This function allows you to simulate two-dimensional stochastic differential equations.
-#' @param y0 a two-element vector of the initial conditions for the state variables. Elements must be assigned as objects (see Example below).
+#' @param init.x initial condition for the x state variable
+#' @param init.y initial condition for the y state variable
+#' @param y0 instead of init.x and init.y, can assign a two-element vector of the initial conditions for the state variables. Elements must be assigned as objects (see Example below).
 #' @param time numeric value indicating the total time over which the simulation is to be run.
 #' @param deltat numeric value indicating the frequency of stochastic perturbation, as \eqn{\Delta t}.
 #' @param x.rhs a string containing the right hand side of the equation for x.
@@ -44,7 +46,12 @@
 #'		x.rhs = test.eqn.x, y.rhs = test.eqn.y, parms = model.parms, sigma = model.sigma)
 
 
-TSTraj <- function(y0, time, deltat, x.rhs, y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA) {
+TSTraj <- function(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs, y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA) {
+
+	if (is.null(y0)) {y0 = c(init.x, init.y)}#{y0 = c(x = init.x, y = init.y)}
+	if (is.null(y0[1])) {stop("Missing initial starting value for x, either init.x or y0")}
+	if (is.null(y0[2])) {stop("Missing initial starting value for y, either init.y or y0")}
+
 	func <- function(t, state, parms) {
 		with(as.list(c(state, parms)), {
 		dx <- eval(parse(text=x.rhs))
