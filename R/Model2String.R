@@ -42,9 +42,9 @@
 #'  x.lhs.term = 'dx', y.lhs.term = 'dy') 
 
 
-Model2String <- function(model, parms = 'NULL', deSolve.form = FALSE, x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE, width.cutoff = 500) {
+Model2String <- function(model, parms = NULL, deSolve.form = FALSE, x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE, width.cutoff = 500) {
 	if (!supress.print) {
-		print("Note: This function is supplied as duct tape.  Long equations, equations spanning multiple lines, equations with strange notation, etc, may not work.  Always check the output.")
+		message("Note: This function is supplied as duct tape.  Long equations, equations spanning multiple lines, equations with strange notation, etc, may not work.  Always check the output.")
 	}
 	
 	if (deSolve.form == TRUE) {
@@ -59,7 +59,8 @@ Model2String <- function(model, parms = 'NULL', deSolve.form = FALSE, x.lhs.term
 		foundy = 0	#flag for making sure dy is only found once
 	
 	#remove the lhs and return the rhs
-		for (i in 1:length(temp)) {
+#		for (i in 1:length(temp)) { 
+		for (i in seq_along(x)) {
 		#when searching, first look for the lhs defining whether the derivative is for x or y
 		#once found, look inside the string and use either '<-' or '=' to separate
 		# the lhs from the rhs
@@ -97,7 +98,8 @@ Model2String <- function(model, parms = 'NULL', deSolve.form = FALSE, x.lhs.term
 	}
 	
 #if parameters are not declared, then we do not have to replace anything
-	if (!(parms[1] == 'NULL')){
+	if (!is.null(parms)) {
+#	if (!(parms[1] == 'NULL')){
 #replace the parameter names in the equations with their values
 		allnames <-names(parms)
 		for (i in 1:length(parms)) {

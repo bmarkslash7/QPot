@@ -4,18 +4,18 @@
 \alias{TSDensity}
 \title{Density plot from simulation of two-dimensional stochastic differential equations}
 \usage{
-TSDensity(mat, dim = 1, xlim = "NULL", ylim = "NULL",
-  contour.levels = 15, col2d = c("blue", "yellow", "orange", "red"),
-  contour.lwd = 0.5, contour.lines = TRUE, kde2d.n = 100, ...)
+TSDensity(mat, dim = 1, xlim = NULL, ylim = NULL, contour.levels = 15,
+  col2d = c("blue", "yellow", "orange", "red"), contour.lwd = 0.5,
+  contour.lines = TRUE, kde2d.n = 100, ...)
 }
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}
 
 \item{dim}{dimensions of the plot; \code{dim = 1} plots simple density histogram or \code{dim = 2} plots the density in state space (i.e., X and Y respectively on the abscissa and ordinate axes).}
 
-\item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
+\item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.}
 
-\item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
+\item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.}
 
 \item{contour.levels}{the number of contour levels for the two-dimensional plots (i.e., when \code{dim = 2}).}
 

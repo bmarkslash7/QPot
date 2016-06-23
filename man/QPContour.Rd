@@ -4,9 +4,9 @@
 \alias{QPContour}
 \title{Contour plot of quasi-potential surfaces}
 \usage{
-QPContour(surface, dens, x.bound, y.bound, xlim = "NULL", ylim = "NULL",
+QPContour(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
   n.filled.contour = 25, n.contour.lines = 25, c.parm = 1, col.contour,
-  contour.lines = TRUE, ...)
+  contour.lines = TRUE, xlab = "X", ylab = "Y", ...)
 }
 \arguments{
 \item{surface}{the surface to be plotted, from \code{\link{QPGlobal}}.}
@@ -17,9 +17,9 @@ QPContour(surface, dens, x.bound, y.bound, xlim = "NULL", ylim = "NULL",
 
 \item{y.bound}{a two-element vector with the minimum and maximum y values used for computing the quasi-potential.}
 
-\item{xlim}{numeric vectors of length 2, giving the x coordinate range.}
+\item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.}
 
-\item{ylim}{numeric vectors of length 2, giving the y coordinates range.}
+\item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.}
 
 \item{n.filled.contour}{numeric value for the nubmber of breaks in the filled contour.}
 
@@ -30,6 +30,10 @@ QPContour(surface, dens, x.bound, y.bound, xlim = "NULL", ylim = "NULL",
 \item{col.contour}{colors to interpolate; must be a valid argument to \code{\link{col2rgb}}.}
 
 \item{contour.lines}{if \code{TRUE}, then contour lines plotted over filled contour; vice versa if \code{FALSE}.}
+
+\item{xlab}{a title for the x axis when}
+
+\item{ylab}{a title for the y axis when}
 
 \item{...}{passes arguments to \code{\link{plot}}.}
 }

@@ -4,8 +4,8 @@
 \alias{VecDecomPlot}
 \title{Plotting function for vector decomposition and remainder fields}
 \usage{
-VecDecomPlot(x.field, y.field, dens, x.bound, y.bound, xlim = "NULL",
-  ylim = "NULL", arrow.type = "equal", tail.length = 0.25,
+VecDecomPlot(x.field, y.field, dens, x.bound, y.bound, xlim = NULL,
+  ylim = NULL, arrow.type = "equal", tail.length = 0.25,
   head.length = 0.25, ...)
 }
 \arguments{
@@ -19,9 +19,9 @@ VecDecomPlot(x.field, y.field, dens, x.bound, y.bound, xlim = "NULL",
 
 \item{y.bound}{the y boundaries denoted at c(minimum, maximum) for the quasi-potential simulation.}
 
-\item{xlim}{numeric vectors of length 2, giving the x coordinate range.}
+\item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.}
 
-\item{ylim}{numeric vectors of length 2, giving the y coordinate range.}
+\item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.}
 
 \item{arrow.type}{sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".}
 

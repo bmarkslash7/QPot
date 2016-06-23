@@ -4,9 +4,9 @@
 \alias{TSPlot}
 \title{Plot simulation of two-dimensional stochastic differential equations}
 \usage{
-TSPlot(mat, deltat, dim = 1, xlim = "NULL", ylim = "NULL",
-  x.lab = "time", dens = TRUE, lwd = 2, line.alpha = 130,
-  zero.axes = TRUE, ...)
+TSPlot(mat, deltat, dim = 1, xlim = NULL, ylim = NULL, xaxt.1D = "time",
+  dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE,
+  xlab.2D = "X", ylab.2D = "Y", ...)
 }
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}
@@ -15,11 +15,11 @@ TSPlot(mat, deltat, dim = 1, xlim = "NULL", ylim = "NULL",
 
 \item{dim}{dimensions of the plot; \code{dim = 1} to plot a timeseries with X and Y on the ordinate axis or \code{dim = 2} to plot the trjectories in state space (i.e., X and Y respectively on the abscissa and ordinate axes).}
 
-\item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
+\item{xlim}{numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.}
 
-\item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= 'NULL'} automatically sizes plot window.}
+\item{ylim}{numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.}
 
-\item{x.lab}{for \code{dim = 1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}}
+\item{xaxt.1D}{for \code{dim = 1}, allows user to specify the axis as "time" or "steps," with steps being \eqn{time \times \Delta t}}
 
 \item{dens}{if \code{dens = TRUE}, plots a horizontal one-dimensional density plot adjacent to the timerseries.}
 
@@ -28,6 +28,10 @@ TSPlot(mat, deltat, dim = 1, xlim = "NULL", ylim = "NULL",
 \item{line.alpha}{transparency of lines from 0--255.}
 
 \item{zero.axes}{if TRUE, then axes plotted at \code{X = 0} and \code{Y = 0}.}
+
+\item{xlab.2D}{a title for the x axis when \code{dim = 2}.}
+
+\item{ylab.2D}{a title for the y axis when \code{dim = 2}.}
 
 \item{...}{passes arguments to \code{\link{plot}}.}
 }

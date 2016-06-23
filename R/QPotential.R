@@ -43,7 +43,7 @@
 #'	QPContour(storage.eq1, dens = c(xstepnumber, ystepnumber), 
 #'		x.bound = xbounds, y.bound = ybounds, c.parm = 5) 
 
-QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.num.steps = 'NULL', y.rhs = 'NULL', y.start = 'NULL', y.bound = 'NULL', y.num.steps = 'NULL', filename = 'NULL', save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20)
+QPotential <- function (x.rhs = NULL, x.start = NULL, x.bound = NULL, x.num.steps = NULL, y.rhs = NULL, y.start = NULL, y.bound = NULL, y.num.steps = NULL, filename = NULL, save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20)
 {
 # ----------------------------------------------------------------------
 # Break apart function parameters into things that C code will use
@@ -52,22 +52,33 @@ QPotential <- function (x.rhs = 'NULL', x.start = 'NULL', x.bound = 'NULL', x.nu
 #-----------------------------------------------------------------------
 # Make sure that numeric values are numeric
 #-----------------------------------------------------------------------
-if ((x.start != 'NULL') && !isTRUE(is.numeric(x.start))) {stop("x.start is not a number")}
-if ((x.bound != 'NULL') && !isTRUE(is.numeric(x.bound))) {stop("x.bound is not a number")}
-if ((x.num.steps != 'NULL') && !isTRUE(is.numeric(x.num.steps))) {stop("x.num.steps is not a number")}
-if ((y.start != 'NULL') && !isTRUE(is.numeric(y.start))) {stop("y.start is not a number")}
-if ((y.bound != 'NULL') && !isTRUE(is.numeric(y.bound))) {stop("y.bound is not a number")}
-if ((y.num.steps != 'NULL') && !isTRUE(is.numeric(y.num.steps))) {stop("y.num.steps is not a number")}
+#if ((x.start != 'NULL') && !isTRUE(is.numeric(x.start))) {stop("x.start is not a number")}
+#if ((x.bound != 'NULL') && !isTRUE(is.numeric(x.bound))) {stop("x.bound is not a number")}
+#if ((x.num.steps != 'NULL') && !isTRUE(is.numeric(x.num.steps))) {stop("x.num.steps is not a number")}
+#if ((y.start != 'NULL') && !isTRUE(is.numeric(y.start))) {stop("y.start is not a number")}
+#if ((y.bound != 'NULL') && !isTRUE(is.numeric(y.bound))) {stop("y.bound is not a number")}
+#if ((y.num.steps != 'NULL') && !isTRUE(is.numeric(y.num.steps))) {stop("y.num.steps is not a number")}
+#if ((bounce.edge != 0.01) && !isTRUE(is.numeric(bounce.edge))) {stop("bounce.edge is not a number")}
+if (!is.null(x.start) && !isTRUE(is.numeric(x.start))) {stop("x.start is not a number")}
+if (!is.null(x.bound) && !isTRUE(is.numeric(x.bound))) {stop("x.bound is not a number")}
+if (!is.null(x.num.steps) && !isTRUE(is.numeric(x.num.steps))) {stop("x.num.steps is not a number")}
+if (!is.null(y.start) && !isTRUE(is.numeric(y.start))) {stop("y.start is not a number")}
+if (!is.null(y.bound) && !isTRUE(is.numeric(y.bound))) {stop("y.bound is not a number")}
+if (!is.null(y.num.steps) && !isTRUE(is.numeric(y.num.steps))) {stop("y.num.steps is not a number")}
 if ((bounce.edge != 0.01) && !isTRUE(is.numeric(bounce.edge))) {stop("bounce.edge is not a number")}
+
 
 # ----------------------------------------------------------------------
 # check if any component of x is missing
 # ----------------------------------------------------------------------
-if (verboseR) {print("check if any component of x is missing")}
-if (x.rhs == 'NULL') {stop("No equation defined for x. Define x.rhs.")} else {equationx <- x.rhs}
+if (verboseR) {message("check if any component of x is missing")}
+#if (x.rhs == 'NULL') {stop("No equation defined for x. Define x.rhs.")} else {equationx <- x.rhs}
+if (is.null(x.rhs)) {stop("No equation defined for x. Define x.rhs.")} else {equationx <- x.rhs}
 if (grepl(pattern="=", x = x.rhs)) {stop("Equals sign (=) found in x.rhs parameter.  Please give only right hand side of the equation.")}
-if (x.start == 'NULL') {stop("No starting value for x. Define x.start.")} else {startxval <- x.start}
-if (x.num.steps == 'NULL') {stop("Need the number of steps in x range. Define x.num.steps.")} else {numofstepsx <- x.num.steps}
+#if (x.start == 'NULL') {stop("No starting value for x. Define x.start.")} else {startxval <- x.start}
+if (is.null(x.start)) {stop("No starting value for x. Define x.start.")} else {startxval <- x.start}
+#if (x.num.steps == 'NULL') {stop("Need the number of steps in x range. Define x.num.steps.")} else {numofstepsx <- x.num.steps}
+if (is.null(x.num.steps)) {stop("Need the number of steps in x range. Define x.num.steps.")} else {numofstepsx <- x.num.steps}
 lengthequationx	<- nchar(x.rhs)
 if (length(x.bound) < 2) stop("Not enough values for x range in parameter x.bound.")
 if (length(x.bound) > 2) stop("Too many values for x range in parameter x.bound.")
@@ -77,21 +88,27 @@ upperboundsx	<- max(x.bound) #x.bound[2]
 # ----------------------------------------------------------------------
 # check if any component of y is missing
 # ----------------------------------------------------------------------
-if (verboseR) {print("check if any component of y is missing")}
-if (y.rhs == 'NULL') {equationy = '0'} else {equationy <- y.rhs}
+if (verboseR) {message("check if any component of y is missing")}
+#if (y.rhs == 'NULL') {equationy = '0'} else {equationy <- y.rhs}
+if (is.null(y.rhs)) {equationy = '0'} else {equationy <- y.rhs}
 if (grepl(pattern="=", x = y.rhs)) {stop("Equals sign (=) found in y.rhs parameter.  Please give only right hand side of the equation.")}
 lengthequationy <- nchar(y.rhs)
 if ( (length(y.bound) == 1) && (y.bound == 'NULL') ) {lowerboundsy <- 0; upperboundsy <- 0}
-if (y.bound[1] != 'NULL') {
+#if (y.bound[1] != 'NULL') {
+if (!is.null(y.bound)) {
 	if (length(y.bound) < 2) stop("Not enough values for y range in variable y.bound.")
 	if (length(y.bound) > 2) stop("Too many values for y range in variable y.bound.")
 	lowerboundsy <- min(y.bound) #y.bound[1]; 
 	upperboundsy <- max(y.bound) #y.bound[2]
 } # end of if y.bound != 'NULL 
-if (y.bound[1] == 'NULL') stop('No minimum and maximum y values.  Parameter y.bound not defined')
+#if (y.bound[1] == 'NULL') stop('No minimum and maximum y values.  Parameter y.bound not defined')
 #The numofstepsy cannot equal 1, because hy=(LY2-LY1)/(NY-1), where NY is numofsteps
-if (y.num.steps == 'NULL') {numofstepsy <- 2} else {numofstepsy <- y.num.steps}
-if (y.start == 'NULL') {startyval = 0} else {startyval <- y.start}
+#if (y.num.steps == 'NULL') {numofstepsy <- 2} else {numofstepsy <- y.num.steps}
+#if (y.start == 'NULL') {startyval = 0} else {startyval <- y.start}
+if (is.null(y.bound)) stop('No minimum and maximum y values.  Parameter y.bound not defined')
+#The numofstepsy cannot equal 1, because hy=(LY2-LY1)/(NY-1), where NY is numofsteps
+if (is.null(y.num.steps)) {numofstepsy <- 2} else {numofstepsy <- y.num.steps}
+if (is.null(y.start)) {startyval = 0} else {startyval <- y.start}
 
 # ----------------------------------------------------------------------
 # Components for C debugging and information to screen
@@ -102,13 +119,15 @@ if (verboseC == FALSE) {is.c.loud = 0} else {is.c.loud = 1}
 # ----------------------------------------------------------------------
 # Components to enable file saving
 # ---------------------------------------------------------------------- 
-if (verboseR) {print("components to enable file saving")}
+if (verboseR) {message("components to enable file saving")}
 #Save in whatever format the user wants
-if (filename != 'NULL') {lengthfilename = nchar(filename)}
+#if (filename != 'NULL') {lengthfilename = nchar(filename)}
+if (!is.null(filename)) {lengthfilename = nchar(filename)}
 else 					{lengthfilename = 0}
 
 #default filename has a restriction on the name size
-if ( (filename == 'NULL') && (save.to.HD == TRUE) && ( (abs(x.start) > 99999) || (abs(y.start) > 99999) ) ) { stop('Cannot use default filename because program will crash.  Please supply filename')}
+#if ( (filename == 'NULL') && (save.to.HD == TRUE) && ( (abs(x.start) > 99999) || (abs(y.start) > 99999) ) ) { stop('Cannot use default filename because program will crash.  Please supply filename')}
+if ( is.null(filename) && (save.to.HD == TRUE) && ( (abs(x.start) > 99999) || (abs(y.start) > 99999) ) ) { stop('Cannot use default filename because program will crash.  Please supply filename')}
 
 if ((save.to.R == TRUE) && (save.to.HD == TRUE)) 		{datasave = 3}
 else if ((save.to.R == TRUE) && (save.to.HD == FALSE)) 	{datasave = 2}
@@ -116,14 +135,15 @@ else if (isTRUE(save.to.HD))							{datasave = 1}
 else													{datasave = 4}
 if (save.to.HD == 'testrun')							{datasave = 4}
 if (save.to.HD == 'original')							{datasave = 5}
-if (verboseR) {print(paste("Variable datasave is: ", datasave, sep = ""))}
-#print(paste("datasave = ", datasave,sep=""))
+if (verboseR) {message("Variable datasave is: ", datasave)}
+#{print(paste("Variable datasave is: ", datasave, sep = ""))}
+
 
 # ----------------------------------------------------------------------
 # Determine what C code does at edges of x.bound and y.bound
 # bounce (used to make bounce.style), bounce.edge
 # ----------------------------------------------------------------------
-if (verboseR) {print("Determine what C code does at edges of x.bound and y.bound")}
+if (verboseR) {message("Determine what C code does at edges of x.bound and y.bound")}
 if (!is.numeric(bounce.edge)) stop('Parameter bounce.edge must be a number')
 
 if (bounce == FALSE) {bounce.style = 'd'}
@@ -171,7 +191,6 @@ if (datasave == 1) {
 	#no R write; HD write
 	storage = 0;
 	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), as.integer(k.x), as.integer(k.y), as.integer(is.c.debugging), as.integer(is.c.loud), PACKAGE="QPot")
-#	print(ls())
 	return(TRUE)
 }
 else if (datasave == 2) {
@@ -214,9 +233,9 @@ else if (datasave == 4) {
 else if (datasave == 5) {
 	#uses original c code for file output
 	storage = 0;
-	print("Note that you have to hand manipulate these data")
+	message("Note that you have to hand manipulate these data")
 	.C("quasipotential", as.double(storage), as.double(lowerboundsx), as.double(upperboundsx), as.integer(numofstepsx), as.double(lowerboundsy), as.double(upperboundsy), as.integer(numofstepsy), as.double(startxval), as.double(startyval), equationx, as.integer(lengthequationx), equationy, as.integer(lengthequationy), filename, as.integer(lengthfilename), as.integer(datasave), bounce.style, as.double(bounce.edge), as.integer(k.x), as.integer(k.y), as.integer(is.c.debugging), as.integer(is.c.loud), PACKAGE="QPot")
 }
-else {print("datasave is not a possible number.  How did you get here?")}
+else {warning("datasave is not a possible number.  How did you get here?")}
 
 } # end of QPotential
