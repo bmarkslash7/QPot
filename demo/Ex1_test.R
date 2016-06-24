@@ -33,7 +33,7 @@ require(rgl)
 
 ##### 0.1 preperation #####
 	# 0.1.0 clean up and set seed
-	rm(list=ls())
+	#rm(list=ls())
 	your.favourite.number <- 3818919 #chris
 	set.seed(your.favourite.number)
 
@@ -49,14 +49,18 @@ require(rgl)
 		model.sigma <- 0.05
 		model.time <- 12500
 		model.deltat <- 0.025
+		
+		parms.eqn.x <- Model2String(var.eqn.x, parms = model.parms)
+		parms.eqn.y <- Model2String(var.eqn.y, parms = model.parms, supress.print = TRUE) # does not print to screen
 
 	# 0.2.2 time series
 	ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
+	# Could also use TSTraj to combine equation strings and parameter values
+	#ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
+
 
 	# 0.2.3 time series plots
-		temp.default.par <- par()
 		TSPlot(ts.ex1, deltat = model.deltat)
-		par(temp.default.par)
 		TSPlot(ts.ex1, deltat = model.deltat, dim = 2)
 		TSDensity(ts.ex1, dim = 1)
 		TSDensity(ts.ex1, dim = 2)
@@ -89,12 +93,10 @@ require(rgl)
 
 
 ##### 0.3 local quasi-potential!!! #####
-	equation.x <- Model2String(var.eqn.x, parms = model.parms)
 	# Could also input the values by hand and use this version
 	# equation.x = "1.54*x*(1.0-(x/10.14))-(y*(x^2))/(1.0+(x^2))"
-	equation.y <- Model2String(var.eqn.y, parms = model.parms,
-	supress.print =TRUE) # does not print to screen
 	# equation.y = "((0.476*(x^2)*y)/(1+(x^2)))-0.112509*(y^2)"
+	# but we will use parms.eqn.x and parms.eqn.y from above
 	bounds.x = c(-0.5, 20.0)
 	bounds.y = c(-0.5, 20.0)
 	step.number.x = 4100
@@ -104,8 +106,8 @@ require(rgl)
 	eq2.x = 4.9040
 	eq2.y = 4.06187
 
-	eq1.local <- QPotential(x.rhs = equation.x, x.start = eq1.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = equation.y, y.start = eq1.y,  y.bound = bounds.y, y.num.steps = step.number.y)
-	eq2.local <- QPotential(x.rhs = equation.x, x.start = eq2.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = equation.y, y.start = eq2.y, y.bound = bounds.y, y.num.steps = step.number.y)
+	eq1.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq1.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq1.y,  y.bound = bounds.y, y.num.steps = step.number.y)
+	eq2.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq2.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq2.y, y.bound = bounds.y, y.num.steps = step.number.y)
 
 
 ##### 0.4 global quasi-potential!!! #####
@@ -132,13 +134,13 @@ require(rgl)
 
 ##### 0.6 vector field decompisition!!! #####
 	# 0.6.0 all fields
-	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
+	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, x.bound = bounds.x, y.bound = bounds.y)
 	VecDecomPlot(x.field = VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), ylim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
 	VecDecomPlot(x.field = VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.25, head.length = 0.025)
 	VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
 
 	# 0.6.1 vector field
-	VDV <- VecDecomVec(x.num.steps = step.number.y, y.num.steps= step.number.y, x.rhs=equation.x, y.rhs=equation.y, x.bound= bounds.x, y.bound= bounds.x)
+	VDV <- VecDecomVec(x.num.steps = step.number.y, y.num.steps= step.number.y, x.rhs=parms.eqn.x, y.rhs=parms.eqn.y, x.bound= bounds.x, y.bound= bounds.x)
 	VecDecomPlot(x.field=VDV[,,1], y.field=VDV[,,2], dens=c(25,25), x.bound= bounds.x, y.bound=bounds.y,
 		xlim = c(0, 11), ylim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
 
@@ -147,7 +149,7 @@ require(rgl)
 		VecDecomPlot(x.field=VDG[,,1], y.field=VDG[,,2], dens=c(25,25), x.bound= bounds.x, y.bound= bounds.y , tail.length = 0.25, head.length = 0.025, arrow.type = "proportional")
 
 	# 0.6.3 remainder field
-	VDR <- VecDecomRem(surface=ex1.global, x.rhs=equation.x, y.rhs=equation.y, x.bound=bounds.x, y.bound=bounds.y)
+	VDR <- VecDecomRem(surface=ex1.global, x.rhs=parms.eqn.x, y.rhs=parms.eqn.y, x.bound=bounds.x, y.bound=bounds.y)
 		VecDecomPlot(x.field=VDR[,,1], y.field=VDR[,,2], dens=c(25,25), x.bound= bounds.y, y.bound=bounds.y , tail.length = 0.35, head.length = 0.025, arrow.type = "proportional")
 
 	# plots for the paper figure

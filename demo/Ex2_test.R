@@ -56,15 +56,13 @@
 ts.ex2 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
 
 	# 0.2.3 time series plots
-		temp.default.par <- par()
 		TSPlot(ts.ex2, deltat = model.deltat)
-		par(temp.default.par)
 		TSPlot(ts.ex2, deltat = model.deltat, dim = 2, line.alpha = 25)
 		TSDensity(ts.ex2, dim = 1)
 		TSDensity(ts.ex2, dim = 2)
 
 		# plots for the paper figures
-			print.wd <- "/Users/christophermoore/DropBox/QPRPackage/QPotPaper/Figures/"
+		#	plotwd <- "/current_folder/" #put in the folder where you want to save figures
 			# Ex2_TS_1D.png
 				# png(file = paste(plotwd, "/Ex2_TS_1D.png", sep = ""), width = 600, height = 350)
 				# TSPlot(ts.ex2, deltat = model.deltat)
@@ -125,7 +123,7 @@ QPContour(eq1.qp, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, 
 ##### 0.6 vector field decompisition!!! #####
 	# 0.6.1 vector field
 	VDV <- VecDecomVec(x.num.steps = step.number.x, y.num.steps = step.number.y, x.rhs = equation.x, y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
-		VecDecomPlot(x.field = VDV[,,1], y.field = VDV[,,2], dens = c(25,25), x.bound = bounds.x, y.bound = bounds.y, tail.length = 0.5, head.length = 0.03, arrow.type = "proportional", xlim = c(2, 6), y.lim = c(3, 7), xlab = expression(italic(X)), ylab = expression(italic(Y)))
+		VecDecomPlot(x.field = VDV[,,1], y.field = VDV[,,2], dens = c(25,25), x.bound = bounds.x, y.bound = bounds.y, tail.length = 0.5, head.length = 0.03, arrow.type = "proportional",  xlim = c(2, 6), ylim = c(3, 7), xlab = expression(italic(X)), ylab = expression(italic(Y)))
 
 	# 0.6.2 gradient field	
 	VDG <- VecDecomGrad(eq1.qp)

@@ -49,8 +49,8 @@
 TSTraj <- function(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs, y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA) {
 
 	if (is.null(y0)) {y0 = c(init.x, init.y)}#{y0 = c(x = init.x, y = init.y)}
-	if (is.null(y0[1])) {stop("Missing initial starting value for x, either init.x or y0")}
-	if (is.null(y0[2])) {stop("Missing initial starting value for y, either init.y or y0")}
+	if (is.null(y0[1])) {stop("Missing initial starting value for x, supply either init.x or y0")}
+	if (is.null(y0[2])) {stop("Missing initial starting value for y, supply either init.y or y0")}
 
 	func <- function(t, state, parms) {
 		with(as.list(c(state, parms)), {

@@ -70,8 +70,9 @@ VecDecomPlot <- function(x.field, y.field, dens, x.bound, y.bound, xlim = NULL, 
 		y.range <- max(y.bound)-min(y.bound)
 		row.range <- nrow(x.field)-1
 		col.range <- ncol(x.field)-1
+		row.min = NA; row.max = NA; col.min = NA; col.max = NA
 
-		if(missing(xlim) == F & missing(ylim) == F) {
+		if(missing(xlim) == FALSE & missing(ylim) == FALSE) {
 		row.min <- (min(xlim)-min(x.bound))/x.range*row.range + 1
 		row.max <- (max(xlim)-min(x.bound))/x.range*row.range + 1
 		col.min <- (min(ylim)-min(y.bound))/y.range*col.range + 1
@@ -92,8 +93,7 @@ VecDecomPlot <- function(x.field, y.field, dens, x.bound, y.bound, xlim = NULL, 
 				ylim <- c(y.min,y.max)
 				}
 			}
-
- 	sub.x <- seq(row.min, row.max, length.out=dens[1])
+	sub.x <- seq(row.min, row.max, length.out=dens[1])
 	sub.y <- seq(col.min, col.max, length.out=dens[2])
 
 	sub.x.val <- ((sub.x-1)/row.range)*x.range + min(x.bound)

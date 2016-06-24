@@ -6,22 +6,3 @@ R CMD build QPot
 #copy tar.gz to /home to install
 #can't install across partitions
 R CMD INSTALL QPot_
-
-#################################
-examples taken from functions in R/
-##################################
-
-QPContour
-
-# #' @examples
-# #' # First, use a surface (example from QPGlobal)
-# #' global.qp <- QPGlobal(list(local.1,local.2),c(0,4),c(0,4),c(-1,5),c(-1,5))
-# #'
-# #' # Second, input that surface into QPContour
-# #' QPContour(surface=global.qp, density=c(100,100), xlim=c(-0.5,20), y.lim=c(-0.5,20), n.filled.contour=20, n.contour.lines=20, col=c("red", "white", "blue"), contour.lines = TRUE)
-
-
-QPGlobal
-# #' @export
-# #' @examples 
-# #' QPGlobal(list(local.1,local.2),c(0,4),c(0,4),c(-1,5),c(-1,5))
