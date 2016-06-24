@@ -54,14 +54,13 @@
 	ts.ex3 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
 
 	# 0.2.3 time series plots
-		temp.default.par <- par()
 		TSPlot(ts.ex3, deltat = model.deltat)
-		par(temp.default.par)
 		TSPlot(ts.ex3, deltat = model.deltat, dim = 2 , line.alpha = 5)
 		TSDensity(ts.ex3, dim = 1)
 		TSDensity(ts.ex3, dim = 2 , contour.levels = 20 , contour.lwd = 0.1)
 
 		# plots for the paper figures
+		#plotwd = # folder location to store figure files
 			# Ex3_TS_1D.png
 				# png(file = paste(plotwd, "/Ex3_TS_1D.png", sep = ""), width = 600, height = 350)
 				# TSPlot(ts.ex3, deltat = model.deltat)
@@ -131,15 +130,15 @@ QPContour(ex3.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds
 
 	# 0.6.1 vector field
 	VDV <- VecDecomVec(x.num.steps = step.number.y, y.num.steps= step.number.y, x.rhs=equation.x, y.rhs=equation.y, x.bound= bounds.x, y.bound= bounds.x)
-		VecDecomPlot(x.field=VDV[,,1], y.field=VDV[,,2], dens=c(50,50), x.bound= bounds.x, y.bound=bounds.y , tail.length = 0.2 , length = 0.03)
+		VecDecomPlot(x.field=VDV[,,1], y.field=VDV[,,2], dens=c(25,25), x.bound= bounds.x, y.bound=bounds.y , tail.length = 0.2 , head.length = 0.03, arrow.type = "equal")
 
 	# 0.6.2 gradient field	
-	VDG <- VecDecomGrad(e3.global)
-		VecDecomPlot(x.field=VDG[,,1], y.field=VDG[,,2], dens=c(25,25), x.bound= bounds.x, y.bound= bounds.y , tail.length = 0.5 , length = 0.03 , arrow.type = "proportional")
+	VDG <- VecDecomGrad(ex3.global)
+		VecDecomPlot(x.field=VDG[,,1], y.field=VDG[,,2], dens=c(25,25), x.bound= bounds.x, y.bound= bounds.y , tail.length = 0.33 , head.length = 0.03 , arrow.type = "proportional")
 
 	# 0.6.3 remainder field
-	VDR <- VecDecomRem(surface=e3.global, x.rhs=equation.x, y.rhs=equation.y, x.bound=bounds.x, y.bound=bounds.y)
-		VecDecomPlot(x.field=VDR[,,1], y.field=VDR[,,2], dens=c(25,25), x.bound= bounds.y, y.bound=bounds.y , tail.length = 0.5 , length = 0.03 , arrow.type = "proportional")
+	VDR <- VecDecomRem(surface=ex3.global, x.rhs=equation.x, y.rhs=equation.y, x.bound=bounds.x, y.bound=bounds.y)
+		VecDecomPlot(x.field=VDR[,,1], y.field=VDR[,,2], dens=c(25,25), x.bound= bounds.y, y.bound=bounds.y , tail.length = 0.5 , head.length = 0.03 , arrow.type = "proportional")
 
 ##### 0.7 3D graphs!!! #####
 	library(rgl)
