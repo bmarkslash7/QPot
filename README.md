@@ -8,9 +8,9 @@ QPot offers a range of tools to simulate, analyze, and visualize the dynamics of
 
 M. K. Cameron. 2012. Finding the quasipotential for nongradient SDEs. *Physica D*, 241(18):1532–1550.
 
-Moore, C.M., Stieha, C.R., Nolting, B.C., Cameron, M.K., and Abbott, K.C. *Submitted to The R Journal.* QPot: An R package for stochastic differential equation quasi-potential analysis
+Moore, C.M., Stieha, C.R., Nolting, B.C., Cameron, M.K., and Abbott, K.C. *Resubmitted to The R Journal.* QPot: An R package for stochastic differential equation quasi-potential analysis
 
-B. C. Nolting and K. C. Abbott. *Accepted.* Balls, cups, and quasi-potentials: quantifying stability in stochastic systems. *Ecology.*
+B. C. Nolting and K. C. Abbott. 2016. Balls, cups, and quasi-potentials: quantifying stability in stochastic systems. *Ecology,* 97(4):850-864.
 
 ### Functions ###
 

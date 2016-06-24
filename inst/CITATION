@@ -1,0 +1,57 @@
+citHeader("To cite QPot in publications use:")
+
+citEntry(entry = "Article",
+  title        = "QPot: Quasi-Potential Analysis for Stochastic Differential Equations",
+  author       = c(person(given = "Christopher", family = "Moore"),
+                   person(given = "Christopher", family = "Stieha"),
+                   person(given = "Ben", family = "Nolting"),
+                   person(given = "Maria", family = "Cameron"),
+                   person(given = "Karen", family = "Abbott")
+                  ),
+  journal      = "In revision at The R Journal",
+  year         = "2016",
+  volume       = "X",
+  number       = "X",
+  pages        = "X--X",
+  url          = "https://github.com/bmarkslash7/QPot",
+
+  textVersion  =
+  paste("Christopher Moore, Christopher Stieha, Ben Nolting, Maria Cameron and Karen Abbott (2016).",
+        "QPot: Quasi-Potential Analysis for Stochastic Differential Equations. R package version 1.2.",
+        "In revision at The R Journal, XX(X):X-XX.",
+        "package URL https://github.com/bmarkslash7/QPot.")
+)
+
+citEntry(entry = "Article",
+  title        = "Balls, cups, and quasi-potentials: quantifying stability in stochastic systems",
+  author       = c(person(given = "Ben C.", family = "Nolting"),
+                   person(given = "Karen C.", family = "Abbott")
+                  ),
+  journal      = "Ecology",
+  year         = "2016",
+  volume       = "97",
+  number       = "4",
+  pages        = "850-864",
+
+  textVersion  =
+  paste("Nolting, Ben C., and Abbott, Karen C. (2016).",
+        "Balls, cups, and quasi-potentials: quantifying stability in stochastic systems.",
+        "Ecology, 97(4):850-864.")
+)
+
+citEntry(entry = "Article",
+  title        = "Finding the quasipotential for nongradient SDEs",
+  author       = c(
+                   person(given = "Maria K.", family = "Cameron")
+                  ),
+  journal      = "Physica D",
+  year         = "2012",
+  volume       = "241",
+  number       = "18",
+  pages        = "1532-1550",
+
+  textVersion  =
+  paste("Maria K. Cameron. (2012).",
+        "Finding the quasipotential for nongradient SDEs.",
+        "Physica D, 241(18):1532-1550.")
+)
