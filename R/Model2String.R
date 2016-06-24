@@ -61,7 +61,7 @@ Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs
 	
 	#remove the lhs and return the rhs
 #		for (i in 1:length(temp)) { 
-		for (i in seq_along(x)) {
+		for (i in seq_along(temp)) {
 		#when searching, first look for the lhs defining whether the derivative is for x or y
 		#once found, look inside the string and use either '<-' or '=' to separate
 		# the lhs from the rhs
