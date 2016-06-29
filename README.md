@@ -129,6 +129,7 @@ QPContour(surface = ex1.global, dens = c(1000, 1000),
 ```R
 VDAll <- VecDecomAll(surface = ex1.global, x.rhs = parms.eqn.x, 
 					y.rhs = parms.eqn.y, x.bound = bounds.x, y.bound = bounds.y)
+
 VecDecomPlot(x.field = VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), 
 			x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), 
 			ylim = c(0, 6), arrow.type = "equal", tail.length = 0.25, 
