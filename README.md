@@ -55,19 +55,25 @@ require(QPot)
 
 var.eqn.x <- "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa+(x^2)))"
 var.eqn.y <- "((gamma*(x^2)*y)/(kappa+(x^2))) - mu*(y^2)"
-
-model.state <- c(x = 1, y = 2)
 model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, 
-					kappa = 1, mu = 0.112509)
+	kappa = 1, mu = 0.112509)
+parms.eqn.x <- Model2String(var.eqn.x, parms = model.parms)
+parms.eqn.y <- Model2String(var.eqn.y, parms = model.parms, 
+	supress.print = TRUE) # does not print to screen
+model.state <- c(x = 1, y = 2)
 model.sigma <- 0.05
-model.time <- 1000
+model.time <- 1000 # we used 12500 in the figures
 model.deltat <- 0.025
 ```
 #### 0.2.2 Time series ####
 ```R
 ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
-			x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, 
-			sigma = model.sigma)
+     x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, sigma = model.sigma)
+
+# Could also use TSTraj to combine equation strings and parameter values
+#ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#     x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
+
 ```
 #### 0.2.3 Time series plots ####
 ```R
@@ -78,12 +84,20 @@ TSDensity(ts.ex1, dim = 2)
 ```
 #### 0.3 Compute the local quasi-potentials ####
 ```R
-equation.x = "1.54*x*(1.0-(x/10.14))-(y*x*x)/(1.0+x*x)"
-equation.y = "((0.476*x*x*y)/(1+x*x))-0.112590*y*y"
+parms.eqn.x <- Model2String(var.eqn.x, parms = model.parms)
+   # if not done in a previous step
+parms.eqn.x <- Model2String(var.eqn.y, parms = model.parms, 
+   supress.print = TRUE) # does not print to screen
+   
+# Could also input the values by hand and use this version
+# parms.eqn.x = "1.54*x*(1.0-(x/10.14)) - (y*(x^2))/(1.0+(x^2))"
+# parms.eqn.x = "((0.476*(x^2)*y)/(1+(x^2))) - 0.112509*(y^2)"
+
 bounds.x = c(-0.5, 20.0)
 bounds.y = c(-0.5, 20.0)
 step.number.x = 4100
 step.number.y = 4100
+
 eq1.x = 1.40491
 eq1.y = 2.80808
 eq2.x = 4.9040
