@@ -127,19 +127,18 @@ QPContour(surface = ex1.global, dens = c(1000, 1000),
 
 #### 0.6 Vector field decomposition ####
 ```R
-VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equation.x, 
-					y.rhs = equation.y, x.bound = bounds.x, y.bound = bounds.y)
+VDAll <- VecDecomAll(surface = ex1.global, x.rhs = parms.eqn.x, 
+					y.rhs = parms.eqn.y, x.bound = bounds.x, y.bound = bounds.y)
+VecDecomPlot(x.field = VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), 
+			x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), 
+			ylim = c(0, 6), arrow.type = "equal", tail.length = 0.25, 
+			head.length = 0.025)
 
-VecDecomPlot(field = list(VDAll[,,1], VDAll[,,2]), dens = c(25, 25), 
-			x.bound = bounds.x, y.bound = bounds.y, x.lim = c(0, 11), 
-			y.lim = c(0, 6), arrow.type = "equal", 
-			tail.length = 0.25, head.length = 0.025)
-
-VecDecomPlot(field = list(VDAll[,,3], VDAll[,,4]), dens = c(25, 25), 
+VecDecomPlot(x.field = VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), 
 			x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", 
 			tail.length = 0.25, head.length = 0.025)
 
-VecDecomPlot(field = list(VDAll[,,5], VDAll[,,6]), dens = c(25, 25), 
+VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), 
 			x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", 
 			tail.length = 0.35, head.length = 0.025)
 ```
@@ -151,8 +150,8 @@ VDV <- VecDecomVec(x.num.steps = step.number.x, y.num.steps = step.number.y,
 					y.bound = bounds.y)
 
 VecDecomPlot(field = list(VDV[,,1], VDV[,,2]), dens = c(50, 50), 
-				x.bound = bounds.x, y.bound=bounds.y, x.lim = c(0, 11), 
-				y.lim=c(0, 6), arrow.type="proportional", 
+				x.bound = bounds.x, y.bound=bounds.y, xlim = c(0, 11), 
+				ylim=c(0, 6), arrow.type="proportional", 
 				tail.length=0.75, head.length=0.03)
 ```
 
