@@ -37,7 +37,7 @@
 #'	TSDensity(ModelOut, dim = 2, kde2d.n = 20, xlab = "")
 #' }
 
-	TSDensity <- function(mat, dim = 1, xlim = NULL, ylim = NULL, contour.levels = 15,  col2d = c("blue", "yellow", "orange", "red") , contour.lwd = 0.5, contour.lines = TRUE, kde2d.n = 100, ...){
+	TSDensity <- function(mat, dim = 1, xlim = NULL, ylim = NULL, contour.levels = 15,  col2d = c("blue", "yellow", "orange", "red") , contour.lwd = 0.5, contour.lines = TRUE, kde2d.n = 100, xlab = "X", ylab = "Y", ...){
 		if (dim ==1){
 			densA <- density(mat[,2] , na.rm = T)
 			densB <- density(mat[,3] , na.rm = T)
@@ -49,10 +49,7 @@
 			}
 		if (dim == 2) {
 #			require("MASS")	#Mass called in DESCRIPTION, Depends
-			parms <- as.list(match.call())
-			if (any(names(parms) == "xlab") == F) {xlab = "State variable 1"}
-			if (any(names(parms) == "ylab") == F) {ylab = "State variable 2"}
-			# if (any(names(parms)) == "dim") {print("yay!")}
+
 			if(missing(xlim) | missing(ylim)){
 				kern.2d <- MASS::kde2d(mat[,2], mat[,3], n = kde2d.n)
 				} else {
@@ -64,7 +61,7 @@
 			y.range <- 1:y.max
 			contour.breaks <- seq(min(kern.2d$z) , max(kern.2d$z), length = contour.levels)
 			myRmap <- colorRampPalette(col2d)(contour.levels)
-			plot(0 , type = "n" , xlim = c(1 , x.max), ylim = c(1 , y.max),  xaxt = "n" , yaxt = "n", xaxs = "i", yaxs = "i", xlab ="", ylab = "", ...)
+			plot(0 , type = "n" , xlim = c(1 , x.max), ylim = c(1 , y.max),  xaxt = "n" , yaxt = "n", xaxs = "i", yaxs = "i", xlab = "", ylab = "")
 			.filled.contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap)
 			contour(x.range , y.range , kern.2d$z , levels = contour.breaks , col = myRmap , add = T , drawlabels=F)
 			if (contour.lines == T) {contour(x.range , y.range , kern.2d$z , levels = contour.breaks, drawlabels = F ,  add = TRUE , col = "black" , lwd = contour.lwd)}
