@@ -63,7 +63,7 @@
 #' 	VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25,25), 
 #'		x.bound = xbounds, y.bound = ybounds, tail.length = 0.15, head.length = 0.05)
 
-VecDecomPlot <- function(x.field, y.field, dens, x.bound, y.bound, xlim = NULL, ylim = NULL, arrow.type = "equal", tail.length = 0.25, head.length = 0.25, ...){
+VecDecomPlot <- function(x.field, y.field, dens, x.bound, y.bound, xlim = NULL, ylim = NULL, arrow.type = "equal", tail.length = 0.25, head.length = 0.25, xlab = "X", ylab = "Y", ...){
 
 		if(any(dim(x.field) != dim(y.field))){stop("x.field and y.field have at least one unequal dimension length")}
 		x.range <- max(x.bound)-min(x.bound)

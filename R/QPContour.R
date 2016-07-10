@@ -53,7 +53,7 @@
 #' 	QPContour(ex1.global, dens = c(100,100), x.bound = xbounds, 
 #'		y.bound = ybounds, c.parm = 5)
 
-QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL, n.filled.contour=25, n.contour.lines=25, c.parm=1, col.contour, contour.lines = TRUE, xlab = "X", ylab = "Y", ...){
+QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL, n.filled.contour = 25, n.contour.lines = 25, c.parm = 1, col.contour, contour.lines = TRUE, xlab = "X", ylab = "Y", ...){
 	x.range <- max(x.bound)-min(x.bound)
 	y.range <- max(y.bound)-min(y.bound)
 
