@@ -125,7 +125,7 @@ VecDecomPlot <- function(x.field, y.field, dens, x.bound, y.bound, xlim = NULL, 
  	qpr <- nrow(dx.plot)
 	qpc <- ncol(dy.plot)
 
-	plot(0 , type = "n" , xlim = xlim , ylim = ylim , las = 1, ...)
+	plot(0 , type = "n" , xlim = xlim , ylim = ylim , las = 1, xlab = xlab, ylab = ylab, ...)
 	for (j in 1:qpr){
 			for (i in 1:qpc){
 				x0 <- sub.x.val[j] - (dx.plot[j,i]/2)

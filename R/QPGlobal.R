@@ -87,7 +87,7 @@ QPGlobal <- function(local.surfaces , unstable.eq.x , unstable.eq.y , x.bound , 
 	}
 	rm(eq.arr.unadj)
 	gc()
-	global.qp <- apply(eq.arr , c(1:n.surfaces) , min)
+	global.qp <- apply(eq.arr , c(1, 2) , min)
 	rm(eq.arr)
 	gc()
 	global.qp
