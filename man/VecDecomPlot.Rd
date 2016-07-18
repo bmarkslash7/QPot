@@ -6,7 +6,7 @@
 \usage{
 VecDecomPlot(x.field, y.field, dens, x.bound, y.bound, xlim = NULL,
   ylim = NULL, arrow.type = "equal", tail.length = 0.25,
-  head.length = 0.25, ...)
+  head.length = 0.25, xlab = "X", ylab = "Y", ...)
 }
 \arguments{
 \item{x.field}{a two-dimensional array containing the x-values for the vector field, generated from \code{\link{VecDecomAll}}, \code{\link{VecDecomVec}}, \code{\link{VecDecomGrad}}, or \code{\link{VecDecomRem}}.}
