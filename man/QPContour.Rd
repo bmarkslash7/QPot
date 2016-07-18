@@ -31,9 +31,9 @@ QPContour(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
 
 \item{contour.lines}{if \code{TRUE}, then contour lines plotted over filled contour; vice versa if \code{FALSE}.}
 
-\item{xlab}{a title for the x axis when}
+\item{xlab}{a title for the x axis.  Default is 'X'}
 
-\item{ylab}{a title for the y axis when}
+\item{ylab}{a title for the y axis.  Default is 'Y'}
 
 \item{...}{passes arguments to \code{\link{plot}}.}
 }

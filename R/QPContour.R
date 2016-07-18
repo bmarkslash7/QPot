@@ -12,8 +12,8 @@
 #' @param c.parm contour line adjustment (see details).
 #' @param col.contour colors to interpolate; must be a valid argument to \code{\link{col2rgb}}.
 #' @param contour.lines if \code{TRUE}, then contour lines plotted over filled contour; vice versa if \code{FALSE}.
-#' @param xlab a title for the x axis when
-#' @param ylab a title for the y axis when
+#' @param xlab a title for the x axis.  Default is 'X'
+#' @param ylab a title for the y axis.  Default is 'Y'
 #' @param ... passes arguments to \code{\link{plot}}.
 #' @details Because, in general, capturing the topological features of a surface can be subtle, we implemented a feature in \code{\link{QPContour}} to keep the filled contour region while changing the contour lines.  Specifically, \code{\link{filled.contour}} takes the range of the surface values (\eqn{\phi}), divides by the number of the specified contours (i.e., \code{n.filled.contour}), and creates a contour at each break, which happenes to be equal across the range.  But because visualizing some topology may (i) require looking between contour breaks and (ii) adding contour lines would overload the plot with lines, we use an equation to modify the distribution of contour lines.  Namely, adjusting the \code{c} argument in the \code{\link{QPContour}} function adjusts the \eqn{c} paramter in the following equation: \deqn{max_\phi \times \left(\frac{x}{n-1}\right)^c.}  This allows the user to keep the same number of contour lines (i.e., specified with \code{n.contour.lines}), but focus them toward the troughs or peaks of the surfaces. At \eqn{c=1}, the contour lines correspond to the filled.contour breaks.  If \eqn{c > 1}, then the contour lines become more concentrated towards the trough.  Similarly, if \eqn{c < 1}, then the contour lines are more focused at the peaks of the surface.  As an example, we change \eqn{c} : \cr \figure{Example3.png}.
 #'

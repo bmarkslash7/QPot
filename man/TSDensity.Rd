@@ -27,6 +27,10 @@ TSDensity(mat, dim = 1, xlim = NULL, ylim = NULL, contour.levels = 15,
 
 \item{kde2d.n}{number of grid points in each direction. Can be scalar or a length-2 integer vector.  Passes to argument \code{n} in \code{\link[MASS]{kde2d}}.}
 
+\item{xlab}{label for x axis when dim = 2.  Default is 'X'}
+
+\item{ylab}{label for y axis when dim = 2.  Default is 'Y'}
+
 \item{...}{passes arguments to \code{\link{plot}}.}
 }
 \description{

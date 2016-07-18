@@ -29,6 +29,10 @@ VecDecomPlot(x.field, y.field, dens, x.bound, y.bound, xlim = NULL,
 
 \item{head.length}{length of the edges of the arrow head (in inches).}
 
+\item{xlab}{label for x axis.  Default is 'X'}
+
+\item{ylab}{label for y axis.  Default is 'Y'}
+
 \item{...}{passes arguments to both \code{\link{plot}}.}
 }
 \description{

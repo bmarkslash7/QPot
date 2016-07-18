@@ -8,6 +8,8 @@
 #' @param y.bound the y boundaries denoted at c(minimum, maximum) for the quasi-potential simulation.
 #' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.
 #' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.
+#' @param xlab label for x axis.  Default is 'X'
+#' @param ylab label for y axis.  Default is 'Y'
 #' @param arrow.type sets the type of line segments plotted. If set to "proportional" the length of the line segments reflects the magnitude of the derivative. If set to "equal" the line segments take equal lengths, simply reflecting the gradient of the derivative(s). Defaults to "equal".
 #' @param tail.length multiplies the current length of the tail (both proportional and equal arrow.types) by the specified factor.  The argument defaults to 1, which is length of the longest vector within the domain boundaries (i.e., the entire field).
 #' @param head.length length of the edges of the arrow head (in inches).

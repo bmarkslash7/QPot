@@ -5,6 +5,8 @@
 #' @param dim dimensions of the plot; \code{dim = 1} plots simple density histogram or \code{dim = 2} plots the density in state space (i.e., X and Y respectively on the abscissa and ordinate axes).
 #' @param xlim numeric vectors of length 2, giving the x coordinate range. Default \code{= NULL} automatically sizes plot window.
 #' @param ylim numeric vectors of length 2, giving the y coordinate range. Default \code{= NULL} automatically sizes plot window.
+#' @param xlab label for x axis when dim = 2.  Default is 'X'
+#' @param ylab label for y axis when dim = 2.  Default is 'Y'
 #' @param contour.levels the number of contour levels for the two-dimensional plots (i.e., when \code{dim = 2}).
 #' @param col2d vector of colors to be used in the plot.
 #' @param contour.lwd line width of contour lines if \code{contour.lines = TRUE}.
