@@ -1,6 +1,6 @@
 Package: QPot
-Version: 1.2
-Date: 2016-05-16
+Version: 1.3
+Date: 2016-07-18
 Title: Quasi-Potential Analysis for Stochastic Differential Equations
 Authors@R: c(
 	person("Christopher", "Moore", role = c("aut"), email = "life.dispersing@gmail.com"),
