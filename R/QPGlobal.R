@@ -67,7 +67,7 @@ QPGlobal <- function(local.surfaces , unstable.eq.x , unstable.eq.y , x.bound , 
 		}
 	}
 
-	max.phi <- max(unstable.phi)
+	max.phi <- max(unstable.phi, na.rm = TRUE)
 	max.phi.arr <- which(unstable.phi == max.phi , arr.ind = T)
 
 	if(nrow(max.phi.arr) != n.unstable.pts){ #if not all max(phi) are the same, then they need to be aligned
