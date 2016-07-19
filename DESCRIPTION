@@ -14,6 +14,8 @@ Depends:
     R (>= 3.0.2)
 Imports:
     MASS
+Suggests: R.rsp, R.devices
+VignetteBuilder: R.rsp
 Maintainer: Christopher Stieha <stieha@hotmail.com>
 Description: Tools to 1) simulate and visualize stochastic differential
     equations and 2) determine stability of equilibria using the ordered-upwind
