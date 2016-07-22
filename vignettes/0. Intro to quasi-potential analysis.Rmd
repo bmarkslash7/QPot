@@ -22,14 +22,20 @@ Introduction to QPot
 ### How does QPot work?
 The quasi-potential is calculated numerically for 2-dimensional stochastic equations through an ordered upwind method developed by Sethian and Vladimirsky,
 > J. A. Sethian and A. Vladimirsky. Ordered upwind methods for static Hamilton-Jacobi equations. Proceedings of the National Academy of Sciences, 98(20):11069–11074, 2001.
+
 > J. A. Sethian and A. Vladimirsky. Ordered upwind methods for static Hamilton-Jacobi equations: Theory and algorithms. SIAM Journal on Numerical Analysis, 41(1):325–363, 2003.
+
 and expanded on by Cameron
+
 > M. K. Cameron. Finding the quasipotential for nongradient SDEs. Physica D, 241(18):1532–1550, 2012.
 Nolting and Abbott have recently introduced the method to the field of ecology
-> B. C. Nolting and K. C. Abbott. Balls, cups, and quasi-potentials: Quantifying stability in stochastic
-systems. Ecology, 97(4):850–864, 2016.
+
+> B. C. Nolting and K. C. Abbott. Balls, cups, and quasi-potentials: Quantifying stability in stochastic systems. Ecology, 97(4):850–864, 2016.
+
 and we have recently published a detailed paper on how to use **QPot**
+
 > C. Moore, C. Stieha, B. Nolting, M. Cameron, and K. Abbott. QPot: Quasi-Potential Analysis for Stochastic Differential Equations, 2016. URL [https://www.R-project.org/package=QPot](https:// github.com/bmarkslash7/QPot). R package version 1.2.
+
 This vignette is a condensed version of Moore et al. (2016), mostly focusing on Example 1.
 
 ### How can I get QPot?
@@ -38,7 +44,7 @@ This vignette is a condensed version of Moore et al. (2016), mostly focusing on 
 ```R
 	install.packages("QPot")
 ```
-or for the most recent working version from [GitHub](www.github.com/bmarkslash7/QPot):
+or for the most recent working version from [GitHub](https://github.com/bmarkslash7/QPot):
 ```R
 	devtools::install_github(repo = "bmarkslash7/QPot")
 ```
@@ -49,6 +55,7 @@ then simply load the library:
 
 ### Why all of the vignettes?
 We break the vignettes into sections similar to the way we do in Moore et al. (2016).  They're broken into 6 natural steps:
+
 	1. Analyzing the deterministic skeleton
 	2. Stochastic simulation
 	3. Local quasi-potential calculation
