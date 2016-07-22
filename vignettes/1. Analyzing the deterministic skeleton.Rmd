@@ -67,5 +67,33 @@ Then, we plot the direction field and the zero-growth isoclines (i.e., nullcline
 	flowField(model.ex1, x.lim = xlims, y.lim = ylims, parameters = NULL, points = 30, arrow.type = "equal", colour = "grey50")
 	null.clines <- nullclines(model.ex1, x.lim = xlims, y.lim = ylims, parameters = NULL, points = 250, col = c("blue","red"))
 ```
-## Identifying and classifying equilibria
-We can see from the field that trajectories may take many paths to different areas or points in phase space.  But more reliably, we can see that the nullclines cross several times, which means that at those points we have equilibria.  For the purposes of our example, we are interested in interior points (i.e., $x$ and $y$ have populations > 0).
+### Identifying and classifying equilibria
+We can see from the field that trajectories may take many paths to different areas or points in phase space (i.e., there are multiple basins of attraction).  But more reliably, we can see that the nullclines cross several times, which means that at those points we have equilibria.  For the purposes of our example, we are interested in interior points (i.e., $x$ and $y$ have populations > 0).
+
+There are several ways to find solutions and classify equilibrium points.  Users are encouraged to familiarize themselves with [CRAN Task View: Differential Equations](https://cran.r-project.org/web/views/DifferentialEquations.html) for a summary of available packages.  Here, we use package [rootSolve](https://cran.r-project.org/web/packages/rootSolve/index.html) to find equilibria.  At each equilibrium point, we also classify the behavior about the point by finding the eigenvalues of the Jacobian matrix, known as linear or local stability analysis.
+
+#### Finding equilibria
+Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using `rootSolve::stode`.  Because it's a small space, we'll first use a `for` loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.
+```R
+	xspace <- seq(1, 5, length.out = 10)
+	yspace <- seq(2.5, 4, length.out = 10)
+	l.xspace <- length(xspace)
+	l.yspace <- length(yspace)
+	space.mat <- matrix(data = NA, nrow = l.xspace*l.yspace, ncol = 2)	
+
+	for (i in 1:l.xspace){
+		for (j in 1:l.yspace){
+			y <- c(x = xspace[i], y = yspace[j])
+			STO <- stode(y = y, func = model.ex1, parms = NULL, positive = T)
+			space.mat[(((i-1)*l.xspace)+j),] <- STO$y
+		}
+	}
+	eqs <- unique(round(space.mat, 2))
+```
+
+#### Classifying equilibria
+Once we have equilibria, we can classify them using `phaseR::stability`
+```R
+	stability(deriv = model.ex1, y.star = NULL, parameters = NULL, summary = TRUE)
+```
+This will reveal our three interior equilibria---two stable and one unstable equilibrium.  Our current focus is on determining the relative stability around the two interior equilibria when stochasticity is added to the system.  In the next vignette, we heuristically run some stochastic simulations to better understand how the system behaves with stochasticity.
