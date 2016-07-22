@@ -15,8 +15,8 @@ vignette: >
 
 Analyzing the deterministic skeleton
 ========================================================
-#Example 1 from Moore et al. (2016)
-## A system of equations
+## Example 1 from Moore et al. (2016)
+### A system of equations
 In Moore et al. (2016) we use an example of a coupled consumer-resource equation developed for plankton, $x$, and their consumers, $y$:
 
 $$\frac{dx(t)}{dt} = \alpha x(t)\left(1 - \frac{x(t)}{\beta}\right) - \frac{\delta x^2(t)y(t)}{\kappa + x^2(t)} \\
@@ -24,13 +24,48 @@ $$\frac{dx(t)}{dt} = \alpha x(t)\left(1 - \frac{x(t)}{\beta}\right) - \frac{\del
 
 For this system, we use a specific parametrization to generate two non-trivial stable equilibria.  Specifically, we use the parameters:
 
-Parameter   | Value    | Biological description
------------ | -------- | ----------------------------------------
-$\alpha $   | 1.54     | Maximal growth rate of plankton
-$\beta $    | 10.14    | Carrying capacity of plankton
-$\delta $   | 1.0      | Maximal feeding rate of the consumers
-$\gamma $   | 0.476    | Conversion rate of plankton to consumer
-$\mu $      | 0.112509 | Death rate of the consumer
+Parameter  | Value    | Biological description
+---------- | -------- | ----------------------------------------
+$\alpha$   | 1.54     | Maximal growth rate of plankton
+$\beta$    | 10.14    | Carrying capacity of plankton
+$\delta$   | 1.0      | Maximal feeding rate of the consumers
+$\gamma$   | 0.476    | Conversion rate of plankton to consumer
+$\mu$      | 0.112509 | Death rate of the consumer
 
-## Visualizing dynamics
-We can create a vector field of the deterministic skeleton by using package [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html).  First, we will load [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) and its dependency, [deSolve](https://cran.r-project.org/web/packages/deSolve/index.html) ([phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) makes use of `deSolve::ode`).
+### Visualizing dynamics
+We can create a vector field of the deterministic skeleton by using package [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html).  First, we will load [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) and its dependency, [deSolve](https://cran.r-project.org/web/packages/deSolve/index.html) ([phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) makes use of `deSolve::ode`):
+```R
+	library("deSolve")
+	library("phaseR")
+```
+Second, we write our equations above in the format:
+```R
+	model <- function(time, initial conditions, parameters){
+	
+	}
+```
+as
+```R
+	model.ex1 <- function(t, y, parameters) {
+		x <- y[1]
+		y <- y[2]
+		alpha <- parameters["alpha"]
+		beta <- parameters["beta"]
+		delta <- parameters["delta"]
+		kappa <- parameters["kappa"]
+		gamma <- parameters["gamma"]
+		mu <- parameters["mu"]
+		dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+		dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+		list(dx, dy)
+	}
+```
+Then, we plot the direction field and the zero-growth isoclines (i.e., nullclines):
+```R
+	xlims <- c(0, 6)
+	ylims <- c(0, 6)
+	flowField(model.ex1, x.lim = xlims, y.lim = ylims, parameters = NULL, points = 30, arrow.type = "equal", colour = "grey50")
+	null.clines <- nullclines(model.ex1, x.lim = xlims, y.lim = ylims, parameters = NULL, points = 250, col = c("blue","red"))
+```
+## Identifying and classifying equilibria
+We can see from the field that trajectories may take many paths to different areas or points in phase space.  But more reliably, we can see that the nullclines cross several times, which means that at those points we have equilibria.  For the purposes of our example, we are interested in interior points (i.e., $x$ and $y$ have populations > 0).

@@ -28,6 +28,7 @@ The quasi-potential is calculated numerically for 2-dimensional stochastic equat
 and expanded on by Cameron
 
 > M. K. Cameron. Finding the quasipotential for nongradient SDEs. Physica D, 241(18):1532–1550, 2012.
+
 Nolting and Abbott have recently introduced the method to the field of ecology
 
 > B. C. Nolting and K. C. Abbott. Balls, cups, and quasi-potentials: Quantifying stability in stochastic systems. Ecology, 97(4):850–864, 2016.
