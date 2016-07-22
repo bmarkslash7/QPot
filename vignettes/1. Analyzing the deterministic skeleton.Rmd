@@ -1,0 +1,35 @@
+---
+title: "QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis"
+author:
+  - "Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 1
+vignette: >
+  %\VignetteIndexEntry{1. Analyzing the deterministic skeleton}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Analyzing the deterministic skeleton
+========================================================
+#Example 1 from Moore et al. (2016)
+## A system of equations
+In Moore et al. (2016) we use an example of a coupled consumer-resource equation developed for plankton, $x$, and their consumers, $y$:
+$$\frac{dx(t)}{dt} = \alpha x(t)\left(1 - \frac{x(t)}{\beta}\right) - \frac{\delta x^2(t)y(t)}{\kappa + x^2(t)} \\
+\frac{dy(t)}{dt} = \frac{\gamma x^2(t)y(t)}{\kappa + x^2(t)} - \mu y^2(t)$$
+
+For this system, we use a specific parametrization to generate two non-trivial stable equilibria.  Specifically, we use the parameters:
+
+Parameter  | Value    | Biological description
+---------- | -------- | ----------------------------------------
+$\alpha$   | 1.54     | Maximal growth rate of plankton
+$\beta$    | 10.14    | Carrying capacity of plankton
+$\delta$   | 1.0      | Maximal feeding rate of the consumers
+$\gamma$   | 0.476    | Conversion rate of plankton to consumer
+$\mu$      | 0.112509 | Death rate of the consumer
+
+## Visualize dynamics
+We can create a vector field of the deterministic skeleton by using package [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html).  First, we will load [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) and its dependency, [deSolve](https://cran.r-project.org/web/packages/deSolve/index.html) ([phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) makes use of `deSolve::ode`).
