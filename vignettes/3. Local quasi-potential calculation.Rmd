@@ -1,0 +1,58 @@
+---
+title: "QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis"
+author:
+  - "Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 1
+vignette: >
+  %\VignetteIndexEntry{3. Local quasi-potential calculation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Calculating the local quasi-potential
+========================================================
+## Example 1 from Moore et al. (2016)
+The next step is to compute a local quasi-potential for each basin of attractor (sys. with stable equilibrium).  In the example above we have 2. For each stable equilibrium.
+
+To understand the local quasi-potential, it is useful consider the analogy of a particle traveling according to the system of equations in 2. Stochastic simulation. In the context of example 1, the coordinates of the particle correspond to population densities, and the particle’s path corresponds to how those population densities change over time. The deterministic skeleton can be visualized as a force field influencing the particle’s trajectory. Suppose that the particle moves along a path from a stable equilibrium to another point (x, y). If this path does not coincide with a solution of the deterministic skeleton, then the stochastic terms must be doing some ``work'' to move the particle along the path. The more work is required, the less likely it is for the path to be a realization of the system. $\phi (x, y)$ is the amount of work required to traverse the easiest path from the stable equilibrium to (x, y). Note that $\phi (x, y)$ is non-negative, and it is zero at the stable equilibrium.
+
+In the basin of attraction for esi, $\phi (x, y)$ has many properties analogous to the potential function for gradient systems. Key among these properties is that the quasi-potential is non-increasing along deterministic trajectories. This means that the quasi-potential can be interpreted as a type of energy surface, and the rolling ball metaphor is still valid. The difference is that, in non-gradient systems, there is an additional component to the vector field that causes trajectories to circulate around level sets of the energy surface. This is discussed in more detail in [vignette on vector field decomposition], below.
+
+QPot calculates quasi-potentials using an adjustment developed by Cameron (2012) to the ordered upwind algorithm (Sethian and Vladimirsky, 2001, 2003). The idea behind the algorithm is to calculate $\phi (x, y)$ in ascending order, starting with the known the stable equilibrium. The result is an expanding area where the solution is known.
+
+Calculating $\phi (x, y)$ with the function `QPotential` requires:
+
+1. a text string of the equations and parameter values,
+2. the stable equilibrium points, the computation domain, and 
+3. the mesh size.
+
+
+The coordinates of the points esi, which were determined in Step 1, are es1 = (1.4049, 2.8081) and es2 = (4.9040, 4.0619).
+The R Journal Vol. XX/YY, AAAA 20ZZ ISSN 2073-4859CONTRIBUTED RESEARCH ARTICLE 6
+ eq1.x <- 1.40491; eq1.y <- 2.80808
+eq2.x <- 4.9040; eq2.y <- 4.06187
+Next, the boundaries of the computational domain need to be entered. This domain will be denoted by [Lx1, Lx2] × [Ly1, Ly2]. The ordered-upwind method terminates when the solved area encounters a boundary of this domain. Thus, it is important to choose boundaries carefully. For example, if esi lies on one of the coordinate axes, one should not use that axis as a boundary because the algorithm will immediately terminate. Instead, one should add padding space. This is important even if the padding space corresponds to physically unrealistic values (e.g., negative population densities). For this example, a good choice of boundaries is: Lx1 = Ly1 = −0.5, and Lx2 = Ly2 = 20. This choice of domain was obtained by examining stream plots of the deterministic skeleton and density plots of stochastic realizations (Figures 1–3). The domain contains all of the deterministic skeleton equilibria, and it encompasses a large area around the regions of phase space visited by stochastic trajectories (Figures 1–3). Note that a small padding space was added to the left and bottom sides of the domain, so that the coordinate axes are not the domain boundaries.
+bounds.x <- c(-0.5, 20.0); bounds.y <- c(-0.5, 20.0)
+In some cases, it may be desirable to treat boundaries differently in the upwind algorithm. This is addressed below in the section “Boundary behavior”.
+Finally, the mesh size for the discretization of the domain needs to be specified. Let Nx be the number of grid points in the x-direction and Ny be the number of grid points in the y-direction. Note
+that the horizontal distance between mesh points is hx = Lx2−Lx1 , and the vertical distance between Nx
+mesh points is hy = Ly2−Ly1 . Mesh points are considered adjacent if their Euclidean distance is less Ny
+than or equal to h =  h2x + h2y. This means that diagonal mesh points are considered adjacent. In this
+example, a good choice is Nx = Ny = 4100. This means that hx = hy = 0.005, and h ≈ 0.00707. In general, the best choice of mesh size will be a compromise between resolution and computational time. The mesh size must be fine enough to precisely track how information moves outward along characteristics from the initial point. Too fine of a mesh size can lead to very long computational times, though. The way that computation time scales with grid size depends on the system under consideration (see below for computation time for this example), because the algorithm ends when it reaches a boundary, which could occur before the algorithm has exhaustively searched the entire mesh area.
+step.number.x <- 1000; step.number.y <- 1000 # we used 4100 in the figures
+The “update radii factors”, Kx and Ky, are two other adjustable parameters for the algorithm. These are k.x and k.y in QPotential(). These two parameters determine the neighborhood of points that can be used to update a given point. Kx and Ky are the distances (measured in mesh units) in the x and y direction that bound this neighborhood for any given point. The selection of the best values for these parameters involves several nuanced considerations. For a discussion of these issues, please see Cameron (2012). For users who wish to avoid these details, we suggest using the defaults Kx = 20 and Ky = 20.
+The R interface implements the QPotential() algorithm using C code. By default QPotential() outputs a matrix that contains the quasi-potentials to the R session. The time required to compute the quasi-potential will depend on the size of the region and the fineness of the mesh. This example with Kx = Ky = 20 and Nx = Ny = 4100 has approximately 1.7 × 107 grid points, which leads to run times of approximately 2.25 min (2.5 GHz Intel Core i5 processor and 8 GB 1600 MHz DDR3 memory). When one reaches around 5 × 108 grid points, computational time can be several hours. Setting the argument save.to.R to TRUE (default) outputs the matrix into the R session, and setting the argument save.to.HD to TRUE saves the matrix to the hard drive as a tab-delimited text file filename in the current working directory. For Nx = Ny = 4100, the saved file occupies 185 MB.
+eq1.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq1.x, x.bound = bounds.x,
+  x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq1.y,  y.bound =
+  bounds.y, y.num.steps = step.number.y)
+Step 3 should be repeated until local quasi-potentials Φi(x, y) have been obtained for each esi. In example 1, this means calculating Φ1(x, y) corresponding to es1 and Φ2(x, y) corresponding to es2.
+eq2.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq2.x, x.bound = bounds.x,
+  x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq2.y, y.bound =
+  bounds.y, y.num.steps = step.number.y)
+   The R Journal Vol. XX/YY, AAAA 20ZZ ISSN 2073-4859
+CONTRIBUTED RESEARCH ARTICLE 7
+ Each local quasi-potential Φi (x, y) is stored in R as a large matrix. The entries in this matrix are the values of Φi at each mesh point. To define the function on the entire domain (i.e., to allow it to be evaluated at arbitrary points in the domain, not just the discrete mesh points), bilinear interpolation is used. The values of Φ(x, y) can be extracted using the function QPInterp(). Inputs to QPInterp() include the (x, y) coordinates of interest, the (x, y) domain boundaries, and the QPotential() out- put (i.e., the matrix with rows corresponding to x-values and columns corresponding to y-values). QPInterp() can be used for any of the local quasi-potential or the global quasi-potential surfaces (see the next subsection).

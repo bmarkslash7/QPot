@@ -65,7 +65,7 @@ Second, `TSDensity` takes the simulation results and plots it as either a single
 	TSDensity(ts.ex1, dim = 2)
 ```
 
-### Discrepancies in the notion of stability
+### Discrepancies in the notion of stability in stochastic systems
 We can see from these simulations that the system spends a great deal of time around the stable focus at x = 1.405 and y = 2.808 than the stable node at x = 4.904 and y = 4.062.  This realization is typical of this system, regardless of $\delta t$, $T$, or $\sigma$.  We should therefore describe the behavior of system in a way that captures this behavior.  
 
 The typical way of describing stability is through linear stability analysis, which respectively yields the following results for stable focus and stable node:
@@ -73,9 +73,9 @@ The typical way of describing stability is through linear stability analysis, wh
 	stability(deriv = model.ex1, y.star = eqs[1,], parameters = model.parms, summary = F)$eigenvalues
 	stability(deriv = model.ex1, y.star = eqs[3,], parameters = model.parms, summary = F)$eigenvalues
 ```
-The largest real eigenvalue of the Jacobian matrix for the stable focus is -0.0473848 and for the stable node is -0.37737660.  Because the stable node is larger (i.e., more negative), *we would conclude that the stable node is more stable than the stable focus---in direct contrast to what our simulation shows*.  This type of stability---known as asymptotic stability--is not necessarily sufficient for describing stability in stochastic systems, with continual perturbations.
+The largest real eigenvalue of the Jacobian matrix for the stable focus is -0.0473848 and for the stable node is -0.37737660.  Because the stable node is larger (i.e., more negative), **we would conclude that the stable node is more stable than the stable focus---in direct contrast to what our simulation shows**.  This type of stability---known as asymptotic stability---is not necessarily sufficient for describing stability in stochastic systems, with continual perturbations.
 
-This is why we need another tool that will better describe the behavior of how a system will behave with continual perturbations.  For this, Nolting and Abbott have argued that the quasi-potential should be used.
+This is why we need another tool that will better describe the behavior of how a system will behave with continual perturbations.  For this, Nolting and Abbott (2016) have argued that the quasi-potential should be used.
 
 For a more in-depth description and mathematical details, we again encourage readers to see
 
