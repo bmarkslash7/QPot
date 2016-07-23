@@ -41,7 +41,11 @@ We can create a vector field of the deterministic skeleton by using package [pha
 Second, we write our equations above in the format:
 ```R
 	model <- function(time, initial conditions, parameters){
-	
+	assign state variables to initial conditions
+	assign parameters
+	create an object to store output
+	equations
+	a list as the output
 	}
 ```
 as
@@ -55,18 +59,20 @@ as
 		kappa <- parameters["kappa"]
 		gamma <- parameters["gamma"]
 		mu <- parameters["mu"]
-		dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
-		dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
-		list(dx, dy)
+		dy <- numeric(2)
+		dy[1] <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+		dy[2] <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+		list(dy)
 	}
 ```
 Then, we plot the direction field and the zero-growth isoclines (i.e., nullclines):
 ```R
 	xlims <- c(0, 6)
 	ylims <- c(0, 6)
-	flowField(model.ex1, x.lim = xlims, y.lim = ylims, parameters = NULL, points = 30, arrow.type = "equal", colour = "grey50")
-	null.clines <- nullclines(model.ex1, x.lim = xlims, y.lim = ylims, parameters = NULL, points = 250, col = c("blue","red"))
+	flowField(model.ex1, x.lim = xlims, y.lim = ylims, parameters = model.parms, points = 30, add = F)
+	nullclines(model.ex1, x.lim = xlims, y.lim = ylims, parameters = model.parms, points = 250, col = c("blue","red"))
 ```
+
 ### Identifying and classifying equilibria
 We can see from the field that trajectories may take many paths to different areas or points in phase space (i.e., there are multiple basins of attraction).  But more reliably, we can see that the nullclines cross several times, which means that at those points we have equilibria.  For the purposes of our example, we are interested in interior points (i.e., $x$ and $y$ have populations > 0).
 
@@ -75,6 +81,7 @@ There are several ways to find solutions and classify equilibrium points.  Users
 #### Finding equilibria
 For simple models, equilibria can be found analytically.  But for most non-linear models, a solver must be used.  Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using `rootSolve::stode`.  Because it's a small space, we'll first use a `for` loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.
 ```R
+	library("rootSolve")
 	xspace <- seq(1, 5, length.out = 10)
 	yspace <- seq(2.5, 4, length.out = 10)
 	l.xspace <- length(xspace)
@@ -84,16 +91,23 @@ For simple models, equilibria can be found analytically.  But for most non-linea
 	for (i in 1:l.xspace){
 		for (j in 1:l.yspace){
 			y <- c(x = xspace[i], y = yspace[j])
-			STO <- stode(y = y, func = model.ex1, parms = NULL, positive = T)
+			STO <- stode(y = y, func = model.ex1, parms = model.parms, positive = T)
 			space.mat[(((i-1)*l.xspace)+j),] <- STO$y
 		}
 	}
-	eqs <- unique(round(space.mat, 2))
+	eqs <- unique(round(space.mat, 3))
+```
+And, for further confirmation, if the plot window is still open, we can add them to ensure they look correct:
+```R
+	points(eqs[,1], eqs[,2], cex = 1.5)
 ```
 
 #### Classifying equilibria
-Once we have equilibria, we can classify them using `phaseR::stability`
+Once we have equilibria, we can classify them using `phaseR::stability`.  There's a good deal of information beyond the `$classification` that we call and with summary = T`.
 ```R
-	stability(deriv = model.ex1, y.star = NULL, parameters = NULL, summary = TRUE)
+	for (i in 1:nrow(eqs)){
+	print(paste0("x = ", eqs[i, 1], ", y = ", eqs[i, 2], " is a ", stability(deriv = model.ex1, y.star = eqs[i,], parameters = model.parms, summary = F)$classification))
+	}
 ```
+
 This will reveal our three interior equilibria---two stable and one unstable equilibrium.  Our current focus is on determining the relative stability around the two interior equilibria when stochasticity is added to the system.  In the next vignette, we heuristically run some stochastic simulations to better understand how the system behaves with stochasticity.
