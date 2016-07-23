@@ -16,6 +16,7 @@ vignette: >
 Calculating the local quasi-potential
 ========================================================
 ## Example 1 from Moore et al. (2016)
+### Conceptualizing the local quasi-potential
 The next step is to compute a local quasi-potential for each basin of attractor (sys. with stable equilibrium).  In the example above we have 2. For each stable equilibrium.
 
 To understand the local quasi-potential, it is useful consider the analogy of a particle traveling according to the system of equations in 2. Stochastic simulation. In the context of example 1, the coordinates of the particle correspond to population densities, and the particle’s path corresponds to how those population densities change over time. The deterministic skeleton can be visualized as a force field influencing the particle’s trajectory. Suppose that the particle moves along a path from a stable equilibrium to another point (x, y). If this path does not coincide with a solution of the deterministic skeleton, then the stochastic terms must be doing some ``work'' to move the particle along the path. The more work is required, the less likely it is for the path to be a realization of the system. $\phi (x, y)$ is the amount of work required to traverse the easiest path from the stable equilibrium to (x, y). Note that $\phi (x, y)$ is non-negative, and it is zero at the stable equilibrium.
@@ -27,15 +28,20 @@ QPot calculates quasi-potentials using an adjustment developed by Cameron (2012)
 Calculating $\phi (x, y)$ with the function `QPotential` requires:
 
 1. a text string of the equations and parameter values,
-2. the stable equilibrium points, the computation domain, and 
-3. the mesh size.
+2. the stable equilibrium points,
+3. the computation domain, and
+4. the mesh size.
 
+The coordinates of the stable equilibrium points, which were determined in 1. Analyzing the deterministic skeleton, are $e_{s1} = (1.4049, 2.8081)$ and $e_{s2} = (4.9040, 4.0619)$.
 
-The coordinates of the points esi, which were determined in Step 1, are es1 = (1.4049, 2.8081) and es2 = (4.9040, 4.0619).
-The R Journal Vol. XX/YY, AAAA 20ZZ ISSN 2073-4859CONTRIBUTED RESEARCH ARTICLE 6
- eq1.x <- 1.40491; eq1.y <- 2.80808
-eq2.x <- 4.9040; eq2.y <- 4.06187
+```R
+	eq1.x <- eqs[1, 1]; eq1.y <- eqs[1, 2] # stable focus
+	eq2.x <- eqs[3, 1]; eq2.y <- eqs[3, 2] # stable node
+```
+
+### Determining the computational domain
 Next, the boundaries of the computational domain need to be entered. This domain will be denoted by [Lx1, Lx2] × [Ly1, Ly2]. The ordered-upwind method terminates when the solved area encounters a boundary of this domain. Thus, it is important to choose boundaries carefully. For example, if esi lies on one of the coordinate axes, one should not use that axis as a boundary because the algorithm will immediately terminate. Instead, one should add padding space. This is important even if the padding space corresponds to physically unrealistic values (e.g., negative population densities). For this example, a good choice of boundaries is: Lx1 = Ly1 = −0.5, and Lx2 = Ly2 = 20. This choice of domain was obtained by examining stream plots of the deterministic skeleton and density plots of stochastic realizations (Figures 1–3). The domain contains all of the deterministic skeleton equilibria, and it encompasses a large area around the regions of phase space visited by stochastic trajectories (Figures 1–3). Note that a small padding space was added to the left and bottom sides of the domain, so that the coordinate axes are not the domain boundaries.
+
 bounds.x <- c(-0.5, 20.0); bounds.y <- c(-0.5, 20.0)
 In some cases, it may be desirable to treat boundaries differently in the upwind algorithm. This is addressed below in the section “Boundary behavior”.
 Finally, the mesh size for the discretization of the domain needs to be specified. Let Nx be the number of grid points in the x-direction and Ny be the number of grid points in the y-direction. Note
