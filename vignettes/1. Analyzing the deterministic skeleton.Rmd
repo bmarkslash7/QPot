@@ -73,7 +73,7 @@ We can see from the field that trajectories may take many paths to different are
 There are several ways to find solutions and classify equilibrium points.  Users are encouraged to familiarize themselves with [CRAN Task View: Differential Equations](https://cran.r-project.org/web/views/DifferentialEquations.html) for a summary of available packages.  Here, we use package [rootSolve](https://cran.r-project.org/web/packages/rootSolve/index.html) to find equilibria.  At each equilibrium point, we also classify the behavior about the point by finding the eigenvalues of the Jacobian matrix, known as linear or local stability analysis.
 
 #### Finding equilibria
-Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using `rootSolve::stode`.  Because it's a small space, we'll first use a `for` loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.
+For simple models, equilibria can be found analytically.  But for most non-linear models, a solver must be used.  Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using `rootSolve::stode`.  Because it's a small space, we'll first use a `for` loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.
 ```R
 	xspace <- seq(1, 5, length.out = 10)
 	yspace <- seq(2.5, 4, length.out = 10)

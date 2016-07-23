@@ -24,6 +24,7 @@ dY(t) = \left(\frac{\gamma X^2(t)Y(t)}{\kappa + X^2(t)} - \mu Y^2(t)\right) + \s
 
 There are several existing packages in R that will run stochastic simulations (see references in [CRAN Task View: Differential Equations](https://cran.r-project.org/web/views/DifferentialEquations.html)), but we include a less-computationally-efficient function for less-intensive simulations that are sufficient for our purposes and takes arguments in the form that we later use for the quasi-potential analysis.
 
+### Running the simulation
 Specifically, we created `TSTraj` (for **T**ime **S**eries **Traj**ectory), to take a equations as strings, with the option to specify the parameter values as a separate list.  `TSTraj` allows users to add stochasticity to the model (`sigma`), control  the timestep ($\delta t$), set upper and lower bounds (e.g., a lower bound of 0 may be useful for biologists studying populations since a population of < 0 is yet to be discovered), and returns a matrix with the numbers of rows equal to the total time steps ($\delta t \times T$) and two columns for each state variable (e.g., $X$ and $Y$).
 
 Specifying the above equations can be separate from the parameters:
@@ -33,16 +34,23 @@ var.eqn.y <- "((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)"
 model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, kappa = 1,
   mu = 0.112509)
 ```
+or together, using `QPot::Model2String`
+```R
+	parms.eqn.x <- Model2String(var.eqn.x, parms = model.parms, supress.print = TRUE)
+	parms.eqn.y <- Model2String(var.eqn.y, parms = model.parms, supress.print = TRUE)
+```
+For this simulation, we start our simulation at (1, 2), add Gaussian noise with a mean of 0 and a standard deviation of 0.05 every $\delta t = 0.025$, for a total time of $T = 1000$.
 
-parms.eqn.x <- Model2String(var.eqn.x, parms = model.parms)
-## Do not print to screen.
-parms.eqn.y <- Model2String(var.eqn.y, parms = model.parms, supress.print = TRUE)
+```R
 model.state <- c(x = 1, y = 2)
 model.sigma <- 0.05
-model.time <- 1000     # we used 12500 in the figures
+model.time <- 1000
 model.deltat <- 0.025
-ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat,
-  x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, sigma = model.sigma)
-## Could also use TSTraj to combine equation strings and parameter values.
-## ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat,
-##   x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
+
+ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, sigma = model.sigma)
+```
+Or alternatively, one could also use TSTraj to combine equation strings and parameter values.
+```R
+ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, parms = model.parms, sigma = model.sigma)
+```
+### Visualizing the results
