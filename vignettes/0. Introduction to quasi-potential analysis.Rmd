@@ -6,7 +6,7 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
-    toc_depth: 1
+    toc_depth: 3
 vignette: >
   %\VignetteIndexEntry{0. Intro to quasi-potential analysis}
   %\VignetteEngine{knitr::rmarkdown}
@@ -21,6 +21,7 @@ Introduction to QPot
 
 ### How does QPot work?
 The quasi-potential is calculated numerically for 2-dimensional stochastic equations through an ordered upwind method developed by Sethian and Vladimirsky,
+
 > J. A. Sethian and A. Vladimirsky. Ordered upwind methods for static Hamilton-Jacobi equations. Proceedings of the National Academy of Sciences, 98(20):11069–11074, 2001.
 
 > J. A. Sethian and A. Vladimirsky. Ordered upwind methods for static Hamilton-Jacobi equations: Theory and algorithms. SIAM Journal on Numerical Analysis, 41(1):325–363, 2003.
@@ -43,7 +44,7 @@ This vignette is a condensed version of Moore et al. (2016), mostly focusing on 
 **QPot** can be downloaded like any other package from CRAN:
 
 ```R
-	install.packages("QPot")
+	install.packages(pkgs = "QPot")
 ```
 or for the most recent working version from [GitHub](https://github.com/bmarkslash7/QPot):
 ```R
@@ -51,7 +52,7 @@ or for the most recent working version from [GitHub](https://github.com/bmarksla
 ```
 then simply load the library:
 ```R
-	library("QPot")
+	library(package = "QPot")
 ```
 
 ### Why all of the vignettes?
@@ -63,4 +64,5 @@ We break the vignettes into sections similar to the way we do in Moore et al. (2
 	4. Global quasi-potential calculation
 	5. Global quasi-potential visualization
 	6. Vector field decomposition
-(1) Analyzing the deterministic skeleton goes through the process of taking a set of ordinary (non-stochastic) differential equations and examining its dynamics. (2) Adds stochasticity to (1), and we see that we need a tool to determine how the system will behave.  (3) Is the first part of quasi-potential analysis, where a local quasi-potential is calculated for each stable equilibrium.  (4) Combines each local quasi-potential  into a global quasi-potential surface.  (5) Visualized the global quasi-potential surface.  (6) Performs a vector field decomposition of the deterministic direction field, the gradient field, and remainder field.
+
+Analyzing the deterministic skeleton (1) goes through the process of taking a set of ordinary (non-stochastic) differential equations and examining its dynamics. (2) Adds stochasticity to (1), and we see that we need a tool to determine how the system will behave.  (3) Is the first part of quasi-potential analysis, where a local quasi-potential is calculated for each stable equilibrium.  (4) Combines each local quasi-potential  into a global quasi-potential surface.  (5) Visualized the global quasi-potential surface.  (6) Performs a vector field decomposition of the deterministic direction field, the gradient field, and remainder field.

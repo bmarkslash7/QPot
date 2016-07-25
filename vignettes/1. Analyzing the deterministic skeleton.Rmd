@@ -6,7 +6,7 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
-    toc_depth: 1
+    toc_depth: 3
 vignette: >
   %\VignetteIndexEntry{1. Analyzing the deterministic skeleton}
   %\VignetteEngine{knitr::rmarkdown}
@@ -19,13 +19,13 @@ Analyzing the deterministic skeleton
 ### A system of equations
 In Moore et al. (2016) we use an example of a coupled consumer-resource equation developed for plankton, $x$, and their consumers, $y$:
 
-$$\frac{dx(t)}{dt} = \alpha x(t)\left(1 - \frac{x(t)}{\beta}\right) - \frac{\delta x^2(t)y(t)}{\kappa + x^2(t)} \\
-\frac{dy(t)}{dt} = \frac{\gamma x^2(t)y(t)}{\kappa + x^2(t)} - \mu y^2(t)$$
+$$\frac{dx(t)}{dt} = \alpha x(t)\left(1 - \frac{x(t)}{\beta}\right) - \frac{\delta x^2(t)y(t)}{\kappa + x^2(t)}$$
+$$\frac{dy(t)}{dt} = \frac{\gamma x^2(t)y(t)}{\kappa + x^2(t)} - \mu y^2(t)$$
 
 For this system, we use a specific parametrization to generate two non-trivial stable equilibria.  Specifically, we use the parameters:
 
 Parameter  | Value    | Biological description
----------- | -------- | ----------------------------------------
+---------- | :-------- | :----------------------------------------
 $\alpha$   | 1.54     | Maximal growth rate of plankton
 $\beta$    | 10.14    | Carrying capacity of plankton
 $\delta$   | 1.0      | Maximal feeding rate of the consumers
@@ -35,10 +35,10 @@ $\mu$      | 0.112509 | Death rate of the consumer
 ### Visualizing dynamics
 We can create a vector field of the deterministic skeleton by using package [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html).  First, we will load [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) and its dependency, [deSolve](https://cran.r-project.org/web/packages/deSolve/index.html) ([phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) makes use of `deSolve::ode`):
 ```R
-	library("deSolve")
-	library("phaseR")
+	library(package = "deSolve")
+	library(package = "phaseR")
 ```
-Second, we write our equations above in the format:
+Second, we write our equations above in the pseudo-code format:
 ```R
 	model <- function(time, initial conditions, parameters){
 	assign state variables to initial conditions
@@ -48,7 +48,7 @@ Second, we write our equations above in the format:
 	a list as the output
 	}
 ```
-as
+in R as
 ```R
 	model.ex1 <- function(t, y, parameters) {
 		x <- y[1]
@@ -69,7 +69,7 @@ Then, we plot the direction field and the zero-growth isoclines (i.e., nullcline
 ```R
 	xlims <- c(0, 6)
 	ylims <- c(0, 6)
-	flowField(model.ex1, x.lim = xlims, y.lim = ylims, parameters = model.parms, points = 30, add = F)
+	flowField(deriv = model.ex1, x.lim = xlims, y.lim = ylims, parameters = model.parms, points = 30, add = F)
 	nullclines(model.ex1, x.lim = xlims, y.lim = ylims, parameters = model.parms, points = 250, col = c("blue","red"))
 ```
 
@@ -81,11 +81,11 @@ There are several ways to find solutions and classify equilibrium points.  Users
 #### Finding equilibria
 For simple models, equilibria can be found analytically.  But for most non-linear models, a solver must be used.  Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using `rootSolve::stode`.  Because it's a small space, we'll first use a `for` loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.
 ```R
-	library("rootSolve")
-	xspace <- seq(1, 5, length.out = 10)
-	yspace <- seq(2.5, 4, length.out = 10)
-	l.xspace <- length(xspace)
-	l.yspace <- length(yspace)
+	library(package = "rootSolve")
+	xspace <- seq(from = 1, to = 5, length.out = 10)
+	yspace <- seq(from = 2.5, to = 4, length.out = 10)
+	l.xspace <- length(x = xspace)
+	l.yspace <- length(x = yspace)
 	space.mat <- matrix(data = NA, nrow = l.xspace*l.yspace, ncol = 2)	
 
 	for (i in 1:l.xspace){
@@ -95,18 +95,18 @@ For simple models, equilibria can be found analytically.  But for most non-linea
 			space.mat[(((i-1)*l.xspace)+j),] <- STO$y
 		}
 	}
-	eqs <- unique(round(space.mat, 3))
+	eqs <- unique(x = round(x = space.mat, digits = 3))
 ```
 And, for further confirmation, if the plot window is still open, we can add them to ensure they look correct:
 ```R
-	points(eqs[,1], eqs[,2], cex = 1.5)
+	points(x = eqs[,1], y = eqs[,2], cex = 1.5)
 ```
 
 #### Classifying equilibria
-Once we have equilibria, we can classify them using `phaseR::stability`.  There's a good deal of information beyond the `$classification` that we call and with summary = T`.
+Once we have equilibria, we can classify them using `phaseR::stability`.  There's a good deal of information beyond the `$classification` that we call and with `summary = T`.
 ```R
 	for (i in 1:nrow(eqs)){
-	print(paste0("x = ", eqs[i, 1], ", y = ", eqs[i, 2], " is a ", stability(deriv = model.ex1, y.star = eqs[i,], parameters = model.parms, summary = F)$classification))
+	print(x = paste0("x = ", eqs[i, 1], ", y = ", eqs[i, 2], " is a ", stability(deriv = model.ex1, y.star = eqs[i,], parameters = model.parms, summary = F)$classification))
 	}
 ```
 

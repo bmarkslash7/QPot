@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott" />
+
+<meta name="date" content="2016-07-24" />
+
+<title>QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis</h1>
+<h4 class="author"><em>Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott</em></h4>
+<h4 class="date"><em>2016-07-24</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#analyzing-the-deterministic-skeleton">Analyzing the deterministic skeleton</a><ul>
+<li><a href="#example-1-from-moore-et-al.-2016">Example 1 from Moore et al. (2016)</a><ul>
+<li><a href="#a-system-of-equations">A system of equations</a></li>
+<li><a href="#visualizing-dynamics">Visualizing dynamics</a></li>
+<li><a href="#identifying-and-classifying-equilibria">Identifying and classifying equilibria</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="analyzing-the-deterministic-skeleton" class="section level1">
+<h1>Analyzing the deterministic skeleton</h1>
+<div id="example-1-from-moore-et-al.-2016" class="section level2">
+<h2>Example 1 from Moore et al. (2016)</h2>
+<div id="a-system-of-equations" class="section level3">
+<h3>A system of equations</h3>
+<p>In Moore et al. (2016) we use an example of a coupled consumer-resource equation developed for plankton, <span class="math inline">\(x\)</span>, and their consumers, <span class="math inline">\(y\)</span>:</p>
+<p><span class="math display">\[\frac{dx(t)}{dt} = \alpha x(t)\left(1 - \frac{x(t)}{\beta}\right) - \frac{\delta x^2(t)y(t)}{\kappa + x^2(t)}\]</span> <span class="math display">\[\frac{dy(t)}{dt} = \frac{\gamma x^2(t)y(t)}{\kappa + x^2(t)} - \mu y^2(t)\]</span></p>
+<p>For this system, we use a specific parametrization to generate two non-trivial stable equilibria. Specifically, we use the parameters:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th align="left">Value</th>
+<th align="left">Biological description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\alpha\)</span></td>
+<td align="left">1.54</td>
+<td align="left">Maximal growth rate of plankton</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\beta\)</span></td>
+<td align="left">10.14</td>
+<td align="left">Carrying capacity of plankton</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\delta\)</span></td>
+<td align="left">1.0</td>
+<td align="left">Maximal feeding rate of the consumers</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\gamma\)</span></td>
+<td align="left">0.476</td>
+<td align="left">Conversion rate of plankton to consumer</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\mu\)</span></td>
+<td align="left">0.112509</td>
+<td align="left">Death rate of the consumer</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="visualizing-dynamics" class="section level3">
+<h3>Visualizing dynamics</h3>
+<p>We can create a vector field of the deterministic skeleton by using package <a href="https://cran.r-project.org/web/packages/phaseR/index.html">phaseR</a>. First, we will load <a href="https://cran.r-project.org/web/packages/phaseR/index.html">phaseR</a> and its dependency, <a href="https://cran.r-project.org/web/packages/deSolve/index.html">deSolve</a> (<a href="https://cran.r-project.org/web/packages/phaseR/index.html">phaseR</a> makes use of <code>deSolve::ode</code>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">library</span>(<span class="dt">package =</span> <span class="st">&quot;deSolve&quot;</span>)
+    <span class="kw">library</span>(<span class="dt">package =</span> <span class="st">&quot;phaseR&quot;</span>)</code></pre></div>
+<p>Second, we write our equations above in the pseudo-code format:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    model &lt;-<span class="st"> </span>function(time, initial conditions, parameters){
+    assign state variables to initial conditions
+    assign parameters
+    create an object to store output
+    equations
+    a list as the output
+    }</code></pre></div>
+<p>in R as</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    model.ex1 &lt;-<span class="st"> </span>function(t, y, parameters) {
+        x &lt;-<span class="st"> </span>y[<span class="dv">1</span>]
+        y &lt;-<span class="st"> </span>y[<span class="dv">2</span>]
+        alpha &lt;-<span class="st"> </span>parameters[<span class="st">&quot;alpha&quot;</span>]
+        beta &lt;-<span class="st"> </span>parameters[<span class="st">&quot;beta&quot;</span>]
+        delta &lt;-<span class="st"> </span>parameters[<span class="st">&quot;delta&quot;</span>]
+        kappa &lt;-<span class="st"> </span>parameters[<span class="st">&quot;kappa&quot;</span>]
+        gamma &lt;-<span class="st"> </span>parameters[<span class="st">&quot;gamma&quot;</span>]
+        mu &lt;-<span class="st"> </span>parameters[<span class="st">&quot;mu&quot;</span>]
+        dy &lt;-<span class="st"> </span><span class="kw">numeric</span>(<span class="dv">2</span>)
+        dy[<span class="dv">1</span>] &lt;-<span class="st"> </span>(alpha*x)*(<span class="dv">1</span>-(x/beta)) -<span class="st"> </span>((delta*(x^<span class="dv">2</span>)*y)/(kappa +<span class="st"> </span>(x^<span class="dv">2</span>)))
+        dy[<span class="dv">2</span>] &lt;-<span class="st"> </span>((gamma*(x^<span class="dv">2</span>)*y)/(kappa +<span class="st"> </span>(x^<span class="dv">2</span>))) -<span class="st"> </span>mu*(y^<span class="dv">2</span>)
+        <span class="kw">list</span>(dy)
+    }</code></pre></div>
+<p>Then, we plot the direction field and the zero-growth isoclines (i.e., nullclines):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    xlims &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">6</span>)
+    ylims &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">6</span>)
+    <span class="kw">flowField</span>(<span class="dt">deriv =</span> model.ex1, <span class="dt">x.lim =</span> xlims, <span class="dt">y.lim =</span> ylims, <span class="dt">parameters =</span> model.parms, <span class="dt">points =</span> <span class="dv">30</span>, <span class="dt">add =</span> F)
+    <span class="kw">nullclines</span>(model.ex1, <span class="dt">x.lim =</span> xlims, <span class="dt">y.lim =</span> ylims, <span class="dt">parameters =</span> model.parms, <span class="dt">points =</span> <span class="dv">250</span>, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>))</code></pre></div>
+</div>
+<div id="identifying-and-classifying-equilibria" class="section level3">
+<h3>Identifying and classifying equilibria</h3>
+<p>We can see from the field that trajectories may take many paths to different areas or points in phase space (i.e., there are multiple basins of attraction). But more reliably, we can see that the nullclines cross several times, which means that at those points we have equilibria. For the purposes of our example, we are interested in interior points (i.e., <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> have populations &gt; 0).</p>
+<p>There are several ways to find solutions and classify equilibrium points. Users are encouraged to familiarize themselves with <a href="https://cran.r-project.org/web/views/DifferentialEquations.html">CRAN Task View: Differential Equations</a> for a summary of available packages. Here, we use package <a href="https://cran.r-project.org/web/packages/rootSolve/index.html">rootSolve</a> to find equilibria. At each equilibrium point, we also classify the behavior about the point by finding the eigenvalues of the Jacobian matrix, known as linear or local stability analysis.</p>
+<div id="finding-equilibria" class="section level4">
+<h4>Finding equilibria</h4>
+<p>For simple models, equilibria can be found analytically. But for most non-linear models, a solver must be used. Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using <code>rootSolve::stode</code>. Because it’s a small space, we’ll first use a <code>for</code> loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">library</span>(<span class="dt">package =</span> <span class="st">&quot;rootSolve&quot;</span>)
+    xspace &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> <span class="dv">5</span>, <span class="dt">length.out =</span> <span class="dv">10</span>)
+    yspace &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dt">from =</span> <span class="fl">2.5</span>, <span class="dt">to =</span> <span class="dv">4</span>, <span class="dt">length.out =</span> <span class="dv">10</span>)
+    l.xspace &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="dt">x =</span> xspace)
+    l.yspace &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="dt">x =</span> yspace)
+    space.mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">data =</span> <span class="ot">NA</span>, <span class="dt">nrow =</span> l.xspace*l.yspace, <span class="dt">ncol =</span> <span class="dv">2</span>)  
+
+    for (i in <span class="dv">1</span>:l.xspace){
+        for (j in <span class="dv">1</span>:l.yspace){
+            y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">x =</span> xspace[i], <span class="dt">y =</span> yspace[j])
+            STO &lt;-<span class="st"> </span><span class="kw">stode</span>(<span class="dt">y =</span> y, <span class="dt">func =</span> model.ex1, <span class="dt">parms =</span> model.parms, <span class="dt">positive =</span> T)
+            space.mat[(((i<span class="dv">-1</span>)*l.xspace)+j),] &lt;-<span class="st"> </span>STO$y
+        }
+    }
+    eqs &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="dt">x =</span> <span class="kw">round</span>(<span class="dt">x =</span> space.mat, <span class="dt">digits =</span> <span class="dv">3</span>))</code></pre></div>
+<p>And, for further confirmation, if the plot window is still open, we can add them to ensure they look correct:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">points</span>(<span class="dt">x =</span> eqs[,<span class="dv">1</span>], <span class="dt">y =</span> eqs[,<span class="dv">2</span>], <span class="dt">cex =</span> <span class="fl">1.5</span>)</code></pre></div>
+</div>
+<div id="classifying-equilibria" class="section level4">
+<h4>Classifying equilibria</h4>
+<p>Once we have equilibria, we can classify them using <code>phaseR::stability</code>. There’s a good deal of information beyond the <code>$classification</code> that we call and with <code>summary = T</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(eqs)){
+    <span class="kw">print</span>(<span class="dt">x =</span> <span class="kw">paste0</span>(<span class="st">&quot;x = &quot;</span>, eqs[i, <span class="dv">1</span>], <span class="st">&quot;, y = &quot;</span>, eqs[i, <span class="dv">2</span>], <span class="st">&quot; is a &quot;</span>, <span class="kw">stability</span>(<span class="dt">deriv =</span> model.ex1, <span class="dt">y.star =</span> eqs[i,], <span class="dt">parameters =</span> model.parms, <span class="dt">summary =</span> F)$classification))
+    }</code></pre></div>
+<p>This will reveal our three interior equilibria—two stable and one unstable equilibrium. Our current focus is on determining the relative stability around the two interior equilibria when stochasticity is added to the system. In the next vignette, we heuristically run some stochastic simulations to better understand how the system behaves with stochasticity.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
