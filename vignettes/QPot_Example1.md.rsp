@@ -6,6 +6,39 @@
   %\VignetteEngine{R.rsp::rsp}
 --------------------------------------------------------------------"%>
 
+<%
+		holdthese <- par(no.readonly = TRUE)
+		tsdens.col <- c("lightsteelblue", "white", "indianred")
+		qp.col <- c("#FDE725FF", "#E3E418FF", "#C7E020FF", "#ABDC32FF", "#8FD744FF", 
+					"#75D054FF", "#5DC963FF", "#47C06FFF", "#35B779FF", "#28AE80FF", 
+					"#20A486FF", "#1F9A8AFF", "#21908CFF", "#24868EFF", "#287C8EFF", 
+					"#2C728EFF", "#31688EFF", "#355D8DFF", "#3B528BFF", "#404688FF", 
+					"#443A83FF", "#472D7BFF", "#481F71FF","#471163FF", "#440154FF")
+		legend.col <- function(col, lev, xadj){ 
+				opar <- par
+				n <- length(col)
+				bx <- par("usr")
+				box.cx <- c(bx[2] + (bx[2] - bx[1]) / 1000 + 0, bx[2] + (bx[2] - bx[1]) / 1000 + (bx[2] - bx[1]) / 50)
+				box.cy <- c(bx[3], bx[3])
+				box.sy <- (bx[4] - bx[3]) / n
+				xx <- rep(box.cx, each = 2) + xadj
+				par(xpd = TRUE)
+				for(i in 1:n){
+					yy <- c(box.cy[1] + (box.sy * (i - 1)),
+					box.cy[1] + (box.sy * (i)),
+					box.cy[1] + (box.sy * (i)),
+					box.cy[1] + (box.sy * (i - 1)))
+					polygon(xx, yy, col = col[i], border = col[i])
+				}
+				par(new = TRUE)
+				plot(0, 0, type = "n", ylim = c(min(lev), max(lev)), yaxt = "n", ylab = "",
+				xaxt = "n", xlab = "", frame.plot = FALSE)
+				axis(side = 4, las = 2, tick = FALSE, line = (.25 + xadj))
+				par <- opar
+			}
+%>
+
+
 In this vignette, we will extend the example from the R article and include the code to produce the figures.
 
 ### Example 1: A consumer-resource model with alternative stable states
@@ -39,13 +72,13 @@ Here, we confirm that Model2String() correctly combined the equations and the pa
 ```R
 	model.state <- c(x = 1, y = 2) 	# initial condition
 	model.sigma <- 0.05				# the level of noise
-	model.time <- 12500				# the length of the simulation
+	model.time <- 1000 #12500				# the length of the simulation
 	model.deltat <- 0.025			# the time step
 ```
 <%
 	model.state <- c(x = 1, y = 2) 	# initial condition
 	model.sigma <- 0.05				# the level of noise
-	model.time <- 200 #12500				# the length of the simulation
+	model.time <- 1000 #12500				# the length of the simulation
 	model.deltat <- 0.025			# the time step
 	rcat("\n")
 %>
@@ -91,7 +124,21 @@ or in two-dimensional space with
 ```R
 	TSDensity(ts.ex1, dim = 2)
 ```
-<%toPNG("EX1timeseriesFig4", {TSDensity(ts.ex1, dim = 2)})%>
+<%
+		k2 <- MASS::kde2d(ts.ex1[,2], ts.ex1[,3], n = 200)
+		k2dns <- k2$z/sum(k2$z)
+		k2cut <- cut(k2dns, 100, label = FALSE)
+		crramp <- colorRampPalette(tsdens.col)
+		colr <- crramp(100)
+%>
+
+<%toPNG("EX1timeseriesFig4", {
+	par(mar = c(4, 4, 4 , 4))
+	TSDensity(ts.ex1, dim = 2)
+	legend.col(col = colr, lev = k2dns, xadj = 0.1)
+	par(holdthese)
+	})
+%>
 <img src="figures/EX1timeseriesFig4.png">
 
 
@@ -102,8 +149,8 @@ To calculate the quasi-potential for a system of equations, we first need to def
 ```R	
 	bounds.x = c(-0.5, 20.0) 	# upper and lower limit of X
 	bounds.y = c(-0.5, 20.0) 	# upper and lower limit of Y
-	step.number.x = 500 #4100 	# number of division between upper and lower limit
-	step.number.y = 500 #4100 	# number of division between upper and lower limit
+	step.number.x = 1000 #4100 	# number of division between upper and lower limit
+	step.number.y = 1000 #4100 	# number of division between upper and lower limit
 	eq1.x = 1.40491				# x value of first equilibrium
 	eq1.y = 2.80808				# y value of first equilibrium
 	eq2.x = 4.9040				# x value of second equilibrium
@@ -159,39 +206,11 @@ QPGlobal() takes a list of local.surfaces (in this current example, two) and com
 ```
 
 <%
-		holdthese <- par(no.readonly = TRUE)
-		tsdens.col <- c("lightsteelblue", "white", "indianred")
-		qp.col <- c("#FDE725FF", "#E3E418FF", "#C7E020FF", "#ABDC32FF", "#8FD744FF", 
-					"#75D054FF", "#5DC963FF", "#47C06FFF", "#35B779FF", "#28AE80FF", 
-					"#20A486FF", "#1F9A8AFF", "#21908CFF", "#24868EFF", "#287C8EFF", 
-					"#2C728EFF", "#31688EFF", "#355D8DFF", "#3B528BFF", "#404688FF", 
-					"#443A83FF", "#472D7BFF", "#481F71FF","#471163FF", "#440154FF")
-		legend.col <- function(col, lev, xadj){ 
-				opar <- par
-				n <- length(col)
-				bx <- par("usr")
-				box.cx <- c(bx[2] + (bx[2] - bx[1]) / 1000 + 0, bx[2] + (bx[2] - bx[1]) / 1000 + (bx[2] - bx[1]) / 50)
-				box.cy <- c(bx[3], bx[3])
-				box.sy <- (bx[4] - bx[3]) / n
-				xx <- rep(box.cx, each = 2) + xadj
-				par(xpd = TRUE)
-				for(i in 1:n){
-					yy <- c(box.cy[1] + (box.sy * (i - 1)),
-					box.cy[1] + (box.sy * (i)),
-					box.cy[1] + (box.sy * (i)),
-					box.cy[1] + (box.sy * (i - 1)))
-					polygon(xx, yy, col = col[i], border = col[i])
-				}
-				par(new = TRUE)
-				plot(0, 0, type = "n", ylim = c(min(lev), max(lev)), yaxt = "n", ylab = "",
-				xaxt = "n", xlab = "", frame.plot = FALSE)
-				axis(side = 4, las = 2, tick = FALSE, line = (.25 + xadj))
-				par <- opar
-			}
-		k2dns <- seq(min(ex1.global, na.rm = T), max(ex1.global, na.rm = T), 0.001)
-		k2cut <- cut(k2dns, 100, label = FALSE)
-		crramp <- colorRampPalette(qp.col)
-		colr <- crramp(100)
+	k2dns <- seq(min(ex1.global, na.rm = T), max(ex1.global, na.rm = T), 0.001)
+	k2cut <- cut(k2dns, 100, label = FALSE)
+	crramp <- colorRampPalette(qp.col)
+	colr <- crramp(100)
+
 %>
 
 
@@ -203,9 +222,11 @@ QPGlobal() takes a list of local.surfaces (in this current example, two) and com
 %>
 
 <%toPNG("EX1globalvisualizationFig6", {
+		par(oma = c(0,1,0,2))
 		QPContour(surface = ex1.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, 
 					c.parm = 5, xlab = expression(italic("x")), ylab = "")
 		legend.col(col = colr, lev = k2dns, xadj = 0.1)
+		par(holdthese)
 	})
 %>
 
