@@ -40,6 +40,7 @@ In this vignette, we will extend example 2 from the R article and include the co
 ### Example 2: A model with a limit cycle
 <br>
 ```R
+	library(QPot)
 	var.eqn.x <- "-(y-beta) + mu*(x-alpha)*(1-(x-alpha)^2-(y-beta)^2) "
 	var.eqn.y <- "(x-alpha) + mu*(y-beta)*(1-(x-alpha)^2-(y-beta)^2)"
 	model.parms <- c(alpha = 4, beta = 5, mu = 0.2)
@@ -140,16 +141,16 @@ or in two-dimensional space with
 To calculate the quasi-potential for a system of equations, we first need to define some initial conditions and parameter values.
 
 ```R	
-	bounds.x = c(-0.5, 7.5) 	# upper and lower limit of X
-	bounds.y = c(-0.5, 7.5) 	# upper and lower limit of Y
+	bounds.x = c(-0.5, 11.5) 	# upper and lower limit of X
+	bounds.y = c(-0.5, 11.5) 	# upper and lower limit of Y
 	step.number.x = 500 #4000 	# number of division between upper and lower limit
 	step.number.y = 500 #4000 	# number of division between upper and lower limit
 	xinit = 4.15611				# x value to start computing quasi-potential
 	yinit = 5.987774			# y value to start computing quasi-potential
 ```
 <%
-	bounds.x = c(-0.5, 7.5)
-	bounds.y = c(-0.5, 7.5)
+	bounds.x = c(-0.5, 11.5)
+	bounds.y = c(-0.5, 11.5)
 	step.number.x = 500 # 4000
 	step.number.y = 500 # 4000
 	xinit = 4.15611
@@ -199,23 +200,22 @@ In this example, the global quasi-potential is the same as the local quasi-poten
 ![Global quasi-potential visualization](figures/EX1globalvisualizationFig5.png)
 
 
-<%---
 
 In case you want to view the quasipotential in three dimensions, we can use the R package rgl:
 
 ```R
 	library(rgl)
 	ex1.global <- eq1.qp #remember, copy-paste leads to code like this
-	dens.sub <- c(4000,4000)
+	dens.sub <- c(500,500) #c(4000, 4000)
 	global.sub <- ex1.global[round(seq(1,nrow(ex1.global),length.out=dens.sub[1])) ,
 		round(seq(1,ncol(ex1.global),length.out=dens.sub[2]))]
+	
 	# global.sub[global.sub > 1] <- NA # to cut off large values for a better view of the basin
-	persp3d(x = global.sub, col = "orange", expand = 1.1, xlim = c(0.1, 2), ylim = c(0.1, 2), 
+	persp3d(x = global.sub, col = "orange", expand = 1.1, 
 		zlim = c(0, 2), xlab = "X", ylab = "Y", zlab = intToUtf8(0x03A6))
 ```
 
-![Three dimensional quasi-potential visualization using package rgl](figures/EX1globalvisualizationFig7.png)
-
+![Three dimensional quasi-potential visualization using package rgl](figures/EX2visualizationrgl.png)
 
 
 ### Step 6: Vector field decomposition
@@ -223,22 +223,22 @@ In case you want to view the quasipotential in three dimensions, we can use the 
 	Taking the global quasi-potential, we can visualize the vector field, specifically the gradient and the remainder.  First we calculate the vector field decomposition, which gives us the deterministic skeleton, the gradient vector field, and the remainder vector field for both state variables X and Y. 
 
 ```R
-	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = parms.eqn.x, 
+	VDAll <- VecDecomAll(surface = eq1.qp, x.rhs = parms.eqn.x, 
 				y.rhs = parms.eqn.y, x.bound = bounds.x, y.bound = bounds.y)
 ```
 <%
-VDAll <- VecDecomAll(surface = ex1.global, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, x.bound = bounds.x, y.bound = bounds.y)
+VDAll <- VecDecomAll(surface = eq1.qp, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, x.bound = bounds.x, y.bound = bounds.y)
 %>
 
 
 We can then plot the deterministic skeleton
 ```R
 	VecDecomPlot(x.field = VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), 
-			x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), ylim = c(0, 6), 
+			x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), ylim = c(0, 11), 
 			arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
 ```
 <%toPNG("EX1vectorfielddecompDETSKEL", {
-VecDecomPlot(x.field = VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), ylim = c(0, 6), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
+VecDecomPlot(x.field = VDAll[,,1], y.field = VDAll[,,2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), ylim = c(0, 11), arrow.type = "equal", tail.length = 0.25, head.length = 0.025)
 })
 %>
 ![Global quasi-potential visualization](figures/EX1vectorfielddecompDETSKEL.png)
@@ -257,17 +257,29 @@ VecDecomPlot(x.field = VDAll[,,3], y.field = VDAll[,,4], dens = c(25, 25), x.bou
 ![Global quasi-potential visualization](figures/EX1vectorfielddecompGRAD.png)
 
 
-and the remainder vector field, which is the "force that causes trajectories to circulate around level sets of the quasi-potential."
+and the remainder vector field, which is the "force that causes trajectories to circulate around level sets of the quasi-potential."  In this example, arrow.type = "proportional" and "equal" visually convey different aspects of the quasi-potential, where "equal" showcases the limit cycle and "proportional" showcases the variation in the gradient.
+First, the arrow.type = "proportional":
 ```R
 VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, 
 		y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
 ```
-<%toPNG("EX1vectorfielddecompREM", {
+<%toPNG("EX1vectorfielddecompREMprop", {
 VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
 })
 %>
-![Global quasi-potential visualization](figures/EX1vectorfielddecompREM.png)
+![Global quasi-potential visualization](figures/EX1vectorfielddecompREMprop.png)
 
+
+Followed by the arrow.type = "equal": 
+```R
+VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, 
+		y.bound = bounds.y, arrow.type = "equal", tail.length = 0.35, head.length = 0.025)
+```
+<%toPNG("EX1vectorfielddecompREMequal", {
+VecDecomPlot(x.field = VDAll[,,5], y.field = VDAll[,,6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "equal", tail.length = 0.35, head.length = 0.025)
+})
+%>
+![Global quasi-potential visualization](figures/EX1vectorfielddecompREMequal.png)
 
 
 
@@ -293,4 +305,4 @@ The force arrows can be drawn equal size or can be drawn proportional to their v
 %>
 ![Global quasi-potential visualization](figures/EX1vectorfielddecompFig8.png)
 
----%>
+
