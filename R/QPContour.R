@@ -84,7 +84,7 @@ QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
 
 	eq.sub <- surface[sub.x, sub.y]
 
-	plot(0 , type = "n" , xlim = xlim , ylim = ylim , las = 1, xlab = xlab, ylab = ylab, ...)
+	plot(0 , type = "n" , xlim = xlim , ylim = ylim, xlab = xlab, ylab = ylab, ...)
 	min.eq.sub <- min(eq.sub , na.rm = T)
 	max.eq.sub <- max(eq.sub , na.rm = T)
 	contour.breaks <- seq(min.eq.sub , max.eq.sub , length = n.filled.contour)

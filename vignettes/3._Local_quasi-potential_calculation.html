@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott" />
+
+<meta name="date" content="2016-07-24" />
+
+<title>QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis</h1>
+<h4 class="author"><em>Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott</em></h4>
+<h4 class="date"><em>2016-07-24</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#calculating-the-local-quasi-potential">Calculating the local quasi-potential</a><ul>
+<li><a href="#example-1-from-moore-et-al.-2016">Example 1 from Moore et al. (2016)</a><ul>
+<li><a href="#conceptualizing-the-local-quasi-potential">Conceptualizing the local quasi-potential</a></li>
+<li><a href="#determining-the-computational-domain">Determining the computational domain</a></li>
+<li><a href="#determining-the-mesh-size">Determining the mesh size</a></li>
+<li><a href="#calculating-local-quasi-potentials">Calculating local quasi-potentials</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="calculating-the-local-quasi-potential" class="section level1">
+<h1>Calculating the local quasi-potential</h1>
+<div id="example-1-from-moore-et-al.-2016" class="section level2">
+<h2>Example 1 from Moore et al. (2016)</h2>
+<div id="conceptualizing-the-local-quasi-potential" class="section level3">
+<h3>Conceptualizing the local quasi-potential</h3>
+<p>The next step is to compute a local quasi-potential for each basin of attractor (sys. with stable equilibrium). In the example above we have 2. For each stable equilibrium.</p>
+<p>To understand the local quasi-potential, it is useful consider the analogy of a particle traveling according to the system of equations in 2. Stochastic simulation. In the context of example 1, the coordinates of the particle correspond to population densities, and the particle’s path corresponds to how those population densities change over time. The deterministic skeleton can be visualized as a force field influencing the particle’s trajectory. Suppose that the particle moves along a path from a stable equilibrium to another point <span class="math inline">\((x, y)\)</span>. If this path does not coincide with a solution of the deterministic skeleton, then the stochastic terms must be doing some ``work’’ to move the particle along the path. The more work is required, the less likely it is for the path to be a realization of the system. <span class="math inline">\(\Phi (x, y)\)</span> is the amount of work required to traverse the easiest path from the stable equilibrium to <span class="math inline">\((x, y)\)</span>. Note that <span class="math inline">\(\Phi (x, y)\)</span> is non-negative, and it is zero at the stable equilibrium.</p>
+<p>In the basin of attraction for esi, <span class="math inline">\(\Phi (x, y)\)</span> has many properties analogous to the potential function for gradient systems. Key among these properties is that the quasi-potential is non-increasing along deterministic trajectories. This means that the quasi-potential can be interpreted as a type of energy surface, and the rolling ball metaphor is still valid. The difference is that, in non-gradient systems, there is an additional component to the vector field that causes trajectories to circulate around level sets of the energy surface. This is discussed in more detail in [vignette on vector field decomposition], below.</p>
+<p><code>QPot</code> calculates quasi-potentials using an adjustment developed by Cameron (2012) to the ordered upwind algorithm (Sethian and Vladimirsky, 2001, 2003). The idea behind the algorithm is to calculate <span class="math inline">\(\Phi (x, y)\)</span> in ascending order, starting with the known the stable equilibrium. The result is an expanding area where the solution is known.</p>
+<p>Calculating <span class="math inline">\(\Phi (x, y)\)</span> with the function <code>QPotential</code> requires:</p>
+<ol style="list-style-type: decimal">
+<li>a text string of the equations and parameter values,</li>
+<li>the stable equilibrium points,</li>
+<li>the computational domain, and</li>
+<li>the mesh size.</li>
+</ol>
+<p>The coordinates of the stable equilibrium points, which were determined in 1. Analyzing the deterministic skeleton, are <span class="math inline">\(e_{s1} = (1.4049, 2.8081)\)</span> and <span class="math inline">\(e_{s2} = (4.9040, 4.0619)\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    eq1.x &lt;-<span class="st"> </span>eqs[<span class="dv">1</span>, <span class="dv">1</span>]; eq1.y &lt;-<span class="st"> </span>eqs[<span class="dv">1</span>, <span class="dv">2</span>] <span class="co"># stable focus</span>
+    eq2.x &lt;-<span class="st"> </span>eqs[<span class="dv">3</span>, <span class="dv">1</span>]; eq2.y &lt;-<span class="st"> </span>eqs[<span class="dv">3</span>, <span class="dv">2</span>] <span class="co"># stable node</span></code></pre></div>
+</div>
+<div id="determining-the-computational-domain" class="section level3">
+<h3>Determining the computational domain</h3>
+<p>Next, the boundaries of the computational domain need to be entered. The ordered-upwind method terminates when the solved area encounters a boundary of this domain, so it’s important to choose boundaries carefully. For example, if a stable equilibrium lies on one of the coordinate axes, one should not use that axis as a boundary because the algorithm will immediately terminate. Instead, one should add padding space. For this example, a good choice of boundaries is <span class="math inline">\(x = -0.5-20\)</span> and <span class="math inline">\(y = -0.5-20\)</span>. This choice of domain was obtained by examining both the direction field and stochastic realizations.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    bounds.x &lt;-<span class="st"> </span><span class="kw">c</span>(-<span class="fl">0.5</span>, <span class="fl">20.0</span>)
+    bounds.y &lt;-<span class="st"> </span><span class="kw">c</span>(-<span class="fl">0.5</span>, <span class="fl">20.0</span>)</code></pre></div>
+</div>
+<div id="determining-the-mesh-size" class="section level3">
+<h3>Determining the mesh size</h3>
+<p>Finally, the mesh size for the discretization of the domain needs to be specified. In general, the best choice of mesh size will be a compromise between resolution and computational time. The mesh size must be fine enough to precisely track how information moves outward along characteristics from the initial point, but too fine of a mesh size can lead to very long computational times.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    step.number.x &lt;-<span class="st"> </span><span class="dv">1000</span>
+    step.number.y &lt;-<span class="st"> </span><span class="dv">1000</span></code></pre></div>
+</div>
+<div id="calculating-local-quasi-potentials" class="section level3">
+<h3>Calculating local quasi-potentials</h3>
+<p>For each stable equilibrium, calculate the local quasi-potential:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    eq1.local &lt;-<span class="st"> </span><span class="kw">QPotential</span>(<span class="dt">x.rhs =</span> parms.eqn.x, <span class="dt">x.start =</span> eq1.x, <span class="dt">x.bound =</span> bounds.x, <span class="dt">x.num.steps =</span> step.number.x, <span class="dt">y.rhs =</span> parms.eqn.y, <span class="dt">y.start =</span> eq1.y,  <span class="dt">y.bound =</span> bounds.y, <span class="dt">y.num.steps =</span> step.number.y)
+
+    eq2.local &lt;-<span class="st"> </span><span class="kw">QPotential</span>(<span class="dt">x.rhs =</span> parms.eqn.x, <span class="dt">x.start =</span> eq2.x, <span class="dt">x.bound =</span> bounds.x, <span class="dt">x.num.steps =</span> step.number.x, <span class="dt">y.rhs =</span> parms.eqn.y, <span class="dt">y.start =</span> eq2.y, <span class="dt">y.bound =</span> bounds.y, <span class="dt">y.num.steps =</span> step.number.y)</code></pre></div>
+<p>You did it! <code>QPotential</code> returns a matrix that has <code>step.number.x</code> by <code>step.number.y</code> rows and columns. We will visualize these local quasi-potential surfaces later in vignette [5. Global quasi-potential visualization].</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
