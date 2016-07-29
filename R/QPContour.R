@@ -53,7 +53,7 @@
 #' 	QPContour(ex1.global, dens = c(100,100), x.bound = xbounds, 
 #'		y.bound = ybounds, c.parm = 5)
 
-QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL, n.filled.contour = 25, n.contour.lines = 25, c.parm = 1, col.contour, contour.lines = TRUE, xlab = "X", ylab = "Y", ...){
+QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL, n.filled.contour = 25, n.contour.lines = 25, c.parm = 1, col.contour, contour.lines = TRUE, xlab = "X", ylab = "Y", contour.lwd = 1, ...){
 	x.range <- max(x.bound)-min(x.bound)
 	y.range <- max(y.bound)-min(y.bound)
 
@@ -92,5 +92,5 @@ QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
 	line.contour.breaks <- (eq.max)*(((0:n.contour.lines)/(n.contour.lines-1)))^c.parm
 	myRamp <- if(missing(col.contour)){colorRampPalette(c("#FDE725FF","#E3E418FF","#C7E020FF","#ABDC32FF","#8FD744FF","#75D054FF","#5DC963FF","#47C06FFF","#35B779FF","#28AE80FF","#20A486FF","#1F9A8AFF","#21908CFF","#24868EFF","#287C8EFF","#2C728EFF" ,"#31688EFF","#355D8DFF","#3B528BFF","#404688FF","#443A83FF","#472D7BFF","#481F71FF","#471163FF","#440154FF"))(n.filled.contour)}else{colorRampPalette(col.contour)(n.filled.contour)}
 	.filled.contour(sub.x.val , sub.y.val , eq.sub , levels = contour.breaks , col = myRamp)
-	if(contour.lines==TRUE){contour(sub.x.val , sub.y.val , eq.sub , levels = line.contour.breaks, drawlabels = F ,  add = TRUE , col = "black")}
+	if(contour.lines==TRUE){contour(sub.x.val , sub.y.val , eq.sub , levels = line.contour.breaks, drawlabels = F ,  add = TRUE , col = "black", lwd = contour.lwd)}
 	}
