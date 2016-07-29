@@ -65,6 +65,90 @@ In this vignette, we will extend the example from the R article and include the 
 <br>
 Here, we confirm that Model2String() correctly combined the equations and the parameters.  We can suppress this output from Model2String() using suppress.print = TRUE.
 
+### Step 1: Analyze the deterministic skeleton
+<br>
+To analyze our system of differential equations, we use the package phaseR, which requires the system of equations to be implemented as a function.  Our function Model2String() was made to help users of QPot transition from their use of previous packages requiring this function format.
+
+```R
+	require(phaseR)
+	model.ex1 <- function(t, y, parameters){
+		x <- y[1]
+		y <- y[2]
+		alpha <- parameters["alpha"]
+		beta <- parameters["beta"]
+		delta <- parameters["delta"]
+		kappa <- parameters["kappa"]
+		gamma <- parameters["gamma"]
+		mu <- parameters["mu"]
+		dy <- numeric(2)
+		dy[1] <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+		dy[2] <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+		list(dy)
+	}
+```
+<%
+	require(phaseR)
+	model.ex1 <- function(t, y, parameters){
+		x <- y[1]
+		y <- y[2]
+		alpha <- parameters["alpha"]
+		beta <- parameters["beta"]
+		delta <- parameters["delta"]
+		kappa <- parameters["kappa"]
+		gamma <- parameters["gamma"]
+		mu <- parameters["mu"]
+		dy <- numeric(2)
+		dy[1] <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+		dy[2] <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+		list(dy)
+	}
+%>
+
+
+```R
+	# draws the vector field
+	flowField(deriv = model.ex1, x.lim = c(-0.1, 6), y.lim = c(-0.1, 6), parameters = model.parms, 
+		add = F, points = 30, col = "grey70", ann = F, arrow.head = 0.025, frac = 1.1, 
+		xaxs = "i", yaxs = "i", las = 1)
+	# draw the nullclines and suppress the output by assigning it to a variable
+	supp.print <- nullclines(deriv = model.ex1, x.lim = c(-0.1, 6), y.lim = c(-0.1, 6), 
+		parameters = model.parms, col = c("blue", "red"), points = 250)
+	# draw and label the equilibria
+	# open circles are unstable, black are stable
+	points(0,0 , pch = 21 , col = "black" , bg = "white" , cex = 1.5)
+	text(0,0 , labels = expression(italic(e[u1])) , adj = c(-0.1,-.25) , cex = 1.5)
+	points(1.4049, 2.8081 , pch = 21 , col = "black" , bg = "grey30" , cex = 1.5)
+	text(1.4049, 2.8081 , labels = expression(italic(e[s1])) , adj = c(-0.1,1.25) , cex = 1.5)
+	points(4.2008, 4.0039 , pch = 21 , col = "black" , bg = "white" , cex = 1.5)
+	text(4.2008, 4.0039 , labels = expression(italic(e[u2])) , adj = c(-0.1,1.25) , cex = 1.5)
+	points(4.9040, 4.0619 , pch = 21 , col = "black" , bg = "grey30" , cex = 1.5)
+	text(4.9040, 4.0619 , labels = expression(italic(e[s2])) , adj = c(.4,-.35) , cex = 1.5)
+	# label the x and y axis
+	mtext(expression(italic(x)), side = 1, line = 2.5)
+	mtext(expression(italic(y)), side = 2, line = 2.5)
+```
+<%toPNG("EX1vectordiagram", {
+	# draws the vector field
+	flowField(deriv = model.ex1, x.lim = c(-0.1, 6), y.lim = c(-0.1, 6), parameters = model.parms, add = F, points = 30, col = "grey70", ann = F, arrow.head = 0.025, frac = 1.1, xaxs = "i", yaxs = "i", las = 1)
+	# draw the nullclines and suppress the output by assigning it to a variable
+	supp.print <- nullclines(deriv = model.ex1, x.lim = c(-0.1, 6), y.lim = c(-0.1, 6), parameters = model.parms, col = c("blue", "red"), points = 250)
+	# draw and label the equilibria
+	# open circles are unstable, black are stable
+	points(0,0 , pch = 21 , col = "black" , bg = "white" , cex = 1.5)
+	text(0,0 , labels = expression(italic(e[u1])) , adj = c(-0.1,-.25) , cex = 1.5)
+	points(1.4049, 2.8081 , pch = 21 , col = "black" , bg = "grey30" , cex = 1.5)
+	text(1.4049, 2.8081 , labels = expression(italic(e[s1])) , adj = c(-0.1,1.25) , cex = 1.5)
+	points(4.2008, 4.0039 , pch = 21 , col = "black" , bg = "white" , cex = 1.5)
+	text(4.2008, 4.0039 , labels = expression(italic(e[u2])) , adj = c(-0.1,1.25) , cex = 1.5)
+	points(4.9040, 4.0619 , pch = 21 , col = "black" , bg = "grey30" , cex = 1.5)
+	text(4.9040, 4.0619 , labels = expression(italic(e[s2])) , adj = c(.4,-.35) , cex = 1.5)
+	mtext(expression(italic(x)), side = 1, line = 2.5)
+	mtext(expression(italic(y)), side = 2, line = 2.5)
+})
+%>
+
+![Null clines of the current system of equations](figures/EX1vectordiagram.png)
+
 ### Step 2: Stochastic simulation
 <br>
 	In order to simulate the stochastic equations, we need:
@@ -159,8 +243,8 @@ To calculate the quasi-potential for a system of equations, we first need to def
 <%
 	bounds.x = c(-0.5, 20.0)
 	bounds.y = c(-0.5, 20.0)
-	step.number.x = 500 # 4100
-	step.number.y = 500 # 4100
+	step.number.x = 1000 # 4100
+	step.number.y = 1000 # 4100
 	eq1.x = 1.40491
 	eq1.y = 2.80808
 	eq2.x = 4.9040
@@ -230,6 +314,7 @@ QPGlobal() takes a list of local.surfaces (in this current example, two) and com
 	})
 %>
 
+
 The parameter c.parm modifies the distribution of contour lines throughout the quasi-potential (see the help file for specifics).  But for right now, we can compare c.parm = 1
 ![Global quasi-potential visualization](figures/EX1globalvisualizationFig5.png)
 
@@ -238,8 +323,38 @@ with c.parm = 5
 ![Global quasi-potential visualization](figures/EX1globalvisualizationFig6.png)
 
 
-In case you want to view the quasipotential in three dimensions, we can use the R package rgl:
+In case you want to view the quasipotential in three dimensions, we can use the R package plot3D:
 
+```R
+	library(plot3D)
+	library(viridis)
+	frac.x <- c(0.05, 0.3)
+	frac.y <- c(0.125, 0.25)
+	global.sub <- ex1.global[round(dim(ex1.global)[1]*frac.x[1]):round(dim(ex1.global)[1]*frac.x[2]),
+		round(dim(ex1.global)[2]*frac.y[1]):round(dim(ex1.global)[2]*frac.y[2])]
+	global.sub[global.sub > 0.01] <- NA
+#	par(fin = c(4, 4), oma = rep(0,4), mar = c(3.5, 3.5, 0, 0))
+	persp3D(z = global.sub, theta = 25, phi = 25, col = viridis(100, option = "C"), shade = 0.1, 
+		colkey = list(side = 4, length = 0.85), contour = T, zlim = c(-0.001, .011), 
+		zlab = intToUtf8(0x03A6))
+```
+
+<%
+	library(plot3D)
+	library(viridis)
+toPNG( "EX1globalvisualization3D", {
+	frac.x <- c(0.05, 0.3)
+	frac.y <- c(0.125, 0.25)
+	global.sub <- ex1.global[round(dim(ex1.global)[1]*frac.x[1]):round(dim(ex1.global)[1]*frac.x[2]), round(dim(ex1.global)[2]*frac.y[1]):round(dim(ex1.global)[2]*frac.y[2])]
+	global.sub[global.sub > 0.01] <- NA
+#	par(fin = c(4, 4), oma = rep(0,4), mar = c(3.5, 3.5, 0, 0))
+	persp3D(z = global.sub, theta = 25, phi = 25, col = viridis(100, option = "C"), shade = 0.1, colkey = list(side = 4, length = 0.85), contour = T, zlim = c(-0.001, .011), zlab = intToUtf8(0x03A6))
+})
+%>
+
+![Three dimensional quasi-potential visualization using package plot3D](figures/EX1globalvisualization3D.png)
+
+<%---
 ```R
 	library(rgl)
 	dens.sub <- c(4000,4000)
@@ -259,6 +374,7 @@ In case you want to view the quasipotential in three dimensions, we can use the 
 
 ![Three dimensional quasi-potential visualization using package rgl](figures/EX1globalvisualizationFig7.png)
 
+---%>
 
 
 ### Step 6: Vector field decomposition
