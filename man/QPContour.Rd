@@ -6,7 +6,7 @@
 \usage{
 QPContour(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
   n.filled.contour = 25, n.contour.lines = 25, c.parm = 1, col.contour,
-  contour.lines = TRUE, xlab = "X", ylab = "Y", ...)
+  contour.lines = TRUE, xlab = "X", ylab = "Y", contour.lwd = 1, ...)
 }
 \arguments{
 \item{surface}{the surface to be plotted, from \code{\link{QPGlobal}}.}

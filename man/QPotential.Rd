@@ -2,7 +2,7 @@
 % Please edit documentation in R/QPotential.R
 \name{QPotential}
 \alias{QPotential}
-\title{Computes the quasi-potential for a system of stochastic differential equations using the upwind ordered method.}
+\title{Computes the quasi-potential for a system of stochastic differential equations using the ordered upwind method.}
 \usage{
 QPotential(x.rhs = NULL, x.start = NULL, x.bound = NULL,
   x.num.steps = NULL, y.rhs = NULL, y.start = NULL, y.bound = NULL,
@@ -30,13 +30,13 @@ QPotential(x.rhs = NULL, x.start = NULL, x.bound = NULL,
 
 \item{filename}{string for the name of the file saved to the hard drive.  If save.to.HD=TRUE and filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively.  Matrix stored as a tab-delimited file.}
 
-\item{save.to.R}{boolean to output the matrix of results for the upwind-ordered method to the current R session.  The default is to write the matrix to the R session.  save.to.R=FALSE prevents the output from being written to the R session.}
+\item{save.to.R}{boolean to output the matrix of results for the ordered upwind method to the current R session.  The default is to write the matrix to the R session.  save.to.R=FALSE prevents the output from being written to the R session.}
 
-\item{save.to.HD}{boolean to write the matrix of results for the upwind-ordered method to the hard drive in a file named filename.  Default is FALSE.}
+\item{save.to.HD}{boolean to write the matrix of results for the ordered upwind method to the hard drive in a file named filename.  Default is FALSE.}
 
-\item{bounce}{by default, the upwind-ordered method stops when the boundaries are reached (x.bound and y.bound).  The bounce parameter allows the default action (bounce = 'd'), only positive values to be tested (bounce = 'p'), or reflection near the boundaries (bounce = 'b').}
+\item{bounce}{by default, the ordered upwind method stops when the boundaries are reached (x.bound and y.bound).  The bounce parameter allows the default action (bounce = 'd'), only positive values to be tested (bounce = 'p'), or reflection near the boundaries (bounce = 'b').}
 
-\item{bounce.edge}{if bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01}
+\item{bounce.edge}{if bounce = 'b', then to prevent the ordered upwind method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01}
 
 \item{verboseR}{NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential R wrapper.}
 
@@ -56,7 +56,7 @@ filetoHD if save.to.HD enabled, then saves a file in the current directory as ei
 filetoR if save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
 }
 \description{
-Computes the quasi-potential for a system of stochastic differential equations using the upwind ordered method.
+Computes the quasi-potential for a system of stochastic differential equations using the ordered upwind method.
 }
 \examples{
 # First, System of equations

@@ -1,4 +1,4 @@
-#' Computes the quasi-potential for a system of stochastic differential equations using the upwind ordered method. 
+#' Computes the quasi-potential for a system of stochastic differential equations using the ordered upwind method. 
 #' 
 #' 
 #' @param x.rhs a string containing the right hand side of the equation for x.
@@ -9,11 +9,11 @@
 #' @param y.start the starting value of y, usually the y value of the current equilibrium.
 #' @param y.bound the y boundaries denoted as c(minimum, maximum).
 #' @param y.num.steps the number of steps between the minimum and maximum y value defined in y range.
-#' @param save.to.R boolean to output the matrix of results for the upwind-ordered method to the current R session.  The default is to write the matrix to the R session.  save.to.R=FALSE prevents the output from being written to the R session.
-#' @param save.to.HD boolean to write the matrix of results for the upwind-ordered method to the hard drive in a file named filename.  Default is FALSE.
+#' @param save.to.R boolean to output the matrix of results for the ordered upwind method to the current R session.  The default is to write the matrix to the R session.  save.to.R=FALSE prevents the output from being written to the R session.
+#' @param save.to.HD boolean to write the matrix of results for the ordered upwind method to the hard drive in a file named filename.  Default is FALSE.
 #' @param filename string for the name of the file saved to the hard drive.  If save.to.HD=TRUE and filename is left blank, output file saved as defaultname-xX.STARTyY.START.txt, where X.START and Y.START are values in x.start and y.start, respectively.  Matrix stored as a tab-delimited file.
-#' @param bounce by default, the upwind-ordered method stops when the boundaries are reached (x.bound and y.bound).  The bounce parameter allows the default action (bounce = 'd'), only positive values to be tested (bounce = 'p'), or reflection near the boundaries (bounce = 'b').
-#' @param bounce.edge if bounce = 'b', then to prevent the upwind-ordered method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
+#' @param bounce by default, the ordered upwind method stops when the boundaries are reached (x.bound and y.bound).  The bounce parameter allows the default action (bounce = 'd'), only positive values to be tested (bounce = 'p'), or reflection near the boundaries (bounce = 'b').
+#' @param bounce.edge if bounce = 'b', then to prevent the ordered upwind method from reaching the boundaries, temporary boundaries are created inside the boundaries defined by x.bound and y.bound.  The boundary edge is bounce.edge of the total range.  Default is 0.01
 #' @param k.x integer anisotropic factor for x.  See journal article.  Default is 20.
 #' @param k.y integer anisotropic factor for y.  See journal article.  Default is 20.
 #' @param INFINITY largest possible quasi-potential value.  If computed quasi-potential is ever greater than this number, program will stop.  Especially useful when bounce = 'b'.  Default is 1,000,000 with a tolerance of 1e-12
