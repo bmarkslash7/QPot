@@ -35,6 +35,8 @@ QPContour(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
 
 \item{ylab}{a title for the y axis.  Default is 'Y'}
 
+\item{contour.lwd}{line width of contour lines.}
+
 \item{...}{passes arguments to \code{\link{plot}}.}
 }
 \description{
