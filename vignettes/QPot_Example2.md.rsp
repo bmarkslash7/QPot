@@ -73,10 +73,9 @@ model.ex2 <- function(t, y, parameters){
 	kappa <- parameters["kappa"]
 	gamma <- parameters["gamma"]
 	mu <- parameters["mu"]
-	dy <- numeric(2)
-	dy[1] <- -(y-beta) + mu*(x-alpha)*(1-(x-alpha)^2-(y-beta)^2)
-	dy[2] <- (x-alpha) + mu*(y-beta)*(1-(x-alpha)^2-(y-beta)^2)
-	list(dy)
+	dx <- -(y-beta) + mu*(x-alpha)*(1-(x-alpha)^2-(y-beta)^2)
+	dy <- (x-alpha) + mu*(y-beta)*(1-(x-alpha)^2-(y-beta)^2)
+	list(c(dx,dy))
 }
 ```
 <%
@@ -90,10 +89,9 @@ model.ex2 <- function(t, y, parameters){
 	kappa <- parameters["kappa"]
 	gamma <- parameters["gamma"]
 	mu <- parameters["mu"]
-	dy <- numeric(2)
-	dy[1] <- -(y-beta) + mu*(x-alpha)*(1-(x-alpha)^2-(y-beta)^2)
-	dy[2] <- (x-alpha) + mu*(y-beta)*(1-(x-alpha)^2-(y-beta)^2)
-	list(dy)
+	dx <- -(y-beta) + mu*(x-alpha)*(1-(x-alpha)^2-(y-beta)^2)
+	dy <- (x-alpha) + mu*(y-beta)*(1-(x-alpha)^2-(y-beta)^2)
+	list(c(dx,dy))
 }
 %>
 

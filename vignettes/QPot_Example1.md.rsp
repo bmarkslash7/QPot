@@ -80,10 +80,9 @@ To analyze our system of differential equations, we use the package phaseR, whic
 		kappa <- parameters["kappa"]
 		gamma <- parameters["gamma"]
 		mu <- parameters["mu"]
-		dy <- numeric(2)
-		dy[1] <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
-		dy[2] <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
-		list(dy)
+		dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+		dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+		list(c(dx,dy))
 	}
 ```
 <%
@@ -97,10 +96,9 @@ To analyze our system of differential equations, we use the package phaseR, whic
 		kappa <- parameters["kappa"]
 		gamma <- parameters["gamma"]
 		mu <- parameters["mu"]
-		dy <- numeric(2)
-		dy[1] <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
-		dy[2] <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
-		list(dy)
+		dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+		dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+		list(c(dx,dy))
 	}
 %>
 
