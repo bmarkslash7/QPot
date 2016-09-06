@@ -302,14 +302,14 @@ struct myvector myfieldchris(double x,double y) {
     switch( chfield ) {
         case 'p': /* positivevalues: Case to use if you want only positive values */
             if(x<0 && y<0)
-            {v.x=1000000.0;
-                v.y=1000000.0;}
+            {v.x=INFTY;//1000000.0;
+                v.y=INFTY;}//1000000.0;}
             else if(x<0)
-            {v.x=1000000.0;
+            {v.x=INFTY;//1000000.0;
                 v.y=0.0;}
             else if(y<0)
             {v.x=0.0;
-                v.y=100000.0;}
+                v.y=INFTY;}//100000.0;}
             else {
             	v.x = parse_expression_with_callbacks( xbuff, variable_callback, function_callback, &num_arguments );
                 v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
@@ -317,14 +317,14 @@ struct myvector myfieldchris(double x,double y) {
             break;
 		case 'b': /* bounce : Case to use if you want reflecting boundaries */
             if(x<(LX1+bounceedge*NX*hx) && y<(LY1+bounceedge*NY*hy) )
-            {v.x=1000000.0;
-                v.y=1000000.0;}
+            {v.x=INFTY;//1000000.0;
+                v.y=INFTY;}//1000000.0;}
             else if(x<(LX1+bounceedge*NX*hx))
-            {v.x=1000000.0;
+            {v.x=INFTY;//1000000.0;
                 v.y=0.0;}
             else if(y<(LY1+bounceedge*NY*hy))
             {v.x=0.0;
-                v.y=100000.0;}
+                v.y=INFTY;}//100000.0;}
             else {
             	v.x = parse_expression_with_callbacks( xbuff, variable_callback, function_callback, &num_arguments );
                 v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
