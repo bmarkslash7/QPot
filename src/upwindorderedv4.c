@@ -302,14 +302,14 @@ struct myvector myfieldchris(double x,double y) {
     switch( chfield ) {
         case 'p': /* positivevalues: Case to use if you want only positive values */
             if(x<0 && y<0)
-            {v.x=INFTY;//1000000.0;
-                v.y=INFTY;}//1000000.0;}
+            {v.x=INFTY;/*1000000.0;*/
+                v.y=INFTY;}/*1000000.0;}*/
             else if(x<0)
-            {v.x=INFTY;//1000000.0;
+            {v.x=INFTY;/*1000000.0;*/
                 v.y=0.0;}
             else if(y<0)
             {v.x=0.0;
-                v.y=INFTY;}//100000.0;}
+                v.y=INFTY;}/*100000.0;}*/
             else {
             	v.x = parse_expression_with_callbacks( xbuff, variable_callback, function_callback, &num_arguments );
                 v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
@@ -317,14 +317,14 @@ struct myvector myfieldchris(double x,double y) {
             break;
 		case 'b': /* bounce : Case to use if you want reflecting boundaries */
             if(x<(LX1+bounceedge*NX*hx) && y<(LY1+bounceedge*NY*hy) )
-            {v.x=INFTY;//1000000.0;
-                v.y=INFTY;}//1000000.0;}
+            {v.x=INFTY;/*1000000.0;*/
+                v.y=INFTY;}/*1000000.0;}*/
             else if(x<(LX1+bounceedge*NX*hx))
-            {v.x=INFTY;//1000000.0;
+            {v.x=INFTY;/*1000000.0;*/
                 v.y=0.0;}
             else if(y<(LY1+bounceedge*NY*hy))
             {v.x=0.0;
-                v.y=INFTY;}//100000.0;}
+                v.y=INFTY;}/*100000.0;}*/
             else {
             	v.x = parse_expression_with_callbacks( xbuff, variable_callback, function_callback, &num_arguments );
                 v.y = parse_expression_with_callbacks( ybuff, variable_callback, function_callback, &num_arguments );
@@ -467,17 +467,21 @@ void ordered_upwind(void) {
         /*	Rprintf("%ld\t(%ld\t%ld) is accepted, g=%.4f\n",mycount,i,j,g[ind]); */
         
         /* update considered neighbors of the accepted point */
-        for( k=0; k<8; k++ ) {
+        for( k=0; k<8; k++ ) { /* consider all eight neighbors of the accepted? point */
             ind1=ind+neii[k];
-            if( ms[ind1] == 2 ) {
+            if( ms[ind1] == 2 ) { 
+			/* if current neighbor ind1 is in accepted front */
+			/* check to see if two neighbors are in accepted front or accepted */
                 ind1m=ind+neii[(k-1+8)%8];
                 ind1p=ind+neii[(k+1)%8];
-                if( ms[ind1m] >= 2 && ms[ind1p] >= 2 ) {
+                if( ms[ind1m] >= 2 && ms[ind1p] >= 2 ) { 
+					/* if neighbors are in accepted front or accepted*/
+					/* then make ind1 accepted */
                     ms[ind1]=3;
                     /*	  Rprintf("ms[%ld, %ld] = 3\n",ind1%NX,ind1/NX); */
                 }
-                else {
-                    g0=g[ind];
+                else { /* neighbors are unknown or considered */
+                    g0=g[ind]; /*quasipotential of focal */
                     ii=ind1%NX;
                     jj=ind1/NX;
 /* v2: converts index value to x or y value */
@@ -487,7 +491,11 @@ void ordered_upwind(void) {
                     for( i0=max(i-KX,0); i0<=min(i+KX,nx1); i0++) for( j0=max(j-KY,0); j0<=min(j+KY,ny1); j0++ ) {
                         indupdate=i0+NX*j0;
                         update='y';
-                        if( ms[indupdate] == 1 ) {
+/* It appears: */
+/* So although only immediate neighbors are used to add to considered */
+/* compute the quasi-potential from all known points around within KX and KY */
+                        
+                        if( ms[indupdate] == 1 ) { /*point is a considered point */
 /* v2: converts index value to x or y value */
                             x=LX1 + i0*hx;
                             y=LY1 + j0*hy;
@@ -499,20 +507,22 @@ void ordered_upwind(void) {
                             bdotvec=dotproduct(b,vec);
                             
                             if( update == 'y' && fabs(max(len0,len1)-length(xnewac-x1,ynewac-y1)-min(len0,len1)) > TOL ) {
-                                sol=triangle_update(indupdate,ind,ind1);
-                                g[indupdate]=min(g[indupdate],sol.g);
+                                sol=triangle_update(indupdate,ind,ind1); /* returns a double g and a char c */
+                                g[indupdate]=min(g[indupdate],sol.g); /* ?pick the minimum value for the quasipotential? */
                                 if( sol.g <= g[indupdate] ) {
                                     updatetree(indupdate);
                                     /*	    Rprintf("( %ld %ld ) has been updated, g = %.4f\n", i0,j0,g[indupdate]); */
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+                                } /* if( sol.g <= g[indupdate] ) */
+                            } /* if( update == 'y' && fabs(max(len0,len1)-length(xnewac-x1,ynewac-y1)-min(len0,len1)) > TOL )*/
+                        } /* if( ms[indupdate] == 1 ) */
+                    } /* for( i0=max(i-KX,0); i0<=min(i+KX,nx1); i0++) for( j0=max(j-KY,0); j0<=min(j+KY,ny1); j0++ )  */
+                } /* NOT if( ms[ind1m] >= 2 && ms[ind1p] >= 2 ) */
+            } /* if( ms[ind1] == 2 ) */
+        } /* for( k=0; k<8; k++ ) */
         
         nc=0;
+        /* look at the neighbors and change the individuals that are unknown to considered */
+        /* but this doesn't appear to change ms, just adds them to a list of nc */
         for( k=0;k<8;k++) {
             ind1=ind+neii[k];
             if( ms[ind1]==0 )  {
@@ -541,6 +551,8 @@ void ordered_upwind(void) {
                 x0=LX1 + hx*i0;
                 y0=LY1 + hy*j0;
                 if( ms[ind0] == 2 || (ms[ind0]==3 && fabs(i-i0)<1.5 && fabs(j-j0)<1.5) ) {
+				/* look at accepted front or accepted points */
+				/* ?that are 1 unit away from the ind0 point? */
                     update='y';
                     if( bdotvec > 0.0 ) {
                         v0.x=x-x0;
@@ -653,6 +665,8 @@ struct mysol triangle_update(int_fast64_t ind,int_fast64_t ind0,int_fast64_t ind
         }
     }
     else sol.c='n';
+    
+    
         if( sol.c == 'n' ) {
             gtent0=one_pt_update(ind,ind0);
             gtent1=one_pt_update(ind,ind1);
