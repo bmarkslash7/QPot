@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott" />
 
-<meta name="date" content="2016-07-24" />
+<meta name="date" content="2017-06-01" />
 
 <title>QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis</h1>
 <h4 class="author"><em>Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott</em></h4>
-<h4 class="date"><em>2016-07-24</em></h4>
+<h4 class="date"><em>2017-06-01</em></h4>
 
 
 <div id="TOC">
@@ -96,7 +96,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">QPContour</span>(<span class="dt">surface =</span> eq1.local, <span class="dt">dens =</span> <span class="kw">c</span>(<span class="dv">1000</span>, <span class="dv">1000</span>), <span class="dt">x.bound =</span> bounds.x, <span class="dt">y.bound =</span> bounds.y)
     <span class="kw">QPContour</span>(<span class="dt">surface =</span> eq2.local, <span class="dt">dens =</span> <span class="kw">c</span>(<span class="dv">1000</span>, <span class="dv">1000</span>), <span class="dt">x.bound =</span> bounds.x, <span class="dt">y.bound =</span> bounds.y)</code></pre></div>
 <p>Notice that plotting contours is not very fast. We have an argument, <code>dens</code>, that, when it’s small, allows for faster plotting times. This argument simply subsamples the surface.</p>
-<p>Next, looking at the stable node’s surface (<code>eqs[3,]</code>), you’ll notice that there’s not much resolution, and it looks like a large, flat basin. Well, that’s not the case. The stable equilibrium is there, but it’s a shallow depression that’s too shallow to be captured by the color scheme and contour lines. To see the depression, you could normally add more colors (<code>QPContour()</code>) or add the number of contour lines, but that can be insufficient in many ways. What we did to overcome this is create an argument within <code>QPContour</code> that changes the density of contour lines. Specifically, the argument <code>c.parm</code> focuses the concentration of contour lines at that bottom of the basin, as the value increases from one. Try, for example, the above with <code>c.parm = 2</code> or <code>c.parm = 5</code>:</p>
+<p>Next, looking at the stable node’s surface (<code>eqs[3,]</code>), you’ll notice that there’s not much resolution, and it looks like a large, flat basin. Well, that’s not the case. The stable equilibrium is there, but it’s a shallow depression that’s too shallow to be captured by the color scheme and contour lines. To see the depression, you could normally add more colors (<code>QPContour</code>) or add the number of contour lines, but that can be insufficient in many ways. What we did to overcome this is create an argument within <code>QPContour</code> that changes the density of contour lines. Specifically, the argument <code>c.parm</code> focuses the concentration of contour lines at that bottom of the basin, as the value increases from one. Try, for example, the above with <code>c.parm = 2</code> or <code>c.parm = 5</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">QPContour</span>(<span class="dt">surface =</span> eq2.local, <span class="dt">dens =</span> <span class="kw">c</span>(<span class="dv">1000</span>, <span class="dv">1000</span>), <span class="dt">x.bound =</span> bounds.x, <span class="dt">y.bound =</span> bounds.y, <span class="dt">c.parm =</span> <span class="dv">5</span>)</code></pre></div>
 <p>This argument will come in handy, since the quasi-potential surfaces tend to span a large range, and we’re often interested in the contours at the bottom of the basins.</p>
 </div>
@@ -129,7 +129,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
