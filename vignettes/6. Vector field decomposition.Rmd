@@ -31,7 +31,7 @@ The remainder vector field can be interpreted as a force that causes trajectorie
 ### Vector field decomposition using `QPot`
 `QPot` enables users to perform this decomposition. The function `VecDecomAll` calculates the vector field decomposition, and outputs three vector fields: the original deterministic skeleton, $\mathbf{f}(x, y)$; the gradient vector field, $-\nabla \Phi (x, y)$; and the remainder vector field, $\mathbf{r}(x, y)$. Each of these three vector fields can be output alone using `VecDecomVec`, `VecDecomGrad`, or `VecDecomRem`. These vector fields can be visualized using the function `VecDecomPlot`. Code to create the vector fields from `VecDecomAll` is displayed below; code for generating individual vector fields can be found in the man pages accessible by `help` for `VecDecomVec`, `VecDecomGrad`, or `VecDecomRem`. 
 
-```R
+```{r}
 	## Calculate all three vector fields.
 	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, x.bound = bounds.x, y.bound = bounds.y)
 

@@ -34,7 +34,7 @@ Calculating $\Phi (x, y)$ with the function `QPotential` requires:
 
 The coordinates of the stable equilibrium points, which were determined in 1. Analyzing the deterministic skeleton, are $e_{s1} = (1.4049, 2.8081)$ and $e_{s2} = (4.9040, 4.0619)$.
 
-```R
+```{r}
 	eq1.x <- eqs[1, 1]; eq1.y <- eqs[1, 2] # stable focus
 	eq2.x <- eqs[3, 1]; eq2.y <- eqs[3, 2] # stable node
 ```
@@ -50,7 +50,7 @@ Next, the boundaries of the computational domain need to be entered.  The ordere
 ### Determining the mesh size
 Finally, the mesh size for the discretization of the domain needs to be specified.  In general, the best choice of mesh size will be a compromise between resolution and computational time. The mesh size must be fine enough to precisely track how information moves outward along characteristics from the initial point, but too fine of a mesh size can lead to very long computational times.
 
-```R
+```{r}
 	step.number.x <- 1000
 	step.number.y <- 1000
 ```
@@ -58,7 +58,7 @@ Finally, the mesh size for the discretization of the domain needs to be specifie
 ### Calculating local quasi-potentials
 For each stable equilibrium, calculate the local quasi-potential:
 
-```R
+```{r}
 	eq1.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq1.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq1.y,  y.bound = bounds.y, y.num.steps = step.number.y)
 
 	eq2.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq2.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq2.y, y.bound = bounds.y, y.num.steps = step.number.y)
