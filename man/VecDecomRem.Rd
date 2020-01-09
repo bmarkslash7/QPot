@@ -59,8 +59,7 @@ This function calculates the remainder field.
 VDR <- VecDecomRem(surface = ex1.global, x.rhs = equationx, y.rhs = equationy, 
 	x.bound = xbounds, y.bound = ybounds)	
 }
-\keyword{decompoosition,}
+\keyword{decomposition}
 \keyword{field}
 \keyword{remainder}
 \keyword{vector}
-

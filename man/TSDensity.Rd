@@ -4,9 +4,20 @@
 \alias{TSDensity}
 \title{Density plot from simulation of two-dimensional stochastic differential equations}
 \usage{
-TSDensity(mat, dim = 1, xlim = NULL, ylim = NULL, contour.levels = 15,
-  col2d = c("blue", "yellow", "orange", "red"), contour.lwd = 0.5,
-  contour.lines = TRUE, kde2d.n = 100, xlab = "X", ylab = "Y", ...)
+TSDensity(
+  mat,
+  dim = 1,
+  xlim = NULL,
+  ylim = NULL,
+  contour.levels = 15,
+  col2d = c("blue", "yellow", "orange", "red"),
+  contour.lwd = 0.5,
+  contour.lines = TRUE,
+  kde2d.n = 100,
+  xlab = "X",
+  ylab = "Y",
+  ...
+)
 }
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}
@@ -63,4 +74,3 @@ TSDensity(ModelOut, dim = 2, kde2d.n = 20, xlab = "")
 \keyword{plot}
 \keyword{simulations}
 \keyword{stochastic}
-

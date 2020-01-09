@@ -51,6 +51,8 @@ In this vignette, we will extend example 2 from the R article and include the co
 <%
 	require(QPot)
 	require(R.devices)
+	require(R.rsp)
+	require(viridis)
 	var.eqn.x <- "-(y-beta) + mu*(x-alpha)*(1-(x-alpha)^2-(y-beta)^2) "
 	var.eqn.y <- "(x-alpha) + mu*(y-beta)*(1-(x-alpha)^2-(y-beta)^2)"
 	model.parms <- c(alpha = 4, beta = 5, mu = 0.2)
@@ -98,38 +100,38 @@ model.ex2 <- function(t, y, parameters){
 
 ```R
 	# draws the vector field
-	flowField(deriv = model.ex2, x.lim = c(2, 7), y.lim = c(2, 7), parameters = model.parms, 
+	flowField(deriv = model.ex2, xlim = c(2, 7), ylim = c(2, 7), parameters = model.parms, 
 		add = F, points = 30, col = "grey70", ann = F, arrow.head = 0.025, frac = 1.1, 
 		xaxs = "i", yaxs = "i", las = 1)
 	# draw the nullclines and suppress the output by assigning it to a variable
-	supp.print <- nullclines(deriv = model.ex2, x.lim = c(2, 7), y.lim = c(2, 7), 
+	supp.print <- nullclines(deriv = model.ex2, xlim = c(2, 7), ylim = c(2, 7), 
 		parameters = model.parms, col = c("blue", "red"), points = 250)
 	# draw and label the equilibria
 	# open circles are unstable, black are stable
 	points(4,5 , pch = 21 , col = "black" , bg = "white" , cex = 1.5)
 	text(4,5 , labels = expression(italic(e[0])) , adj = c(0,-.25) , cex = 1.5)
-	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , x.lim = c(2,7) , y.lim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
-	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , x.lim = c(2,7) , y.lim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
-	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , x.lim = c(2,7) , y.lim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
+	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , tlim = c(2,7), xlim = c(2,7) , ylim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
+	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , tlim = c(2,7), xlim = c(2,7) , ylim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
+	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , tlim = c(2,7), xlim = c(2,7) , ylim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
 	# label the x and y axis
 	mtext(expression(italic(x)), side = 1, line = 2.5)
 	mtext(expression(italic(y)), side = 2, line = 2.5)
 ```
 <%toPNG("EX2vectordiagram", {
 	# draws the vector field
-	flowField(deriv = model.ex2, x.lim = c(2, 7), y.lim = c(2, 7), parameters = model.parms, 
+	flowField(deriv = model.ex2, xlim = c(2, 7), ylim = c(2, 7), parameters = model.parms, 
 		add = F, points = 30, col = "grey70", ann = F, arrow.head = 0.025, frac = 1.1, 
 		xaxs = "i", yaxs = "i", las = 1)
 	# draw the nullclines and suppress the output by assigning it to a variable
-	supp.print <- nullclines(deriv = model.ex2, x.lim = c(2, 7), y.lim = c(2, 7), 
+	supp.print <- nullclines(deriv = model.ex2, xlim = c(2, 7), ylim = c(2, 7), 
 		parameters = model.parms, col = c("blue", "red"), points = 250)
 	# draw and label the equilibria
 	# open circles are unstable, black are stable
 	points(4,5 , pch = 21 , col = "black" , bg = "white" , cex = 1.5)
 	text(4,5 , labels = expression(italic(e[0])) , adj = c(0,-.25) , cex = 1.5)
-	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , x.lim = c(2,7) , y.lim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
-	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , x.lim = c(2,7) , y.lim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
-	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , x.lim = c(2,7) , y.lim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
+	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , tlim = c(2,7), xlim = c(2,7) , ylim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
+	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , tlim = c(2,7), xlim = c(2,7) , ylim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
+	traj <- trajectory(model.ex2,y0=c(runif(1,2,7),runif(1,2,7)) , tlim = c(2,7), xlim = c(2,7) , ylim = c(2,7) , parameters = model.parms , t.end = 250, lwd = 1.5 , pch = 16)
 	# label the x and y axis
 	mtext(expression(italic(x)), side = 1, line = 2.5)
 	mtext(expression(italic(y)), side = 2, line = 2.5)
@@ -291,7 +293,7 @@ In this example, the global quasi-potential is the same as the local quasi-poten
 In case you want to view the quasipotential in three dimensions, we can use the R package plot3D:
 
 ```R
-	library(plot3D)
+	require(plot3D); require(viridis)
 	
 	#first, we have to subset the x and y axis because it is scaled from 0 to 1
 	frac.x <- c(0.2,0.5)
@@ -304,11 +306,12 @@ In case you want to view the quasipotential in three dimensions, we can use the 
 
 	#regular data, can see the valley for the limit cycle
     dens.sub <- c(200, 200)	#pull only 200 rows and columns to speed up graphing
-    global.sub <- global.sub[round(seq(1,nrow(global.sub),length.out=dens.sub[1])) , round(seq(1,ncol(global.sub),length.out=dens.sub[2]))]
+    global.sub <- global.sub[round(seq(1,nrow(global.sub),length.out=dens.sub[1])) , 
+							 round(seq(1,ncol(global.sub),length.out=dens.sub[2]))]
     global.sub[global.sub > 0.01] <- NA # limit the z axis to give the best shot
     persp3D(z = global.sub, theta = 25, phi = 55, col = viridis(100, option = "C"), shade = 0.1, 
-        colkey = list(side = 4, length = 0.85), contour = list(levels = c(0.01, 0.001, 0.0001, 0.00005 ) ), zlim = c(-0.01, .011), 
-        zlab = intToUtf8(0x03A6))
+        colkey = list(side = 4, length = 0.85), contour = list(levels = c(0.01, 0.001, 0.0001, 0.00005 ) ),
+        zlim = c(-0.01, .011), zlab = intToUtf8(0x03A6))
     #spend lots of time playing with theta, phi, zlim, contour levels, etc. to produce a decent graph
 ```
 

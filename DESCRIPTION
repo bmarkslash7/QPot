@@ -1,6 +1,6 @@
 Package: QPot
-Version: 1.3
-Date: 2016-07-18
+Version: 1.6
+Date: 2020-01-08
 Title: Quasi-Potential Analysis for Stochastic Differential Equations
 Authors@R: c(
 	person("Christopher", "Moore", role = c("aut"), email = "life.dispersing@gmail.com"),
@@ -14,13 +14,13 @@ Depends:
     R (>= 3.0.2)
 Imports:
     MASS
-Suggests: R.rsp, R.devices
+Suggests: R.rsp, R.devices,phaseR,plot3D,viridis,markdown
 VignetteBuilder: R.rsp
 Maintainer: Christopher Stieha <stieha@hotmail.com>
 Description: Tools to 1) simulate and visualize stochastic differential
     equations and 2) determine stability of equilibria using the ordered-upwind
     method to compute the quasi-potential.
 License: GPL-2
-URL: http://www.r-project.org, https://github.com/bmarkslash7/QPot
+URL: https://www.r-project.org, https://github.com/bmarkslash7/QPot
 BugReports: https://github.com/bmarkslash7/QPot/issues
-RoxygenNote: 5.0.0
+RoxygenNote: 7.0.2

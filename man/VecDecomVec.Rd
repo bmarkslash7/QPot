@@ -40,4 +40,3 @@ This function calculates the vector field.
 	VDV <- VecDecomVec(x.num.steps = xstepnumber, y.num.steps = ystepnumber, x.rhs = equationx, 
 	y.rhs = equationy, x.bound = xbounds, y.bound = ybounds)
 }
-

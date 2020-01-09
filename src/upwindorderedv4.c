@@ -433,8 +433,10 @@ void ipoint() {
 /*** ordered upwind method ***/
 
 void ordered_upwind(void) {
-    int_fast64_t i,j,k,m,ind,ind0,ind1m,ind1p,ii,jj,ind1,indupdate,kx,ky,i0,j0,i1,j1,mycount=0;
+    int_fast64_t k,m,ind,ind0,ind1m,ind1p,ii,jj,ind1,indupdate,kx,ky,i1,j1,mycount=0; /*changed from int_fast64_t error line 553*/
     int nc; /* # of points that become considered at the current cycle */
+    int_fast64_t i,i0,j,j0;
+    int_fast64_t tempiint, tempjint;
     double x0,x1,y0,y1,g0,g1,x,y,len0,len1;
     int_fast64_t newind[8]; /* the indices of the new considered points */
     struct mysol sol;
@@ -550,7 +552,10 @@ void ordered_upwind(void) {
 /* v2: converts index values to x or y values */
                 x0=LX1 + hx*i0;
                 y0=LY1 + hy*j0;
-                if( ms[ind0] == 2 || (ms[ind0]==3 && fabs(i-i0)<1.5 && fabs(j-j0)<1.5) ) {
+                tempiint = labs(i-i0);
+                tempjint = labs(j-j0);
+                if( ms[ind0] == 2 || (ms[ind0]==3 && tempiint<1.5 && tempjint<1.5) ) {
+               /* if( ms[ind0] == 2 || (ms[ind0]==3 && abs(i-i0)<1.5 && abs(j-j0)<1.5) ) { */
 				/* look at accepted front or accepted points */
 				/* ?that are 1 unit away from the ind0 point? */
                     update='y';
@@ -960,7 +965,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	char *tempchrisy = *equationy;
 	for (int jchris = 0; jchris < lengthofequationx; jchris++) {
 		// xbuffer[jchris] = **equationx[jchris];
-		/*xbuffer[jchris] = tempchrisx[jchris];	/* for fixed size buffer*/
+		/*xbuffer[jchris] = tempchrisx[jchris]; for fixed size buffer*/
 		xbuff[jchris] = tempchrisx[jchris];
 	} 
 /*	xbuffer[lengthofequationx] = '\0';	*/
@@ -968,7 +973,7 @@ void quasipotential(double *storage, double *tempxmin, double *tempxmax, int *te
 	
 	for (int jchris = 0; jchris < lengthofequationy; jchris++) {
 		// ybuffer[jchris] = **equationy[jchris];
-		/*ybuffer[jchris] = tempchrisy[jchris]; /* for fixed size buffer */
+		/*ybuffer[jchris] = tempchrisy[jchris];  for fixed size buffer */
 		ybuff[jchris] = tempchrisy[jchris];
 	} 
 	/*ybuffer[lengthofequationy] = '\0';	*/

@@ -54,6 +54,7 @@ In this vignette, we will extend the example from the R article and include the 
 <%
 	require(QPot)
 	require(R.devices)
+	require(R.rsp)
 	var.eqn.x <- "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa+(x^2)))"
 	var.eqn.y <- "((gamma*(x^2)*y)/(kappa+(x^2))) - mu*(y^2)"
 	model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, kappa = 1, mu = 0.112509)
@@ -105,11 +106,11 @@ To analyze our system of differential equations, we use the package phaseR, whic
 
 ```R
 	# draws the vector field
-	flowField(deriv = model.ex1, x.lim = c(-0.1, 6), y.lim = c(-0.1, 6), parameters = model.parms, 
+	flowField(deriv = model.ex1, xlim = c(-0.1, 6), ylim = c(-0.1, 6), parameters = model.parms, 
 		add = F, points = 30, col = "grey70", ann = F, arrow.head = 0.025, frac = 1.1, 
 		xaxs = "i", yaxs = "i", las = 1)
 	# draw the nullclines and suppress the output by assigning it to a variable
-	supp.print <- nullclines(deriv = model.ex1, x.lim = c(-0.1, 6), y.lim = c(-0.1, 6), 
+	supp.print <- nullclines(deriv = model.ex1, xlim = c(-0.1, 6), ylim = c(-0.1, 6), 
 		parameters = model.parms, col = c("blue", "red"), points = 250)
 	# draw and label the equilibria
 	# open circles are unstable, black are stable
@@ -127,9 +128,9 @@ To analyze our system of differential equations, we use the package phaseR, whic
 ```
 <%toPNG("EX1vectordiagram", {
 	# draws the vector field
-	flowField(deriv = model.ex1, x.lim = c(-0.1, 6), y.lim = c(-0.1, 6), parameters = model.parms, add = F, points = 30, col = "grey70", ann = F, arrow.head = 0.025, frac = 1.1, xaxs = "i", yaxs = "i", las = 1)
+	flowField(deriv = model.ex1, xlim = c(-0.1, 6), ylim = c(-0.1, 6), parameters = model.parms, add = F, points = 30, col = "grey70", ann = F, arrow.head = 0.025, frac = 1.1, xaxs = "i", yaxs = "i", las = 1)
 	# draw the nullclines and suppress the output by assigning it to a variable
-	supp.print <- nullclines(deriv = model.ex1, x.lim = c(-0.1, 6), y.lim = c(-0.1, 6), parameters = model.parms, col = c("blue", "red"), points = 250)
+	supp.print <- nullclines(deriv = model.ex1, xlim = c(-0.1, 6), ylim = c(-0.1, 6), parameters = model.parms, col = c("blue", "red"), points = 250)
 	# draw and label the equilibria
 	# open circles are unstable, black are stable
 	points(0,0 , pch = 21 , col = "black" , bg = "white" , cex = 1.5)
@@ -324,8 +325,8 @@ with c.parm = 5
 In case you want to view the quasipotential in three dimensions, we can use the R package plot3D:
 
 ```R
-	library(plot3D)
-	library(viridis)
+	require(plot3D)
+	require(viridis)
 	frac.x <- c(0.05, 0.3)
 	frac.y <- c(0.125, 0.25)
 	global.sub <- ex1.global[round(dim(ex1.global)[1]*frac.x[1]):round(dim(ex1.global)[1]*frac.x[2]),
@@ -338,8 +339,8 @@ In case you want to view the quasipotential in three dimensions, we can use the 
 ```
 
 <%
-	library(plot3D)
-	library(viridis)
+	require(plot3D)
+	require(viridis)
 toPNG( "EX1globalvisualization3D", {
 	frac.x <- c(0.05, 0.3)
 	frac.y <- c(0.125, 0.25)

@@ -15,7 +15,7 @@
 #' @param head.length length of the edges of the arrow head (in inches).
 #' @param ... passes arguments to both \code{\link{plot}}.
 #' @details If \code{arrow.type = "proportional"}, a common warning, passed from \code{\link{arrows}}, will appear: "The direction of a zero-length arrow is indeterminate, and hence so is the direction of the arrowheads. To allow for rounding error, arrowheads are omitted (with a warning) on any arrow of length less than 1/1000 inch."  Either increase \code{tail.length} or increase the plot window to avoid this warning.
-#' @keywords vector field plot, detrministic skeleton vector field plot, gradient vector field plot, remainder vector field plot
+#' @keywords vector field plot deterministic skeleton vector field plot gradient vector field plot remainder vector field plot
 #'
 #' @examples
 #' # First, system of equations

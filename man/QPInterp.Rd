@@ -24,4 +24,3 @@ This function estimates the quasi-potential value for any x- and y-values
 this function uses bilinear interpolation for estimattion of any x- and y-value.
 }
 \keyword{interpolation}
-

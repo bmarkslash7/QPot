@@ -60,4 +60,3 @@ This function calculates the vector, gradient, and remainder fields.
 	VDAll <- VecDecomAll(surface = ex1.global, x.rhs = equationx, y.rhs = equationy, 
 	x.bound = xbounds, y.bound = ybounds)
 }
-

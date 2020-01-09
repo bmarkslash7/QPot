@@ -4,12 +4,27 @@
 \alias{QPotential}
 \title{Computes the quasi-potential for a system of stochastic differential equations using the ordered upwind method.}
 \usage{
-QPotential(x.rhs = NULL, x.start = NULL, x.bound = NULL,
-  x.num.steps = NULL, y.rhs = NULL, y.start = NULL, y.bound = NULL,
-  y.num.steps = NULL, filename = NULL, save.to.R = TRUE,
-  save.to.HD = FALSE, bounce = "d", bounce.edge = 0.01,
-  verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20,
-  k.y = 20, INFINITY = 1e+06)
+QPotential(
+  x.rhs = NULL,
+  x.start = NULL,
+  x.bound = NULL,
+  x.num.steps = NULL,
+  y.rhs = NULL,
+  y.start = NULL,
+  y.bound = NULL,
+  y.num.steps = NULL,
+  filename = NULL,
+  save.to.R = TRUE,
+  save.to.HD = FALSE,
+  bounce = "d",
+  bounce.edge = 0.01,
+  verboseR = FALSE,
+  verboseC = TRUE,
+  debugC = FALSE,
+  k.x = 20,
+  k.y = 20,
+  INFINITY = 1e+06
+)
 }
 \arguments{
 \item{x.rhs}{a string containing the right hand side of the equation for x.}
@@ -79,4 +94,3 @@ Computes the quasi-potential for a system of stochastic differential equations u
 QPContour(storage.eq1, dens = c(xstepnumber, ystepnumber), 
 	x.bound = xbounds, y.bound = ybounds, c.parm = 5) 
 }
-

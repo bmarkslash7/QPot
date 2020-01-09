@@ -4,8 +4,19 @@
 \alias{TSTraj}
 \title{Simulate two-dimensional stochastic differential equations}
 \usage{
-TSTraj(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs,
-  y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA)
+TSTraj(
+  init.x = NULL,
+  init.y = NULL,
+  y0 = NULL,
+  time,
+  deltat,
+  x.rhs,
+  y.rhs,
+  parms = NA,
+  sigma,
+  lower.bound = NA,
+  upper.bound = NA
+)
 }
 \arguments{
 \item{init.x}{initial condition for the x state variable}
@@ -67,4 +78,3 @@ ModelOut.parms <- TSTraj(y0 = model.state, time = model.time, deltat = model.del
 }
 \keyword{Stochastic}
 \keyword{simulation}
-

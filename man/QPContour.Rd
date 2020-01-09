@@ -4,9 +4,23 @@
 \alias{QPContour}
 \title{Contour plot of quasi-potential surfaces}
 \usage{
-QPContour(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
-  n.filled.contour = 25, n.contour.lines = 25, c.parm = 1, col.contour,
-  contour.lines = TRUE, xlab = "X", ylab = "Y", contour.lwd = 1, ...)
+QPContour(
+  surface,
+  dens,
+  x.bound,
+  y.bound,
+  xlim = NULL,
+  ylim = NULL,
+  n.filled.contour = 25,
+  n.contour.lines = 25,
+  c.parm = 1,
+  col.contour,
+  contour.lines = TRUE,
+  xlab = "X",
+  ylab = "Y",
+  contour.lwd = 1,
+  ...
+)
 }
 \arguments{
 \item{surface}{the surface to be plotted, from \code{\link{QPGlobal}}.}
@@ -81,4 +95,3 @@ Because, in general, capturing the topological features of a surface can be subt
 	QPContour(ex1.global, dens = c(100,100), x.bound = xbounds, 
 	y.bound = ybounds, c.parm = 5)
 }
-

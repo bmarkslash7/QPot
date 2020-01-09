@@ -50,8 +50,7 @@ This function calculates the gradient field.
 # Sixth, creat the gradient vector field
 	VDG <- VecDecomGrad(surface = ex1.global)
 }
-\keyword{decomposition,}
+\keyword{decomposition}
 \keyword{field}
 \keyword{gradient}
 \keyword{vector}
-

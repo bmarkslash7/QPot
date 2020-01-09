@@ -1,10 +1,11 @@
-useDynLib(QPot, quasipotential)
+useDynLib(QPot, .registration = TRUE)
 
 importFrom("grDevices", "colorRampPalette", "rgb")
 importFrom("graphics", ".filled.contour", "abline", "arrows", "axis",
 			"contour", "lines", "par", "plot", "polygon")
 importFrom("stats", "density", "rnorm")
 importFrom("utils", "read.table")
+importFrom("graphics", "mtext")
 
 export(Model2String)
 export(QPContour)

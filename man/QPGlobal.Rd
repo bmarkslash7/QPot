@@ -54,4 +54,3 @@ This function allows you to find the global quasi-potential values for several l
 }
 \keyword{Global}
 \keyword{quasi-potential}
-

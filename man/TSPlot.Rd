@@ -4,9 +4,21 @@
 \alias{TSPlot}
 \title{Plot simulation of two-dimensional stochastic differential equations}
 \usage{
-TSPlot(mat, deltat, dim = 1, xlim = NULL, ylim = NULL, xaxt.1D = "time",
-  dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE,
-  xlab.2D = "X", ylab.2D = "Y", ...)
+TSPlot(
+  mat,
+  deltat,
+  dim = 1,
+  xlim = NULL,
+  ylim = NULL,
+  xaxt.1D = "time",
+  dens = TRUE,
+  lwd = 2,
+  line.alpha = 130,
+  zero.axes = TRUE,
+  xlab.2D = "X",
+  ylab.2D = "Y",
+  ...
+)
 }
 \arguments{
 \item{mat}{a matrix output from \code{\link{TSTraj}}.}
@@ -63,4 +75,3 @@ TSPlot(ModelOut, deltat = model.deltat, dim = 2)
 \keyword{plot}
 \keyword{simulations}
 \keyword{stochastic}
-

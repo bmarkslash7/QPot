@@ -6,7 +6,7 @@
 #' @param y.rhs a string containing the right hand side of the equation for y.
 #' @param x.bound the x boundaries denoted at c(minimum, maximum).
 #' @param y.bound the y boundaries denoted at c(minimum, maximum).
-#' @keywords vector field decompoosition, remainder field
+#' @keywords vector field decomposition remainder field
 #' 
 #'
 #' @return returns an array of the remainder vector field.  The array has three dimensions with the respective lengths of the columns of the surface, the rows of the sruface, and the number of variables (always 2).  The two variables are the x-remainder and y-remainder.

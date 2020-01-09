@@ -4,9 +4,15 @@
 \alias{Model2String}
 \title{Inserts parameter values into equations}
 \usage{
-Model2String(model = NULL, parms = NULL, deSolve.form = FALSE,
-  x.lhs.term = "dx", y.lhs.term = "dy", supress.print = FALSE,
-  width.cutoff = 500)
+Model2String(
+  model = NULL,
+  parms = NULL,
+  deSolve.form = FALSE,
+  x.lhs.term = "dx",
+  y.lhs.term = "dy",
+  supress.print = FALSE,
+  width.cutoff = 500
+)
 }
 \arguments{
 \item{model}{contains the differential equations as given to \code{\link{TSTraj}}.  Can either be a string or a function used by the package \code{deSolve} (see third example).}
@@ -58,4 +64,3 @@ list(c(dx,dy))
 Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE, 
  x.lhs.term = 'dx', y.lhs.term = 'dy') 
 }
-
