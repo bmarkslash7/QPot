@@ -22,38 +22,38 @@
 #' # First, System of equations
 #' 	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
 #' 	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
-#' 
+#'
 #' # Second, shared parameters for each quasi-potential run
 #' 	xbounds <- c(-0.5, 10.0)
 #' 	ybounds <- c(-0.5, 10.0)
 #' 	xstepnumber <- 150
 #' 	ystepnumber <- 150
-#' 
+#'
 #' # Third, first local quasi-potential run
 #' 	xinit1 <- 1.40491
 #' 	yinit1 <- 2.80808
-#' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, 
+#' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1,
 #'		x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy,
 #'		y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
-#' 
+#'
 #' # Fourth, second local quasi-potential run
 #' 	xinit2 <- 4.9040
 #' 	yinit2 <- 4.06187
-#' 	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2, 
+#' 	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2,
 #'		x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy,
 #'		y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber)
-#' 
-#' # Fifth, determine global quasi-potential 
+#'
+#' # Fifth, determine global quasi-potential
 #' 	unst.x <- c(0, 4.2008)
 #' 	unst.y <- c(0, 4.0039)
-#' 	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), 
-#'		unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, 
+#' 	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2),
+#'		unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds,
 #'		y.bound = ybounds)
-#' 
+#'
 #' # Sixth, contour of the quasi-potential
-#' 	QPContour(ex1.global, dens = c(100,100), x.bound = xbounds, 
+#' 	QPContour(ex1.global, dens = c(100,100), x.bound = xbounds,
 #'		y.bound = ybounds, c.parm = 5)
-
+#' @export
 QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL, n.filled.contour = 25, n.contour.lines = 25, c.parm = 1, col.contour, contour.lines = TRUE, xlab = "X", ylab = "Y", contour.lwd = 1, ...){
 	x.range <- max(x.bound)-min(x.bound)
 	y.range <- max(y.bound)-min(y.bound)
@@ -65,7 +65,7 @@ QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
 	row.max <- max(which(surface != 0 , arr.ind = T)[,1])
 	col.min <- min(which(surface != 0 , arr.ind = T)[,2])
 	col.max <- max(which(surface != 0 , arr.ind = T)[,2])
-	
+
 	if(missing(xlim)) {
 		x.min <- ((row.min-1)/row.range)*x.range + min(x.bound)
 		x.max <- ((row.max-1)/row.range)*x.range + min(x.bound)
@@ -73,7 +73,7 @@ QPContour <- function(surface, dens, x.bound, y.bound, xlim = NULL, ylim = NULL,
 		}
 	if(missing(ylim)) {
 		y.min <- ((col.min-1)/col.range)*y.range + min(y.bound)
-		y.max <- ((col.max-1)/col.range)*y.range + min(y.bound)		
+		y.max <- ((col.max-1)/col.range)*y.range + min(y.bound)
 		ylim <- c(y.min,y.max)
 		}
 

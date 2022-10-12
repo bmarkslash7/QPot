@@ -1,7 +1,7 @@
 #' Inserts parameter values into equations
 #'
 #' Converts differential equations from string-format (or function-format) with parameters (e.g. "a*x+b) to string-format with parameter values (e.g. 2*x+3).  Specifically, Model2String reads in the equations, searches for the differential equations within the function (if required), and replaces the parameters with numerical values given by the user.  Returns an array of strings containing the differential equations.  This code is specifically given so that any problems can be found in R as opposed to receiving terse errors from the C code if this was built into the QPotential() function.
-#' 
+#'
 #' @param model contains the differential equations as given to \code{\link{TSTraj}}.  Can either be a string or a function used by the package \code{deSolve} (see third example).
 #' @param parms a named vector of paramters and their respective values for the deterministic equations.  If inputing a function and parms is empty, Model2String will return the equation as a string.
 #' @param deSolve.form if FALSE (default) interprets model as a string containing the rhs of the equation.  If TRUE, treats model as the function input into the package \code{deSolve}.
@@ -23,9 +23,9 @@
 #' test.eqn.x = "dx = (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
 #' test.eqn.y = "dy = ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
 #' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-#' equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms, 
+#' equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms,
 #'  deSolve.form = TRUE, x.lhs.term = 'dx', y.lhs.term = 'dy')
-#' equations.as.strings.y <- Model2String(test.eqn.y, parms = model.parms, 
+#' equations.as.strings.y <- Model2String(test.eqn.y, parms = model.parms,
 #'  deSolve.form = TRUE, x.lhs.term = 'dx', y.lhs.term = 'dy')
 #'
 #' # Third example with deSolve-style function call:
@@ -38,29 +38,29 @@
 #'	})
 #' }
 #'
-#' Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE, 
-#'  x.lhs.term = 'dx', y.lhs.term = 'dy') 
+#' Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE,
+#'  x.lhs.term = 'dx', y.lhs.term = 'dy')
 
-
+#' @export
 Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE, width.cutoff = 500) {
 	if (!supress.print) {
 		message("Note: This function is supplied to help convert equations to strings.  Long equations, equations spanning multiple lines, equations with strange notation, etc, may not work.  Always check the output.")
 	}
 	if (is.null(model)) {stop("No equation supplied to function Model2String")}
-	
+
 	if (deSolve.form == TRUE) {
 
 		temp <- deparse(model, width.cutoff = width.cutoff)
 	# for some reason, inputing a string causes a " to be added
 		temp <- gsub(pattern = '\"', replacement = '', x = temp)
-	
+
 	#Dump function into a list of character strings
 	#Go through each string and determine if it contains an equation
 		foundx = 0	#flag for making sure dx is only found once
 		foundy = 0	#flag for making sure dy is only found once
-	
+
 	#remove the lhs and return the rhs
-#		for (i in 1:length(temp)) { 
+#		for (i in 1:length(temp)) {
 		for (i in seq_along(temp)) {
 		#when searching, first look for the lhs defining whether the derivative is for x or y
 		#once found, look inside the string and use either '<-' or '=' to separate
@@ -76,7 +76,7 @@ Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs
 					x.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
 				} else {stop("Equation does not contain = or <-")}
 			}
-	
+
 			if ((foundy == 0) && isTRUE(grepl(pattern = y.lhs.term, x = temp[i]))) {
 				foundy = 1
 				if (grepl(pattern = '<-', x = temp[i])) {
@@ -89,7 +89,7 @@ Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs
 				} else {stop("Equation does not contain = or <-")}
 			}
 		}
-		
+
 		equations = c()
 		if (foundx == 1) {equations = x.equation}
 		if (foundy == 1) {equations = c(equations, y.equation)}
@@ -97,7 +97,7 @@ Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs
 	else { #simple find and replace
 		equations <- model
 	}
-	
+
 #if parameters are not declared, then we do not have to replace anything
 	if (!is.null(parms)) {
 #	if (!(parms[1] == 'NULL')){
@@ -109,7 +109,7 @@ Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs
 			equations <- gsub(pattern = currname, replacement = value, x = equations)
 		}
 	} #if (!(parms[1] == 'NULL')){
-	
+
 	if (!supress.print) {print(paste(equations))}
 	return(equations)
 

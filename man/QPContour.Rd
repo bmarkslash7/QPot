@@ -73,25 +73,25 @@ Because, in general, capturing the topological features of a surface can be subt
 # Third, first local quasi-potential run
 	xinit1 <- 1.40491
 	yinit1 <- 2.80808
-	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, 
+	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1,
 	x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy,
 	y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
 
 # Fourth, second local quasi-potential run
 	xinit2 <- 4.9040
 	yinit2 <- 4.06187
-	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2, 
+	storage.eq2 <- QPotential(x.rhs = equationx, x.start = xinit2,
 	x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy,
 	y.start = yinit2, y.bound = ybounds, y.num.steps = ystepnumber)
 
-# Fifth, determine global quasi-potential 
+# Fifth, determine global quasi-potential
 	unst.x <- c(0, 4.2008)
 	unst.y <- c(0, 4.0039)
-	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2), 
-	unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds, 
+	ex1.global <- QPGlobal(local.surfaces = list(storage.eq1, storage.eq2),
+	unstable.eq.x = unst.x, unstable.eq.y = unst.y, x.bound = xbounds,
 	y.bound = ybounds)
 
 # Sixth, contour of the quasi-potential
-	QPContour(ex1.global, dens = c(100,100), x.bound = xbounds, 
+	QPContour(ex1.global, dens = c(100,100), x.bound = xbounds,
 	y.bound = ybounds, c.parm = 5)
 }

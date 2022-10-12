@@ -8,7 +8,7 @@
 #' @param surface the surface to interpolated, from \code{\link{QPGlobal}}.
 #' @keywords interpolation
 #' @details this function uses bilinear interpolation for estimattion of any x- and y-value.
-
+#' @export
 	QPInterp <- function(X, Y, x.bound, y.bound, surface) {
 		mat.row.min <- 1
 		mat.row.max <- nrow(surface)
@@ -19,12 +19,12 @@
 		X.range <- max(x.bound) - min(y.bound)
 		Y.range <- max(y.bound) - min(y.bound)
 		x.index <- ((X - min(x.bound))/X.range)*mat.row.max
-		y.index <- ((Y - min(y.bound))/Y.range)*mat.col.max	
+		y.index <- ((Y - min(y.bound))/Y.range)*mat.col.max
 
 		x.1 <- floor(x.index)
 		x.2 <- ceiling(x.index)
 		x <- x.index
-	
+
 		y.1 <- floor(y.index)
 		y.2 <- ceiling(y.index)
 		y <- y.index
@@ -32,18 +32,18 @@
 		Q.11 <- surface[x.1 , y.1]
 		Q.12 <- surface[x.2 , y.1]
 		Q.21 <- surface[x.1 , y.2]
-		Q.22 <- surface[x.2 , y.2]	
+		Q.22 <- surface[x.2 , y.2]
 
 		if(x.1 == x.2 && y.1 != y.2) {
-			print("X SAME!")			
+			print("X SAME!")
 		val <- (1/(y.2-y.1)) * ((Q.11*(y.2-y)) + (Q.22*(y-y.1)))
 		return(val)
 		}
-		
+
  		if (y.1 == y.2 & x.1 != x.2) {
 			print("Y SAME!")
 		val <- (1/(x.2-x.1)) * ((Q.11*(x.2-x)) + (Q.22*(x-x.1)))
-		return(val)		
+		return(val)
 		}
 
 		if (x.1 == x.2 & y.1 == y.2) {

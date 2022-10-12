@@ -11,10 +11,10 @@
 #' @param col2d vector of colors to be used in the plot.
 #' @param contour.lwd line width of contour lines if \code{contour.lines = TRUE}.
 #' @param contour.lines if \code{TRUE}, then black countour lines added to the graph.
-#' @param kde2d.n number of grid points in each direction. Can be scalar or a length-2 integer vector.  Passes to argument \code{n} in \code{\link[MASS]{kde2d}}. 
+#' @param kde2d.n number of grid points in each direction. Can be scalar or a length-2 integer vector.  Passes to argument \code{n} in \code{\link[MASS]{kde2d}}.
 #' @param ... passes arguments to \code{\link{plot}}.
 #' @keywords plot stochastic simulations
-#' 
+#'
 #' @examples
 #'\dontrun{
 #' # First, the parameter values, as found in TSTraj
@@ -23,14 +23,14 @@
 #'	model.deltat <- 0.005
 #'	model.time <- 100
 #'
-#' # Second, write out the deterministic skeleton of the equations to be simulated, 
+#' # Second, write out the deterministic skeleton of the equations to be simulated,
 #' # as found in TSTraj
 #'	#Example 1 from article
 #'	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0 + x*x)"
 #'	equationy <- "((0.476*x*x*y)/(1 + x*x)) - 0.112590*y*y"
 #'
 #' # Third, run it, as found in TSTraj
-#'	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#'	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat,
 #'		x.rhs = equationx, y.rhs = equationy, sigma = model.sigma)
 #' # Fourth, plot it:
 #'	# in 1D
@@ -38,7 +38,7 @@
 #'	# in 2D
 #'	TSDensity(ModelOut, dim = 2, kde2d.n = 20, xlab = "")
 #' }
-
+#' @export
 	TSDensity <- function(mat, dim = 1, xlim = NULL, ylim = NULL, contour.levels = 15,  col2d = c("blue", "yellow", "orange", "red") , contour.lwd = 0.5, contour.lines = TRUE, kde2d.n = 100, xlab = "X", ylab = "Y", ...){
 		if (dim ==1){
 			densA <- density(mat[,2] , na.rm = T)

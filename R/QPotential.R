@@ -1,6 +1,6 @@
-#' Computes the quasi-potential for a system of stochastic differential equations using the ordered upwind method. 
-#' 
-#' 
+#' Computes the quasi-potential for a system of stochastic differential equations using the ordered upwind method.
+#'
+#'
 #' @param x.rhs a string containing the right hand side of the equation for x.
 #' @param x.start the starting value of x, usually the x value of the current equilibrium.
 #' @param x.bound the x boundaries denoted as c(minimum, maximum).
@@ -19,7 +19,7 @@
 #' @param INFINITY largest possible quasi-potential value.  If computed quasi-potential is ever greater than this number, program will stop.  Especially useful when bounce = 'b'.  Default is 1,000,000 with a tolerance of 1e-12
 #' @param verboseC flag (default = TRUE) for printing out useful-for-everyone information from C code implementing the upwind-ordered method (quasipotential.C).
 #' @param verboseR NOT IMPLEMENTED: Flag (default = FALSE) for printing out information in QPotential R wrapper.
-#' @param debugC NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code 
+#' @param debugC NOT IMPLEMENTED: Flag (default = FALSE) for printing out debugging C code
 #' @return filetoHD if save.to.HD enabled, then saves a file in the current directory as either filename or as defaultname-xXSTARTyYSTART.txt
 #' @return filetoR if save.to.R enabled, then the function QPotential returns a matrix containing  the upwind-ordered results to be used for plotting.  Requires a variable to catch the returned matrix, i.e. storage <- QPotential(parameters...)
 #'
@@ -27,23 +27,23 @@
 #' # First, System of equations
 #' 	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0+x*x)"
 #' 	equationy <- "((0.476*x*x*y)/(1+x*x)) - 0.112590*y*y"
-#' 
+#'
 #' # Second, shared parameters for each quasi-potential run
 #' 	xbounds <- c(-0.5, 8.0)
 #' 	ybounds <- c(-0.5, 8.0)
 #' 	xstepnumber <- 200
 #' 	ystepnumber <- 200
-#' 
+#'
 #' # Third, a local quasi-potential run
 #' 	xinit1 <- 1.40491
 #' 	yinit1 <- 2.80808
-#' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, 
-#'		x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, 
+#' 	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1,
+#'		x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy,
 #'		y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
 #' # Visualize the quasi-potential
-#'	QPContour(storage.eq1, dens = c(xstepnumber, ystepnumber), 
-#'		x.bound = xbounds, y.bound = ybounds, c.parm = 5) 
-
+#'	QPContour(storage.eq1, dens = c(xstepnumber, ystepnumber),
+#'		x.bound = xbounds, y.bound = ybounds, c.parm = 5)
+#' @export
 QPotential <- function (x.rhs = NULL, x.start = NULL, x.bound = NULL, x.num.steps = NULL, y.rhs = NULL, y.start = NULL, y.bound = NULL, y.num.steps = NULL, filename = NULL, save.to.R = TRUE, save.to.HD = FALSE, bounce = 'd', bounce.edge = 0.01, verboseR = FALSE, verboseC = TRUE, debugC = FALSE, k.x = 20, k.y = 20, INFINITY = 1000000)
 {
 # ----------------------------------------------------------------------
@@ -99,9 +99,9 @@ if ( (length(y.bound) == 1) && (y.bound == 'NULL') ) {lowerboundsy <- 0; upperbo
 if (!is.null(y.bound)) {
 	if (length(y.bound) < 2) stop("Not enough values for y range in variable y.bound.")
 	if (length(y.bound) > 2) stop("Too many values for y range in variable y.bound.")
-	lowerboundsy <- min(y.bound) #y.bound[1]; 
+	lowerboundsy <- min(y.bound) #y.bound[1];
 	upperboundsy <- max(y.bound) #y.bound[2]
-} # end of if y.bound != 'NULL 
+} # end of if y.bound != 'NULL
 #if (y.bound[1] == 'NULL') stop('No minimum and maximum y values.  Parameter y.bound not defined')
 #The numofstepsy cannot equal 1, because hy=(LY2-LY1)/(NY-1), where NY is numofsteps
 #if (y.num.steps == 'NULL') {numofstepsy <- 2} else {numofstepsy <- y.num.steps}
@@ -113,13 +113,13 @@ if (is.null(y.start)) {startyval = 0} else {startyval <- y.start}
 
 # ----------------------------------------------------------------------
 # Components for C debugging and information to screen
-# ---------------------------------------------------------------------- 
+# ----------------------------------------------------------------------
 if (debugC == FALSE) {is.c.debugging = 0} else {is.c.debugging = 1}
 if (verboseC == FALSE) {is.c.loud = 0} else {is.c.loud = 1}
 
 # ----------------------------------------------------------------------
 # Components to enable file saving
-# ---------------------------------------------------------------------- 
+# ----------------------------------------------------------------------
 if (verboseR) {message("components to enable file saving")}
 #Save in whatever format the user wants
 #if (filename != 'NULL') {lengthfilename = nchar(filename)}
@@ -156,7 +156,7 @@ else 	{stop('Parameter bounce must be left blank, (d)efault), (p)ositivevalues, 
 # Error checking before C code is called
 # ----------------------------------------------------------------------
 
-{ 
+{
 # check to make sure:
 # check that LX1 < xeq < LX2
 # check that LY1 < yeq < LY2
@@ -164,7 +164,7 @@ if ( (lowerboundsx > startxval) || (upperboundsx < startxval) ) {stop("Starting 
 if ( (lowerboundsy > startyval) || (upperboundsy < startyval) ) {stop("Starting y value y.start is outside y.bound range")}
 if ( lowerboundsx > upperboundsx ) {stop("In x.bound, upper bound is less than lower bound.  x.bound[2] < x.bound[1]")}
 if ( lowerboundsy > upperboundsy ) {stop("In y.bound, upper bound is less than lower bounds. y.bound[2] < y.bound[1]")}
- 
+
 
 # ----------------------------------------------------------------------
 # warn about memory size as number of steps is very large
@@ -183,10 +183,10 @@ if (numofstepsx*numofstepsy > 7000*7000) {
 # ----------------------------------------------------------------------
 # Call to upwind ordered method
 # ----------------------------------------------------------------------
-# Produce multiple versions: 	
-#	1) store output only on harddrive 
+# Produce multiple versions:
+#	1) store output only on harddrive
 #	2) store output only in R <DEFAULT>
-#	3) store output in R and on harddrive 
+#	3) store output in R and on harddrive
 #	4) no data saved, testing purposes only
 if (datasave == 1) {
 	#no R write; HD write

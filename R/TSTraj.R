@@ -14,7 +14,7 @@
 #' @param upper.bound numeric value specifying an upper bound in the simulation.
 #' @return returns a matrix with three columns (timestep, x values, and y values) with a length of \code{time/deltat} (2*e4 in the examples below).
 #' @keywords Stochastic simulation
-#' 
+#'
 #' @examples
 #' # First, the parameter values
 #'	model.state <- c(x = 3, y = 3)
@@ -28,10 +28,10 @@
 #'	equationy <- "((0.476*x*x*y)/(1 + x*x)) - 0.112590*y*y"
 #'
 #' # Third, Run it
-#'	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#'	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat,
 #'		x.rhs = equationx, y.rhs = equationy, sigma = model.sigma)
 #'
-#' # Can also input x.rhs and y.rhs as strings that contain parameter names 
+#' # Can also input x.rhs and y.rhs as strings that contain parameter names
 #' # and include parms with names and values of parameters
 #'	model.state <- c(x = 1, y = 2)
 #'	model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, kappa = 1, gamma = 0.476, mu = 0.112509)
@@ -42,9 +42,9 @@
 #'	test.eqn.x = "(alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
 #'	test.eqn.y = "((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
 #'
-#'	ModelOut.parms <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#'	ModelOut.parms <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat,
 #'		x.rhs = test.eqn.x, y.rhs = test.eqn.y, parms = model.parms, sigma = model.sigma)
-
+#' @export
 
 TSTraj <- function(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs, y.rhs, parms = NA, sigma, lower.bound = NA, upper.bound = NA) {
 
@@ -59,7 +59,7 @@ TSTraj <- function(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs,
 		list(c(dx,dy))
 		})
 	}
-	
+
 	time.vals <- seq(from = 0 , to = time , by = deltat)[-1]
 	mat <- matrix(data = NA , nrow = length(time.vals) , ncol = 3)
 	colnames(mat) <- c("t" , names(y0))
@@ -96,7 +96,7 @@ TSTraj <- function(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs,
 						X <- mat.list[1] + fX*deltat + sigma.a*rnorm(1,0, sqrt(deltat))
 						Y <- mat.list[2] + fY*deltat + sigma.b*rnorm(1,0, sqrt(deltat))
 						mat[i,2] <- ifelse(X <= upper.bound.a, ifelse(X >= lower.bound.a,X,lower.bound.a), upper.bound.a)
-						mat[i,3] <- ifelse(Y <= upper.bound.b, ifelse(Y >= lower.bound.b,Y,lower.bound.b), upper.bound.b)	
+						mat[i,3] <- ifelse(Y <= upper.bound.b, ifelse(Y >= lower.bound.b,Y,lower.bound.b), upper.bound.b)
 				}
 			} else {
 			mat[1,] <- c(1, y0[1], y0[2])
@@ -111,7 +111,7 @@ TSTraj <- function(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs,
 						mat[i,3] <- ifelse(Y <= upper.bound.b, Y, upper.bound.b)
 					}
 				}
-	
+
 		} else {
 			if (is.numeric(lower.bound) == TRUE) {
 			mat[1,] <- c(1, y0[1], y0[2])
@@ -124,7 +124,7 @@ TSTraj <- function(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs,
 					Y <- mat.list[2] + fY*deltat + sigma.b*rnorm(1,0, sqrt(deltat))
 					mat[i,2] <- ifelse(X >= lower.bound.a, X, lower.bound.a)
 					mat[i,3] <- ifelse(Y >= lower.bound.b, Y, lower.bound.b)
-		
+
 				}
 			} else {
 			mat[1,] <- c(1, y0[1], y0[2])
@@ -134,7 +134,7 @@ TSTraj <- function(init.x = NULL, init.y = NULL, y0 = NULL, time, deltat, x.rhs,
 					fX <- unlist(func(1 , mat.list , parms))[1]
 					fY <- unlist(func(1 , mat.list , parms))[2]
 					mat[i,2] <- mat.list[1] + fX*deltat + sigma.a*rnorm(1,0, sqrt(deltat))
-					mat[i,3] <- mat.list[2] + fY*deltat + sigma.b*rnorm(1,0, sqrt(deltat))		
+					mat[i,3] <- mat.list[2] + fY*deltat + sigma.b*rnorm(1,0, sqrt(deltat))
 				}
 			}
 		}

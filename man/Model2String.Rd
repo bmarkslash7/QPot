@@ -46,9 +46,9 @@ equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms)
 test.eqn.x = "dx = (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))"
 test.eqn.y = "dy = ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)"
 model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
-equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms, 
+equations.as.strings.x <- Model2String(test.eqn.x, parms = model.parms,
  deSolve.form = TRUE, x.lhs.term = 'dx', y.lhs.term = 'dy')
-equations.as.strings.y <- Model2String(test.eqn.y, parms = model.parms, 
+equations.as.strings.y <- Model2String(test.eqn.y, parms = model.parms,
  deSolve.form = TRUE, x.lhs.term = 'dx', y.lhs.term = 'dy')
 
 # Third example with deSolve-style function call:
@@ -61,6 +61,6 @@ list(c(dx,dy))
 })
 }
 
-Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE, 
- x.lhs.term = 'dx', y.lhs.term = 'dy') 
+Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE,
+ x.lhs.term = 'dx', y.lhs.term = 'dy')
 }

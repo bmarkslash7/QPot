@@ -15,7 +15,7 @@
 #' @param ylab.2D a title for the y axis when \code{dim = 2}.
 #' @param ... passes arguments to \code{\link{plot}}.
 #' @keywords plot stochastic simulations
-#' 
+#'
 #' @examples
 #' # First, the parameter values, as found in TSTraj
 #'	model.state <- c(x = 3, y = 3)
@@ -23,21 +23,21 @@
 #'	model.deltat <- 0.05
 #'	model.time <- 100
 #'
-#' # Second, write out the deterministic skeleton of the equations to be simulated, 
+#' # Second, write out the deterministic skeleton of the equations to be simulated,
 #' # as found in TSTraj
 #'	#Example 1 from article
 #'	equationx <- "1.54*x*(1.0-(x/10.14)) - (y*x*x)/(1.0 + x*x)"
 #'	equationy <- "((0.476*x*x*y)/(1 + x*x)) - 0.112590*y*y"
 #'
 #' # Third, run it, as found in TSTraj
-#'	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, 
+#'	ModelOut <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat,
 #'		x.rhs = equationx, y.rhs = equationy, sigma = model.sigma)
 #' # Fourth, plot it:
 #'	# in 1D
 #'	TSPlot(ModelOut, deltat = model.deltat, dim = 1)
 #'	# in 2D
 #'	TSPlot(ModelOut, deltat = model.deltat, dim = 2)
-
+#' @export
 TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = NULL, xaxt.1D = "time", dens = TRUE, lwd = 2, line.alpha = 130, zero.axes = TRUE, xlab.2D = "X", ylab.2D  = "Y", ...) {
 		if (dim != 1 & dim != 2) {stop("Can only plot in 1 or 2 dimensions (i.e., dim must == 1 or 2)")}
 		if (missing(deltat) == TRUE) {stop("deltat is missing and needed to compute steps and 1D hist.  Please specify.")}
@@ -138,7 +138,7 @@ TSPlot <- function(mat, deltat, dim = 1, xlim = NULL, ylim = NULL, xaxt.1D = "ti
 				if(missing(ylim)) {ylim = c(y.min, y.max)}
 				plot(mat[,2] , mat[,3] , type = "n", las = 1 , ylim = ylim , xlim = xlim, xlab = xlab.2D, ylab = ylab.2D, ...)
 				if (zero.axes == TRUE) {abline(v = 0 , h = 0 , col = "grey75" , lwd = 0.75 , lty = 1)}
-				lines(mat[,2] , mat[,3] , col = rgb(50,50,50,line.alpha,NULL,255) , lwd = lwd)				
+				lines(mat[,2] , mat[,3] , col = rgb(50,50,50,line.alpha,NULL,255) , lwd = lwd)
 			}
 		}
 	on.exit(par(orig.par))

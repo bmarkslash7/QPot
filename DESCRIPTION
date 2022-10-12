@@ -13,7 +13,11 @@ Authors@R: c(
 Depends:
     R (>= 3.0.2)
 Imports:
-    MASS
+    graphics,
+    grDevices,
+    MASS,
+    stats,
+    utils
 Suggests: R.rsp, R.devices,phaseR,plot3D,viridis,markdown
 VignetteBuilder: R.rsp
 Maintainer: Christopher Stieha <stieha@hotmail.com>
@@ -23,4 +27,5 @@ Description: Tools to 1) simulate and visualize stochastic differential
 License: GPL-2
 URL: https://www.r-project.org, https://github.com/bmarkslash7/QPot
 BugReports: https://github.com/bmarkslash7/QPot/issues
-RoxygenNote: 7.0.2
+RoxygenNote: 7.2.1
+Encoding: UTF-8

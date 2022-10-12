@@ -87,10 +87,10 @@ Computes the quasi-potential for a system of stochastic differential equations u
 # Third, a local quasi-potential run
 	xinit1 <- 1.40491
 	yinit1 <- 2.80808
-	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1, 
-	x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy, 
+	storage.eq1 <- QPotential(x.rhs = equationx, x.start = xinit1,
+	x.bound = xbounds, x.num.steps = xstepnumber, y.rhs = equationy,
 	y.start = yinit1, y.bound = ybounds, y.num.steps = ystepnumber)
 # Visualize the quasi-potential
-QPContour(storage.eq1, dens = c(xstepnumber, ystepnumber), 
-	x.bound = xbounds, y.bound = ybounds, c.parm = 5) 
+QPContour(storage.eq1, dens = c(xstepnumber, ystepnumber),
+	x.bound = xbounds, y.bound = ybounds, c.parm = 5)
 }
