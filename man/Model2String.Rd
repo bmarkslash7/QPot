@@ -55,10 +55,10 @@ equations.as.strings.y <- Model2String(test.eqn.y, parms = model.parms,
 model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
 ModelEquations <- function(t, state, parms) {
 	with(as.list(c(state, parms)), {
-dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
-dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
-list(c(dx,dy))
-})
+	dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+	dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+	list(c(dx,dy))
+	})
 }
 
 Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE,

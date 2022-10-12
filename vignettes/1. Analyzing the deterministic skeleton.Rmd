@@ -37,8 +37,8 @@ $\mu$      | 0.112509 | Death rate of the consumer
 We can create a vector field of the deterministic skeleton by using package [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html).  First, we will load [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) and its dependency, [deSolve](https://cran.r-project.org/web/packages/deSolve/index.html) ([phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) makes use of `deSolve::ode`):
 
 ```{r, message = F}
-	library(package = "deSolve")
-	library(package = "phaseR")
+library(package = "deSolve")
+library(package = "phaseR")
 ```
 
 Second, we write our equations above in the pseudo-code format:
@@ -56,29 +56,29 @@ Second, we write our equations above in the pseudo-code format:
 in R as
 
 ```{r}
-	model.ex1 <- function(t, y, parameters) {
-	  	x <- y[1]
-	  	y <- y[2]
-	  	alpha <- parameters["alpha"]
-	  	beta <- parameters["beta"]
-	  	delta <- parameters["delta"]
-	  	kappa <- parameters["kappa"]
-	  	gamma <- parameters["gamma"]
-	  	mu <- parameters["mu"]
-	  	dy <- numeric(2)
-	  	dy[1] <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
-	  	dy[2] <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
-	  	list(dy)
-	}
+model.ex1 <- function(t, y, parameters) {
+  x <- y[1]
+  y <- y[2]
+  alpha <- parameters["alpha"]
+  beta <- parameters["beta"]
+  delta <- parameters["delta"]
+  kappa <- parameters["kappa"]
+  gamma <- parameters["gamma"]
+  mu <- parameters["mu"]
+  dy <- numeric(2)
+  dy[1] <- (alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))
+  dy[2] <- ((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)
+  list(dy)
+}
 ```
 Then, we plot the direction field and the zero-growth isoclines (i.e., nullclines):
 
 ```{r eval = F}
-  model.parms <- c("alpha" = 1.54, "beta" = 10.14, "delta" = 1, "gamma" = 0.476, "mu" = 0.112509, "kappa" = 1)
-	xlims <- c(0, 6)
-	ylims <- c(0, 6)
-	flowField(deriv = model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 30, add = FALSE, state.names = c("x", "y"))
-	nullclines(model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 250, col = c("blue","red"), state.names = c("x", "y"))
+model.parms <- c("alpha" = 1.54, "beta" = 10.14, "delta" = 1, "gamma" = 0.476, "mu" = 0.112509, "kappa" = 1)
+xlims <- c(0, 6)
+ylims <- c(0, 6)
+flowField(deriv = model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 30, add = FALSE, state.names = c("x", "y"))
+nullclines(model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 250, col = c("blue", "red"), state.names = c("x", "y"))
 ```
 
 ### Identifying and classifying equilibria

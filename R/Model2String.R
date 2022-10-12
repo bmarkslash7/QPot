@@ -32,85 +32,94 @@
 #' model.parms <- c(alpha=1.54, beta=10.14, delta=1, kappa=1, gamma=0.476, mu=0.112509)
 #' ModelEquations <- function(t, state, parms) {
 #' 	with(as.list(c(state, parms)), {
-#'	dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
-#'	dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
-#'	list(c(dx,dy))
-#'	})
+#' 	dx <- (alpha*x)*(1-(x/beta)) - ((delta*(x^2)*y)/(kappa + (x^2)))
+#' 	dy <- ((gamma*(x^2)*y)/(kappa + (x^2))) - mu*(y^2)
+#' 	list(c(dx,dy))
+#' 	})
 #' }
 #'
 #' Model2String(ModelEquations, parms = model.parms, deSolve.form = TRUE,
 #'  x.lhs.term = 'dx', y.lhs.term = 'dy')
 
 #' @export
-Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs.term = 'dx', y.lhs.term = 'dy', supress.print = FALSE, width.cutoff = 500) {
-	if (!supress.print) {
-		message("Note: This function is supplied to help convert equations to strings.  Long equations, equations spanning multiple lines, equations with strange notation, etc, may not work.  Always check the output.")
-	}
-	if (is.null(model)) {stop("No equation supplied to function Model2String")}
+Model2String <- function(model = NULL, parms = NULL, deSolve.form = FALSE, x.lhs.term = "dx", y.lhs.term = "dy", supress.print = FALSE, width.cutoff = 500) {
+  if (!supress.print) {
+    message("Note: This function is supplied to help convert equations to strings.  Long equations, equations spanning multiple lines, equations with strange notation, etc, may not work.  Always check the output.")
+  }
+  if (is.null(model)) {
+    stop("No equation supplied to function Model2String")
+  }
 
-	if (deSolve.form == TRUE) {
+  if (deSolve.form == TRUE) {
+    temp <- deparse(model, width.cutoff = width.cutoff)
+    # for some reason, inputing a string causes a " to be added
+    temp <- gsub(pattern = '\"', replacement = "", x = temp)
 
-		temp <- deparse(model, width.cutoff = width.cutoff)
-	# for some reason, inputing a string causes a " to be added
-		temp <- gsub(pattern = '\"', replacement = '', x = temp)
+    # Dump function into a list of character strings
+    # Go through each string and determine if it contains an equation
+    foundx <- 0 # flag for making sure dx is only found once
+    foundy <- 0 # flag for making sure dy is only found once
 
-	#Dump function into a list of character strings
-	#Go through each string and determine if it contains an equation
-		foundx = 0	#flag for making sure dx is only found once
-		foundy = 0	#flag for making sure dy is only found once
+    # remove the lhs and return the rhs
+    # 		for (i in 1:length(temp)) {
+    for (i in seq_along(temp)) {
+      # when searching, first look for the lhs defining whether the derivative is for x or y
+      # once found, look inside the string and use either '<-' or '=' to separate
+      # the lhs from the rhs
+      if ((foundx == 0) && isTRUE(grepl(pattern = x.lhs.term, x = temp[i]))) {
+        foundx <- 1
+        if (grepl(pattern = "<-", x = temp[i])) {
+          location <- regexpr(pattern = "<-", text = temp[i])
+          x.equation <- substr(temp[i], start = (location + 2), stop = nchar(temp[i]))
+        } else if (grepl(pattern = "=", x = temp[i])) {
+          location <- regexpr(pattern = "=", text = temp[i])
+          x.equation <- substr(temp[i], start = (location + 2), stop = nchar(temp[i]))
+        } else {
+          stop("Equation does not contain = or <-")
+        }
+      }
 
-	#remove the lhs and return the rhs
-#		for (i in 1:length(temp)) {
-		for (i in seq_along(temp)) {
-		#when searching, first look for the lhs defining whether the derivative is for x or y
-		#once found, look inside the string and use either '<-' or '=' to separate
-		# the lhs from the rhs
-			if ((foundx == 0) && isTRUE(grepl(pattern = x.lhs.term, x = temp[i]))) {
-				foundx = 1
-				if (grepl(pattern = '<-', x = temp[i])) {
-					location <- regexpr(pattern = '<-', text = temp[i])
-					x.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
-				}
-				else if (grepl(pattern = '=', x = temp[i])) {
-					location <- regexpr(pattern = '=', text = temp[i])
-					x.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
-				} else {stop("Equation does not contain = or <-")}
-			}
+      if ((foundy == 0) && isTRUE(grepl(pattern = y.lhs.term, x = temp[i]))) {
+        foundy <- 1
+        if (grepl(pattern = "<-", x = temp[i])) {
+          location <- regexpr(pattern = "<-", text = temp[i])
+          y.equation <- substr(temp[i], start = (location + 2), stop = nchar(temp[i]))
+        } else if (grepl(pattern = "=", x = temp[i])) {
+          location <- regexpr(pattern = "=", text = temp[i])
+          y.equation <- substr(temp[i], start = (location + 2), stop = nchar(temp[i]))
+        } else {
+          stop("Equation does not contain = or <-")
+        }
+      }
+    }
 
-			if ((foundy == 0) && isTRUE(grepl(pattern = y.lhs.term, x = temp[i]))) {
-				foundy = 1
-				if (grepl(pattern = '<-', x = temp[i])) {
-					location <- regexpr(pattern = '<-', text = temp[i])
-					y.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
-				}
-				else if (grepl(pattern = '=', x = temp[i])) {
-					location <- regexpr(pattern = '=', text = temp[i])
-					y.equation = substr(temp[i], start = (location+2), stop = nchar(temp[i]))
-				} else {stop("Equation does not contain = or <-")}
-			}
-		}
+    equations <- c()
+    if (foundx == 1) {
+      equations <- x.equation
+    }
+    if (foundy == 1) {
+      equations <- c(equations, y.equation)
+    }
+  } # if (deSolve.form == TRUE)
+  else {
+    # simple find and replace
+    equations <- model
+  }
 
-		equations = c()
-		if (foundx == 1) {equations = x.equation}
-		if (foundy == 1) {equations = c(equations, y.equation)}
-	} #if (deSolve.form == TRUE)
-	else { #simple find and replace
-		equations <- model
-	}
+  # if parameters are not declared, then we do not have to replace anything
+  if (!is.null(parms)) {
+    # 	if (!(parms[1] == 'NULL')){
+    # replace the parameter names in the equations with their values
+    allnames <- names(parms)
+    for (i in 1:length(parms)) {
+      currname <- allnames[i]
+      value <- toString(parms[[i]])
+      equations <- gsub(pattern = currname, replacement = value, x = equations)
+    }
+  } # if (!(parms[1] == 'NULL')){
 
-#if parameters are not declared, then we do not have to replace anything
-	if (!is.null(parms)) {
-#	if (!(parms[1] == 'NULL')){
-#replace the parameter names in the equations with their values
-		allnames <-names(parms)
-		for (i in 1:length(parms)) {
-			currname <- allnames[i]
-			value = toString(parms[[i]])
-			equations <- gsub(pattern = currname, replacement = value, x = equations)
-		}
-	} #if (!(parms[1] == 'NULL')){
-
-	if (!supress.print) {print(paste(equations))}
-	return(equations)
-
+  if (!supress.print) {
+    print(paste(equations))
+  }
+  return(equations)
 }

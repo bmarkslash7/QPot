@@ -29,40 +29,40 @@ Specifically, we created `TSTraj` (for **T**ime **S**eries **Traj**ectory), to t
 
 Specifying the above equations can be separate from the parameters:
 ```{r}
-	var.eqn.x <- "(alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))"
-	var.eqn.y <- "((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)"
-	model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, kappa = 1, mu = 0.112509)
+var.eqn.x <- "(alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))"
+var.eqn.y <- "((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)"
+model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, kappa = 1, mu = 0.112509)
 ```
 or together, using `QPot::Model2String`
 ```{r}
-	parms.eqn.x <- Model2String(model = var.eqn.x, parms = model.parms, supress.print = T)
-	parms.eqn.y <- Model2String(model = var.eqn.y, parms = model.parms, supress.print = T)
+parms.eqn.x <- Model2String(model = var.eqn.x, parms = model.parms, supress.print = T)
+parms.eqn.y <- Model2String(model = var.eqn.y, parms = model.parms, supress.print = T)
 ```
 For this simulation, we start our simulation at (1, 2), add Gaussian noise with a mean of 0 and a standard deviation of 0.05 every $\Delta t = 0.025$, for a total time of $T = 1000$.
 ```{r}
-	model.state <- c(x = 1, y = 2)
-	model.sigma <- 0.05
-	model.time <- 1000
-	model.deltat <- 0.025
+model.state <- c(x = 1, y = 2)
+model.sigma <- 0.05
+model.time <- 1000
+model.deltat <- 0.025
 
-	set.seed(6174)
-	ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, sigma = model.sigma, parms = model.parms)
+set.seed(6174)
+ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, sigma = model.sigma, parms = model.parms)
 ```
 Or alternatively, one could also use TSTraj to combine equation strings and parameter values.
 ```{r}
-	ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, parms = model.parms, sigma = model.sigma)
+ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, parms = model.parms, sigma = model.sigma)
 ```
 
 ### Visualizing the results
 We have two functions that allow users to see the results from `TSTraj`: `TSPlot` and `TSDensity`.  First, `TSPlot` plots the time series for each state variable if `dim = 1` (default) and shows the trajectory in state space if `dim = 2`.  For `dim = 1`, we provide an option (default) to plot the density of each state variable adjacent to the time series plot.
 ```{r}
-	TSPlot(mat = ts.ex1, deltat = model.deltat)
-	TSPlot(mat = ts.ex1, deltat = model.deltat, dim = 2)
+TSPlot(mat = ts.ex1, deltat = model.deltat)
+TSPlot(mat = ts.ex1, deltat = model.deltat, dim = 2)
 ```
 Second, `TSDensity` takes the simulation results and plots it as either a single (`dim = 1`) dimension or in two dimensional state space (`dim = 2`).
 ```{r}
-	TSDensity(mat = ts.ex1, dim = 1)
-	TSDensity(mat = ts.ex1, dim = 2)
+TSDensity(mat = ts.ex1, dim = 1)
+TSDensity(mat = ts.ex1, dim = 2)
 ```
 
 ### Discrepancies in the notion of stability in stochastic systems
@@ -70,8 +70,8 @@ We can see from these simulations that the system spends a great deal of time ar
 
 The typical way of describing stability is through linear stability analysis, which respectively yields the following results for stable focus and stable node:
 ```{r}
-	stability(deriv = model.ex1, y.star = eqs[1,], parameters = model.parms, summary = F)$eigenvalues
-	stability(deriv = model.ex1, y.star = eqs[3,], parameters = model.parms, summary = F)$eigenvalues
+stability(deriv = model.ex1, y.star = eqs[1, ], parameters = model.parms, summary = F)$eigenvalues
+stability(deriv = model.ex1, y.star = eqs[3, ], parameters = model.parms, summary = F)$eigenvalues
 ```
 The largest real eigenvalue of the Jacobian matrix for the stable focus is -0.0473848 and for the stable node is -0.37737660.  Because the stable node is larger (i.e., more negative), **we would conclude that the stable node is more stable than the stable focus---in direct contrast to what our simulation shows**.  This type of stability---known as asymptotic stability---is not necessarily sufficient for describing stability in stochastic systems, with continual perturbations.
 
