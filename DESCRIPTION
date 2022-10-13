@@ -18,9 +18,15 @@ Imports:
     MASS,
     stats,
     utils
-Suggests: R.rsp, R.devices,phaseR,plot3D,viridis,markdown
-VignetteBuilder: R.rsp
-Maintainer: Christopher Stieha <stieha@hotmail.com>
+Suggests:
+    deSolve,
+    knitr,
+    phaseR,
+    plot3D,
+    rmarkdown,
+    rootSolve,
+    viridis
+# Maintainer: Christopher Stieha <stieha@hotmail.com>
 Description: Tools to 1) simulate and visualize stochastic differential
     equations and 2) determine stability of equilibria using the ordered-upwind
     method to compute the quasi-potential.
@@ -29,3 +35,4 @@ URL: https://www.r-project.org, https://github.com/bmarkslash7/QPot
 BugReports: https://github.com/bmarkslash7/QPot/issues
 RoxygenNote: 7.2.1
 Encoding: UTF-8
+VignetteBuilder: knitr

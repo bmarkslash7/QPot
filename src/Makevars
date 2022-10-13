@@ -1,3 +1,0 @@
-all: upwindorderedv4.so
-upwindorderedv4.so: $(OBJECTS)
-	$(SHLIB_LINK) -o $@ $(OBJECTS) $(ALL_LIBS)

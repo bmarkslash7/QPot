@@ -12,6 +12,58 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{r echo=FALSE, results=FALSE}
+model.ex1 <- function(t, y, parameters) {
+  x <- y[1]
+  y <- y[2]
+  alpha <- parameters["alpha"]
+  beta <- parameters["beta"]
+  delta <- parameters["delta"]
+  kappa <- parameters["kappa"]
+  gamma <- parameters["gamma"]
+  mu <- parameters["mu"]
+  dy <- numeric(2)
+  dy[1] <- (alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))
+  dy[2] <- ((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)
+  list(dy)
+}
+model.parms <- c("alpha" = 1.54, "beta" = 10.14, "delta" = 1, "gamma" = 0.476, "mu" = 0.112509, "kappa" = 1)
+library(package = "rootSolve")
+xspace <- seq(from = 1, to = 5, length.out = 10)
+yspace <- seq(from = 2.5, to = 4, length.out = 10)
+l.xspace <- length(x = xspace)
+l.yspace <- length(x = yspace)
+space.mat <- matrix(data = NA, nrow = l.xspace * l.yspace, ncol = 2)
+
+for (i in 1:l.xspace) {
+  for (j in 1:l.yspace) {
+    y <- c(x = xspace[i], y = yspace[j])
+    STO <- stode(y = y, func = model.ex1, parms = model.parms, positive = T)
+    space.mat[(((i - 1) * l.xspace) + j), ] <- STO$y
+  }
+}
+eqs <- unique(x = round(x = space.mat, digits = 3))
+
+library(QPot)
+var.eqn.x <- "(alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))"
+var.eqn.y <- "((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)"
+model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, kappa = 1, mu = 0.112509)
+parms.eqn.x <- Model2String(model = var.eqn.x, parms = model.parms, supress.print = T)
+parms.eqn.y <- Model2String(model = var.eqn.y, parms = model.parms, supress.print = T)
+
+eq1.x <- eqs[1, 1]
+eq1.y <- eqs[1, 2] # stable focus
+eq2.x <- eqs[3, 1]
+eq2.y <- eqs[3, 2] # stable node
+bounds.x <- c(-0.5, 20.0)
+bounds.y <- c(-0.5, 20.0)
+step.number.x <- 1000
+step.number.y <- 1000
+eq1.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq1.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq1.y, y.bound = bounds.y, y.num.steps = step.number.y)
+
+eq2.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq2.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq2.y, y.bound = bounds.y, y.num.steps = step.number.y)
+```
+
 
 Global quasi-potential calculation
 ========================================================
@@ -30,6 +82,7 @@ The functions that calculates the global quasi-potential is `QPGlobal`.  Its arg
 For our example, we have:
 
 ```{r}
+library(QPot)
 unstable.x <- c(eqs[2, 1], eqs[4, 1]) # values are c(0, 4.2008)
 unstable.y <- c(eqs[2, 2], eqs[4, 2]) # values are c(0, 4.0039)
 ex1.global <- QPGlobal(local.surfaces = list(eq1.local, eq2.local), unstable.eq.x = unstable.x, unstable.eq.y = unstable.y, x.bound = bounds.x, y.bound = bounds.y)

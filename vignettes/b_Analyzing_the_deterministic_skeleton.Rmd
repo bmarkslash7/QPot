@@ -73,12 +73,12 @@ model.ex1 <- function(t, y, parameters) {
 ```
 Then, we plot the direction field and the zero-growth isoclines (i.e., nullclines):
 
-```{r eval = F}
+```{r}
 model.parms <- c("alpha" = 1.54, "beta" = 10.14, "delta" = 1, "gamma" = 0.476, "mu" = 0.112509, "kappa" = 1)
 xlims <- c(0, 6)
 ylims <- c(0, 6)
-flowField(deriv = model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 30, add = FALSE, state.names = c("x", "y"))
-nullclines(model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 250, col = c("blue", "red"), state.names = c("x", "y"))
+flowField(deriv = model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 30, add = FALSE, state.names = c("x", "y")) |> plot()
+nullclines(model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 250, col = c("blue", "red"), state.names = c("x", "y")) |> plot()
 ```
 
 ### Identifying and classifying equilibria
@@ -88,34 +88,34 @@ There are several ways to find solutions and classify equilibrium points.  Users
 
 #### Finding equilibria
 For simple models, equilibria can be found analytically.  But for most non-linear models, a solver must be used.  Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using `rootSolve::stode`.  Because it's a small space, we'll first use a `for` loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.
-```R
-	library(package = "rootSolve")
-	xspace <- seq(from = 1, to = 5, length.out = 10)
-	yspace <- seq(from = 2.5, to = 4, length.out = 10)
-	l.xspace <- length(x = xspace)
-	l.yspace <- length(x = yspace)
-	space.mat <- matrix(data = NA, nrow = l.xspace*l.yspace, ncol = 2)	
+```{r}
+library(package = "rootSolve")
+xspace <- seq(from = 1, to = 5, length.out = 10)
+yspace <- seq(from = 2.5, to = 4, length.out = 10)
+l.xspace <- length(x = xspace)
+l.yspace <- length(x = yspace)
+space.mat <- matrix(data = NA, nrow = l.xspace * l.yspace, ncol = 2)
 
-	for (i in 1:l.xspace){
-		for (j in 1:l.yspace){
-			y <- c(x = xspace[i], y = yspace[j])
-			STO <- stode(y = y, func = model.ex1, parms = model.parms, positive = T)
-			space.mat[(((i-1)*l.xspace)+j),] <- STO$y
-		}
-	}
-	eqs <- unique(x = round(x = space.mat, digits = 3))
+for (i in 1:l.xspace) {
+  for (j in 1:l.yspace) {
+    y <- c(x = xspace[i], y = yspace[j])
+    STO <- stode(y = y, func = model.ex1, parms = model.parms, positive = T)
+    space.mat[(((i - 1) * l.xspace) + j), ] <- STO$y
+  }
+}
+eqs <- unique(x = round(x = space.mat, digits = 3))
 ```
 And, for further confirmation, if the plot window is still open, we can add them to ensure they look correct:
-```R
-	points(x = eqs[,1], y = eqs[,2], cex = 1.5)
+```{r}
+plot(x = eqs[, 1], y = eqs[, 2], cex = 1.5)
 ```
 
 #### Classifying equilibria
 Once we have equilibria, we can classify them using `phaseR::stability`.  There's a good deal of information beyond the `$classification` that we call and with `summary = T`.
-```R
-	for (i in 1:nrow(eqs)){
-	print(x = paste0("x = ", eqs[i, 1], ", y = ", eqs[i, 2], " is a ", stability(deriv = model.ex1, y.star = eqs[i,], parameters = model.parms, summary = F)$classification))
-	}
+```{r}
+for (i in 1:nrow(eqs)) {
+  print(x = paste0("x = ", eqs[i, 1], ", y = ", eqs[i, 2], " is a ", stability(deriv = model.ex1, ystar = eqs[i, ], parameters = model.parms, summary = F)$classification))
+}
 ```
 
 This will reveal our three interior equilibria---two stable and one unstable equilibrium.  Our current focus is on determining the relative stability around the two interior equilibria when stochasticity is added to the system.  In the next vignette, we heuristically run some stochastic simulations to better understand how the system behaves with stochasticity.

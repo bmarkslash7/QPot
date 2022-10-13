@@ -13,6 +13,46 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r echo=FALSE}
+model.ex1 <- function(t, y, parameters) {
+  x <- y[1]
+  y <- y[2]
+  alpha <- parameters["alpha"]
+  beta <- parameters["beta"]
+  delta <- parameters["delta"]
+  kappa <- parameters["kappa"]
+  gamma <- parameters["gamma"]
+  mu <- parameters["mu"]
+  dy <- numeric(2)
+  dy[1] <- (alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))
+  dy[2] <- ((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)
+  list(dy)
+}
+model.parms <- c("alpha" = 1.54, "beta" = 10.14, "delta" = 1, "gamma" = 0.476, "mu" = 0.112509, "kappa" = 1)
+library(package = "rootSolve")
+xspace <- seq(from = 1, to = 5, length.out = 10)
+yspace <- seq(from = 2.5, to = 4, length.out = 10)
+l.xspace <- length(x = xspace)
+l.yspace <- length(x = yspace)
+space.mat <- matrix(data = NA, nrow = l.xspace * l.yspace, ncol = 2)
+
+for (i in 1:l.xspace) {
+  for (j in 1:l.yspace) {
+    y <- c(x = xspace[i], y = yspace[j])
+    STO <- stode(y = y, func = model.ex1, parms = model.parms, positive = T)
+    space.mat[(((i - 1) * l.xspace) + j), ] <- STO$y
+  }
+}
+eqs <- unique(x = round(x = space.mat, digits = 3))
+
+library(QPot)
+var.eqn.x <- "(alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))"
+var.eqn.y <- "((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)"
+model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, kappa = 1, mu = 0.112509)
+parms.eqn.x <- Model2String(model = var.eqn.x, parms = model.parms, supress.print = T)
+parms.eqn.y <- Model2String(model = var.eqn.y, parms = model.parms, supress.print = T)
+```
+
 Calculating the local quasi-potential
 ========================================================
 ## Example 1 from Moore et al. (2016)
@@ -35,6 +75,7 @@ Calculating $\Phi (x, y)$ with the function `QPotential` requires:
 The coordinates of the stable equilibrium points, which were determined in 1. Analyzing the deterministic skeleton, are $e_{s1} = (1.4049, 2.8081)$ and $e_{s2} = (4.9040, 4.0619)$.
 
 ```{r}
+library(QPot)
 eq1.x <- eqs[1, 1]
 eq1.y <- eqs[1, 2] # stable focus
 eq2.x <- eqs[3, 1]
@@ -44,9 +85,9 @@ eq2.y <- eqs[3, 2] # stable node
 ### Determining the computational domain
 Next, the boundaries of the computational domain need to be entered.  The ordered-upwind method terminates when the solved area encounters a boundary of this domain, so it's important to choose boundaries carefully. For example, if a stable equilibrium lies on one of the coordinate axes, one should not use that axis as a boundary because the algorithm will immediately terminate. Instead, one should add padding space.  For this example, a good choice of boundaries is $x = -0.5-20$ and $y = -0.5-20$. This choice of domain was obtained by examining both the direction field and stochastic realizations.
 
-```R
-	bounds.x <- c(-0.5, 20.0)
-	bounds.y <- c(-0.5, 20.0)
+```{r}
+bounds.x <- c(-0.5, 20.0)
+bounds.y <- c(-0.5, 20.0)
 ```
 
 ### Determining the mesh size
