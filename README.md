@@ -1,7 +1,7 @@
 # An R package for stochastic differential equation quasi-potential analysis
 [![cran version](https://www.r-pkg.org/badges/version/QPot)]( https://CRAN.R-project.org/package=QPot)
-[![rstudio mirror per-month downloads](https://cranlogs.r-pkg.org/badges/QPot)](https://github.com/metacran/cranlogs.app)
-[![rstudio mirror total downloads](https://cranlogs.r-pkg.org/badges/grand-total/QPot?color=yellowgreen)](https://github.com/metacran/cranlogs.app)
+[![rstudio mirror per-month downloads](https://cranlogs.r-pkg.org/badges/QPot)](https://github.com/r-hub/cranlogs.app)
+[![rstudio mirror total downloads](https://cranlogs.r-pkg.org/badges/grand-total/QPot?color=yellowgreen)](https://github.com/r-hub/cranlogs.app)
 
 ### Christopher M. Moore, Christopher R. Stieha, Ben C. Nolting, Maria K. Cameron, and Karen C. Abbott
 

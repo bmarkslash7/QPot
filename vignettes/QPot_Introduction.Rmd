@@ -1,0 +1,417 @@
+---
+title: "QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis"
+author:
+  - "Christopher Moore, Chris Stieha, Ben Nolting, Maria Cameron, and Karen Abbott"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{QPot: An R Package for Stochastic Differential Equation Quasi-Potential Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Introduction to QPot
+========================================================
+
+### What is QPot?
+**QPot** is an abbreviation for an R package for **Q**uasi-**Pot**ential analysis, which is a technique used to determine relative probability and stability in 2-dimensional stochastic systems.
+
+### How does QPot work?
+The quasi-potential is calculated numerically for 2-dimensional stochastic equations through an ordered upwind method developed by Sethian and Vladimirsky,
+
+> J. A. Sethian and A. Vladimirsky. Ordered upwind methods for static Hamilton-Jacobi equations. Proceedings of the National Academy of Sciences, 98(20):11069–11074, 2001.
+
+> J. A. Sethian and A. Vladimirsky. Ordered upwind methods for static Hamilton-Jacobi equations: Theory and algorithms. SIAM Journal on Numerical Analysis, 41(1):325–363, 2003.
+
+and expanded on by Cameron
+
+> M. K. Cameron. Finding the quasipotential for nongradient SDEs. Physica D, 241(18):1532–1550, 2012.
+
+Nolting and Abbott have recently introduced the method to the field of ecology
+
+> B. C. Nolting and K. C. Abbott. Balls, cups, and quasi-potentials: Quantifying stability in stochastic systems. Ecology, 97(4):850–864, 2016.
+
+and we have recently published a detailed paper on how to use **QPot**
+
+> C. Moore, C. Stieha, B. Nolting, M. Cameron, and K. Abbott. QPot: Quasi-Potential Analysis for Stochastic Differential Equations, 2016. URL [https://www.R-project.org/package=QPot](https://github.com/bmarkslash7/QPot). R package version 1.2.
+
+This vignette is a condensed version of Moore et al. (2016), mostly focusing on Example 1.
+
+### How can I get QPot?
+**QPot** can be downloaded like any other package from CRAN:
+
+```R
+	install.packages(pkgs = "QPot")
+```
+or for the most recent working version from [GitHub](https://github.com/bmarkslash7/QPot):
+```R
+	devtools::install_github(repo = "bmarkslash7/QPot")
+```
+then simply load the library:
+```R
+	library(package = "QPot")
+```
+
+### Why all of the vignettes?
+We break the vignettes into sections similar to the way we do in Moore et al. (2016).  They're broken into 6 natural steps:
+
+	1. Analyzing the deterministic skeleton
+	2. Stochastic simulation
+	3. Local quasi-potential calculation
+	4. Global quasi-potential calculation
+	5. Global quasi-potential visualization
+	6. Vector field decomposition
+
+Analyzing the deterministic skeleton (1) goes through the process of taking a set of ordinary (non-stochastic) differential equations and examining its dynamics. (2) Adds stochasticity to (1), and we see that we need a tool to determine how the system will behave.  (3) Is the first part of quasi-potential analysis, where a local quasi-potential is calculated for each stable equilibrium.  (4) Combines each local quasi-potential  into a global quasi-potential surface.  (5) Visualized the global quasi-potential surface.  (6) Performs a vector field decomposition of the deterministic direction field, the gradient field, and remainder field.
+
+
+
+Analyzing the deterministic skeleton
+========================================================
+## Example 1 from Moore et al. (2016)
+### A system of equations
+In Moore et al. (2016) we use an example of a coupled consumer-resource equation developed for plankton, $x$, and their consumers, $y$:
+
+$$\frac{\mathrm{d}x(t)}{\mathrm{d}t} = \alpha x(t)\left(1 - \frac{x(t)}{\beta}\right) - \frac{\delta x^2(t)y(t)}{\kappa + x^2(t)}$$
+$$\frac{\mathrm{d}y(t)}{\mathrm{d}t} = \frac{\gamma x^2(t)y(t)}{\kappa + x^2(t)} - \mu y^2(t)$$
+
+For this system, we use a specific parametrization to generate two non-trivial stable equilibria.  Specifically, we use the parameters:
+
+Parameter  | Value    | Biological description
+---------- | :------- | :----------------------------------------
+$\alpha$   | 1.54     | Maximal growth rate of plankton
+$\beta$    | 10.14    | Carrying capacity of plankton
+$\delta$   | 1.0      | Maximal feeding rate of the consumers
+$\gamma$   | 0.476    | Conversion rate of plankton to consumer
+$\kappa$   | 1.0      | Half-consumption saturation rate
+$\mu$      | 0.112509 | Death rate of the consumer
+
+### Visualizing dynamics
+We can create a vector field of the deterministic skeleton by using package [phaseR](https://CRAN.R-project.org/package=phaseR).  First, we will load [phaseR](https://CRAN.R-project.org/package=phaseR) and its dependency, [deSolve](https://CRAN.R-project.org/package=deSolve) ([phaseR](https://CRAN.R-project.org/package=phaseR) makes use of `deSolve::ode`):
+
+```{r, message = F}
+library(package = "deSolve")
+library(package = "phaseR")
+```
+
+Second, we write our equations above in the pseudo-code format:
+
+```
+	model <- function(time, initial conditions, parameters){
+	assign state variables to initial conditions
+	assign parameters
+	create an object to store output
+	equations
+	a list as the output
+	}
+```
+
+in R as
+
+```{r}
+model.ex1 <- function(t, y, parameters) {
+  x <- y[1]
+  y <- y[2]
+  alpha <- parameters["alpha"]
+  beta <- parameters["beta"]
+  delta <- parameters["delta"]
+  kappa <- parameters["kappa"]
+  gamma <- parameters["gamma"]
+  mu <- parameters["mu"]
+  dy <- numeric(2)
+  dy[1] <- (alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))
+  dy[2] <- ((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)
+  list(dy)
+}
+```
+Then, we plot the direction field and the zero-growth isoclines (i.e., nullclines):
+
+```{r}
+model.parms <- c("alpha" = 1.54, "beta" = 10.14, "delta" = 1, "gamma" = 0.476, "mu" = 0.112509, "kappa" = 1)
+xlims <- c(0, 6)
+ylims <- c(0, 6)
+flowField(deriv = model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 30, add = FALSE, state.names = c("x", "y")) |> plot()
+nullclines(model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, points = 250, col = c("blue", "red"), state.names = c("x", "y")) |> plot()
+```
+
+### Identifying and classifying equilibria
+We can see from the field that trajectories may take many paths to different areas or points in phase space (i.e., there are multiple basins of attraction).  But more reliably, we can see that the nullclines cross several times, which means that at those points we have equilibria.  For the purposes of our example, we are interested in interior points (i.e., $x$ and $y$ have populations > 0).
+
+There are several ways to find solutions and classify equilibrium points.  Users are encouraged to familiarize themselves with [CRAN Task View: Differential Equations](https://CRAN.R-project.org/view=DifferentialEquations) for a summary of available packages.  Here, we use package [rootSolve](https://CRAN.R-project.org/package=rootSolve) to find equilibria.  At each equilibrium point, we also classify the behavior about the point by finding the eigenvalues of the Jacobian matrix, known as linear or local stability analysis.
+
+#### Finding equilibria
+For simple models, equilibria can be found analytically.  But for most non-linear models, a solver must be used.  Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using `rootSolve::stode`.  Because it's a small space, we'll first use a `for` loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.
+```{r}
+library(package = "rootSolve")
+xspace <- seq(from = 1, to = 5, length.out = 10)
+yspace <- seq(from = 2.5, to = 4, length.out = 10)
+l.xspace <- length(x = xspace)
+l.yspace <- length(x = yspace)
+space.mat <- matrix(data = NA, nrow = l.xspace * l.yspace, ncol = 2)
+
+for (i in 1:l.xspace) {
+  for (j in 1:l.yspace) {
+    y <- c(x = xspace[i], y = yspace[j])
+    STO <- stode(y = y, func = model.ex1, parms = model.parms, positive = T)
+    space.mat[(((i - 1) * l.xspace) + j), ] <- STO$y
+  }
+}
+eqs <- unique(x = round(x = space.mat, digits = 3))
+```
+And, for further confirmation, if the plot window is still open, we can add them to ensure they look correct:
+```{r}
+plot(x = eqs[, 1], y = eqs[, 2], cex = 1.5)
+```
+
+#### Classifying equilibria
+Once we have equilibria, we can classify them using `phaseR::stability`.  There's a good deal of information beyond the `$classification` that we call and with `summary = T`.
+```{r}
+for (i in 1:nrow(eqs)) {
+  print(x = paste0("x = ", eqs[i, 1], ", y = ", eqs[i, 2], " is a ", stability(deriv = model.ex1, ystar = eqs[i, ], parameters = model.parms, summary = F)$classification))
+}
+```
+
+This will reveal our three interior equilibria---two stable and one unstable equilibrium.  Our current focus is on determining the relative stability around the two interior equilibria when stochasticity is added to the system.  In the next vignette, we heuristically run some stochastic simulations to better understand how the system behaves with stochasticity.
+
+Stochastic simulation
+========================================================
+## Example 1 from Moore et al. (2016)
+### Creating a model with stochasticity
+In the previous vignette we used an example of a coupled consumer-resource equation developed for plankton and their consumers.  We now write the equation as a stochastic differential equation:
+
+$$\mathrm{d}X(t) = \left(\alpha X(t)\left(1 - \frac{X(t)}{\beta}\right) - \frac{\delta X^2(t)Y(t)}{\kappa + X^2(t)}\right)dt + \sigma \mathrm{d}W_1(t)$$
+$$\mathrm{d}Y(t) = \left(\frac{\gamma X^2(t)Y(t)}{\kappa + X^2(t)} - \mu Y^2(t)\right) + \sigma \mathrm{d}W_2(t)$$
+
+There are several existing packages in R that will run stochastic simulations (see references in [CRAN Task View: Differential Equations](	https://CRAN.R-project.org/view=DifferentialEquations)), but we include a less-computationally-efficient function for less-intensive simulations that are sufficient for our purposes and takes arguments in the form that we later use for the quasi-potential analysis.
+
+### Running the simulation
+Specifically, we created `TSTraj` (for **T**ime **S**eries **Traj**ectory), to take a equations as strings, with the option to specify the parameter values as a separate list.  `TSTraj` allows users to add stochasticity to the model (`sigma`), control  the time step ($\Delta t$), set upper and lower bounds (e.g., a lower bound of 0 may be useful for biologists studying populations since a population of < 0 is yet to be discovered), and returns a matrix with the numbers of rows equal to the total time steps ($\Delta t \times T$) and two columns for each state variable (e.g., $X$ and $Y$).
+
+Specifying the above equations can be separate from the parameters:
+```{r}
+library(QPot)
+var.eqn.x <- "(alpha * x) * (1 - (x / beta)) - ((delta * (x^2) * y) / (kappa + (x^2)))"
+var.eqn.y <- "((gamma * (x^2) * y) / (kappa + (x^2))) - mu * (y^2)"
+model.parms <- c(alpha = 1.54, beta = 10.14, delta = 1, gamma = 0.476, kappa = 1, mu = 0.112509)
+```
+or together, using `QPot::Model2String`
+```{r}
+parms.eqn.x <- Model2String(model = var.eqn.x, parms = model.parms, supress.print = T)
+parms.eqn.y <- Model2String(model = var.eqn.y, parms = model.parms, supress.print = T)
+```
+For this simulation, we start our simulation at (1, 2), add Gaussian noise with a mean of 0 and a standard deviation of 0.05 every $\Delta t = 0.025$, for a total time of $T = 1000$.
+```{r}
+model.state <- c(x = 1, y = 2)
+model.sigma <- 0.05
+model.time <- 1000
+model.deltat <- 0.025
+
+set.seed(6174)
+ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = var.eqn.x, y.rhs = var.eqn.y, sigma = model.sigma, parms = model.parms)
+```
+Or alternatively, one could also use TSTraj to combine equation strings and parameter values.
+```{r}
+ts.ex1 <- TSTraj(y0 = model.state, time = model.time, deltat = model.deltat, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, parms = model.parms, sigma = model.sigma)
+```
+
+### Visualizing the results
+We have two functions that allow users to see the results from `TSTraj`: `TSPlot` and `TSDensity`.  First, `TSPlot` plots the time series for each state variable if `dim = 1` (default) and shows the trajectory in state space if `dim = 2`.  For `dim = 1`, we provide an option (default) to plot the density of each state variable adjacent to the time series plot.
+```{r}
+TSPlot(mat = ts.ex1, deltat = model.deltat)
+TSPlot(mat = ts.ex1, deltat = model.deltat, dim = 2)
+```
+Second, `TSDensity` takes the simulation results and plots it as either a single (`dim = 1`) dimension or in two dimensional state space (`dim = 2`).
+```{r}
+TSDensity(mat = ts.ex1, dim = 1)
+TSDensity(mat = ts.ex1, dim = 2)
+```
+
+### Discrepancies in the notion of stability in stochastic systems
+We can see from these simulations that the system spends a great deal of time around the stable focus at x = 1.405 and y = 2.808 than the stable node at x = 4.904 and y = 4.062.  This realization is typical of this system, regardless of $\Delta t$, $T$, or $\sigma$.  We should therefore describe the behavior of system in a way that captures this behavior.  
+
+The typical way of describing stability is through linear stability analysis, which respectively yields the following results for stable focus and stable node:
+```{r}
+library(phaseR)
+stability(deriv = model.ex1, ystar = eqs[1, ], parameters = model.parms, summary = F)$eigenvalues
+stability(deriv = model.ex1, ystar = eqs[3, ], parameters = model.parms, summary = F)$eigenvalues
+```
+The largest real eigenvalue of the Jacobian matrix for the stable focus is -0.0473848 and for the stable node is -0.37737660.  Because the stable node is larger (i.e., more negative), **we would conclude that the stable node is more stable than the stable focus---in direct contrast to what our simulation shows**.  This type of stability---known as asymptotic stability---is not necessarily sufficient for describing stability in stochastic systems, with continual perturbations.
+
+This is why we need another tool that will better describe the behavior of how a system will behave with continual perturbations.  For this, Nolting and Abbott (2016) have argued that the quasi-potential should be used.
+
+For a more in-depth description and mathematical details, we again encourage readers to see
+
+> B. C. Nolting and K. C. Abbott. Balls, cups, and quasi-potentials: Quantifying stability in stochastic systems. Ecology, 97(4):850–864, 2016.
+
+and specifically **$\S$ A Path Through the Quagmire of Stability Concepts**.  
+
+Calculating the local quasi-potential
+========================================================
+## Example 1 from Moore et al. (2016)
+### Conceptualizing the local quasi-potential
+The next step is to compute a local quasi-potential for each basin of attractor (sys. with stable equilibrium).  In the example above we have 2. For each stable equilibrium.
+
+To understand the local quasi-potential, it is useful consider the analogy of a particle traveling according to the system of equations in 2. Stochastic simulation. In the context of example 1, the coordinates of the particle correspond to population densities, and the particle’s path corresponds to how those population densities change over time. The deterministic skeleton can be visualized as a force field influencing the particle’s trajectory. Suppose that the particle moves along a path from a stable equilibrium to another point $(x, y)$. If this path does not coincide with a solution of the deterministic skeleton, then the stochastic terms must be doing some ``work'' to move the particle along the path. The more work is required, the less likely it is for the path to be a realization of the system. $\Phi (x, y)$ is the amount of work required to traverse the easiest path from the stable equilibrium to $(x, y)$. Note that $\Phi (x, y)$ is non-negative, and it is zero at the stable equilibrium.
+
+In the basin of attraction for esi, $\Phi (x, y)$ has many properties analogous to the potential function for gradient systems. Key among these properties is that the quasi-potential is non-increasing along deterministic trajectories. This means that the quasi-potential can be interpreted as a type of energy surface, and the rolling ball metaphor is still valid. The difference is that, in non-gradient systems, there is an additional component to the vector field that causes trajectories to circulate around level sets of the energy surface. This is discussed in more detail in [vignette on vector field decomposition], below.
+
+`QPot` calculates quasi-potentials using an adjustment developed by Cameron (2012) to the ordered upwind algorithm (Sethian and Vladimirsky, 2001, 2003). The idea behind the algorithm is to calculate $\Phi (x, y)$ in ascending order, starting with the known the stable equilibrium. The result is an expanding area where the solution is known.
+
+Calculating $\Phi (x, y)$ with the function `QPotential` requires:
+
+1. a text string of the equations and parameter values,
+2. the stable equilibrium points,
+3. the computational domain, and
+4. the mesh size.
+
+The coordinates of the stable equilibrium points, which were determined in 1. Analyzing the deterministic skeleton, are $e_{s1} = (1.4049, 2.8081)$ and $e_{s2} = (4.9040, 4.0619)$.
+
+```{r}
+library(QPot)
+eq1.x <- eqs[1, 1]
+eq1.y <- eqs[1, 2] # stable focus
+eq2.x <- eqs[3, 1]
+eq2.y <- eqs[3, 2] # stable node
+```
+
+### Determining the computational domain
+Next, the boundaries of the computational domain need to be entered.  The ordered-upwind method terminates when the solved area encounters a boundary of this domain, so it's important to choose boundaries carefully. For example, if a stable equilibrium lies on one of the coordinate axes, one should not use that axis as a boundary because the algorithm will immediately terminate. Instead, one should add padding space.  For this example, a good choice of boundaries is $x = -0.5-20$ and $y = -0.5-20$. This choice of domain was obtained by examining both the direction field and stochastic realizations.
+
+```{r}
+bounds.x <- c(-0.5, 20.0)
+bounds.y <- c(-0.5, 20.0)
+```
+
+### Determining the mesh size
+Finally, the mesh size for the discretization of the domain needs to be specified.  In general, the best choice of mesh size will be a compromise between resolution and computational time. The mesh size must be fine enough to precisely track how information moves outward along characteristics from the initial point, but too fine of a mesh size can lead to very long computational times.
+
+```{r}
+step.number.x <- 1000
+step.number.y <- 1000
+```
+
+### Calculating local quasi-potentials
+For each stable equilibrium, calculate the local quasi-potential:
+
+```{r}
+eq1.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq1.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq1.y, y.bound = bounds.y, y.num.steps = step.number.y)
+
+eq2.local <- QPotential(x.rhs = parms.eqn.x, x.start = eq2.x, x.bound = bounds.x, x.num.steps = step.number.x, y.rhs = parms.eqn.y, y.start = eq2.y, y.bound = bounds.y, y.num.steps = step.number.y)
+```
+
+You did it!  `QPotential` returns a matrix that has `step.number.x` by `step.number.y` rows and columns.  We will visualize these local quasi-potential surfaces later in vignette [5. Global quasi-potential visualization].
+
+Global quasi-potential calculation
+========================================================
+## Example 1 from Moore et al. (2016)
+### Creating a global quasi-potential
+The next step is combining the local quasi-potentials into a single surface.  If the system only has a single equilibrium point or basin of attraction (e.g., a limit cycle) then the local quasi-potential is the global quasi-potential.  If the system has two or more basins of attraction, then the local surfaces need to be aligned, adjusted, and combined.  Details can be found in Moore et al. (2016) and references therein, but we briefly describe what's happening in the function that creates the global quasi-potential, `QPGlobal`.
+
+Briefly, the most probable way for a trajectory to transition from one basin to another involves passing through the lowest point on the surface specified by each local quasi-potential surface along the separatrix (the line between two basins of attraction). The two local quasi-potentials should be translated so that the minimum heights along the separatrix are the same.  In this example, the minima of both local quasi-potentials occurred at the same point---the saddle at $(4.201, 4.004)$---so the algorithm amounts to matching at that point.  This is a fairly straight-forward example, but see Moore et al. (2016), Example 3, for a more complicated example.
+
+The functions that calculates the global quasi-potential is `QPGlobal`.  Its arguments minimally include:
+
+1. a list of local surfaces,
+2. the (x, y) locations of the unstable points to be evaluated, and
+3. the boundaries used to calculate the local quasi-potentials.
+
+For our example, we have:
+
+```{r}
+library(QPot)
+unstable.x <- c(eqs[2, 1], eqs[4, 1]) # values are c(0, 4.2008)
+unstable.y <- c(eqs[2, 2], eqs[4, 2]) # values are c(0, 4.0039)
+ex1.global <- QPGlobal(local.surfaces = list(eq1.local, eq2.local), unstable.eq.x = unstable.x, unstable.eq.y = unstable.y, x.bound = bounds.x, y.bound = bounds.y)
+```
+And that's all she wrote---you've created your first global quasi-potential!
+
+Global quasi-potential visualization
+========================================================
+## Example 1 from Moore et al. (2016)
+### Visualizing local quasi-potential surfaces
+Users can visualize the global quasi-potential surface right away, but we like to build in a little bit of anticipation and have users think about the local surfaces and what they expect to see in a global quasi-potential surface.
+
+First, let's view the local quasi-potential surfaces with `QPContour`.
+```{r}
+library(QPot)
+QPContour(surface = eq1.local, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y)
+QPContour(surface = eq2.local, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y)
+```
+
+Notice that plotting contours is not very fast.  We have an argument, `dens`, that, when it's small, allows for faster plotting times.  This argument simply subsamples the surface.
+
+Next, looking at the stable node's surface (`eqs[3,]`), you'll notice that there's not much resolution, and it looks like a large, flat basin.  Well, that's not the case.  The stable equilibrium is there, but it's a shallow depression that's too shallow to be captured by the color scheme and contour lines.  To see the depression, you could normally add more colors (`QPContour`) or add the number of contour lines, but that can be insufficient in many ways.  What we did to overcome this is create an argument within `QPContour` that changes the density of contour lines.  Specifically, the argument `c.parm` focuses the concentration of contour lines at that bottom of the basin, as the value increases from one.  Try, for example, the above with `c.parm = 2` or `c.parm = 5`:
+
+```{r}
+QPContour(surface = eq2.local, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y, c.parm = 5)
+```
+
+This argument will come in handy, since the quasi-potential surfaces tend to span a large range, and we're often interested in the contours at the bottom of the basins.
+
+### Visualizing the global quasi-potential surface
+To visualize the global quasi-potential, one can simply take the global quasi-potential matrix from QPGlobal and use it to create a contour plot using `QPContour`.
+
+```{r}
+QPContour(surface = ex1.global, dens = c(1000, 1000), x.bound = bounds.x, y.bound = bounds.y)
+```
+
+That's it---you've created the global quasi-potential!
+
+### Alternative means of visualizing the quasi-potential
+There are many different ways of visualizing the 3-dimensional data like the quasi-potential surfaces.
+
+Probably most useful, we suggest `persp3d` in package `rgl`.  This allows users to interact with the surface in 3 dimensions and gain a further understanding of the shape of the surface.
+```{r, eval = F}
+library("rgl")
+persp3d(x = ex1.global, col = "#FF5500", xlab = "X", ylab = "Y", zlab = intToUtf8(0x03A6), xlim = c(0.05, 0.3), ylim = c(0.1, 0.3), zlim = c(0, 0.01))
+```
+
+Second, `image`, `contour`, and `filled.contour` are all `graphics` packages that work well with 3-dimensional data like the quasi-potential surfaces.  For example:
+
+```{r}
+image(x = ex1.global)
+contour(x = ex1.global)
+filled.contour(x = ex1.global)
+```
+
+Lastly, Karline Soetaert has written a package `plot3D` that has several other ways of visualizing the 3-dimensional data like the quasi-potential surfaces.  For example:
+
+```{r, eval = F}
+persp3D(z = ex1.global, contour = F)
+```
+
+Vector field decomposition
+========================================================
+## Example 1 from Moore et al. (2016)
+### Deterministic skeleton, gradient, and remainder fields
+Recall that the deterministic skeleton from vignette [1. link here] can be visualized as a vector field. In gradient systems, this vector field is completely determined by the potential function. The name ``gradient system'' refers to the fact that the vector field is the negative of the potential function’s gradient.  In non-gradient systems, the vector field can no longer be represented solely in terms of the gradient.  Instead, there is a remainder component of the vector field. The vector field can be decomposed into two terms:
+$$ \text{vector field} = \text{gradient (or negative of the potential)} + \text{remainder field} \text{, or}$$
+$$
+\begin{bmatrix}f_{1}(x,y)\\ f_{2}(x,y) \end{bmatrix}=-\nabla \Phi(x,y)+\mathbf{r}(x,y)= -\begin{bmatrix}\frac{\partial \Phi}{\partial x}(x,y)\\ \frac{\partial \Phi}{\partial y}(x,y) \end{bmatrix} + \begin{bmatrix}r_{1}(x,y)\\ r_{2}(x,y) \end{bmatrix}
+$$
+The remainder vector field is orthogonal to the gradient of the quasi-potential everywhere. That is, for every $(x, y)$ in the domain,
+$$\nabla \Phi (x, y) · \mathbf{r}(x, y) = 0.$$
+An more detailed explanation of this property can be found in Moore et al. (2016) and Nolting and Abbott (2016).
+
+The remainder vector field can be interpreted as a force that causes trajectories to circulate around level sets of the quasi-potential.
+
+### Vector field decomposition using `QPot`
+`QPot` enables users to perform this decomposition. The function `VecDecomAll` calculates the vector field decomposition, and outputs three vector fields: the original deterministic skeleton, $\mathbf{f}(x, y)$; the gradient vector field, $-\nabla \Phi (x, y)$; and the remainder vector field, $\mathbf{r}(x, y)$. Each of these three vector fields can be output alone using `VecDecomVec`, `VecDecomGrad`, or `VecDecomRem`. These vector fields can be visualized using the function `VecDecomPlot`. Code to create the vector fields from `VecDecomAll` is displayed below; code for generating individual vector fields can be found in the man pages accessible by `help` for `VecDecomVec`, `VecDecomGrad`, or `VecDecomRem`. 
+
+```{r}
+library(QPot)
+## Calculate all three vector fields.
+VDAll <- VecDecomAll(surface = ex1.global, x.rhs = parms.eqn.x, y.rhs = parms.eqn.y, x.bound = bounds.x, y.bound = bounds.y)
+
+## Plot the deterministic skeleton vector field
+VecDecomPlot(x.field = VDAll[, , 1], y.field = VDAll[, , 2], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, xlim = c(0, 11), ylim = c(0, 6), arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
+## Plot the gradient vector field
+VecDecomPlot(x.field = VDAll[, , 3], y.field = VDAll[, , 4], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
+## Plot the remainder vector field
+VecDecomPlot(x.field = VDAll[, , 5], y.field = VDAll[, , 6], dens = c(25, 25), x.bound = bounds.x, y.bound = bounds.y, arrow.type = "proportional", tail.length = 0.35, head.length = 0.025)
+```
+
+And that's it---you've successfully decomposed the vector field!

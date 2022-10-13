@@ -1,0 +1,6 @@
+\documentclass{article}
+\usepackage{pdfpages}
+%\VignetteIndexEntry{QPot_Rarticle}
+\begin{document}
+\includepdf[pages=-, fitpaper=true]{QPot_Rarticle_original.pdf}
+\end{document}
