@@ -36,7 +36,7 @@ Nolting and Abbott have recently introduced the method to the field of ecology
 
 and we have recently published a detailed paper on how to use **QPot**
 
-> C. Moore, C. Stieha, B. Nolting, M. Cameron, and K. Abbott. QPot: Quasi-Potential Analysis for Stochastic Differential Equations, 2016. URL [https://www.R-project.org/package=QPot](https:// github.com/bmarkslash7/QPot). R package version 1.2.
+> C. Moore, C. Stieha, B. Nolting, M. Cameron, and K. Abbott. QPot: Quasi-Potential Analysis for Stochastic Differential Equations, 2016. URL [https://www.R-project.org/package=QPot](https://github.com/bmarkslash7/QPot). R package version 1.2.
 
 This vignette is a condensed version of Moore et al. (2016), mostly focusing on Example 1.
 

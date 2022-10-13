@@ -34,7 +34,7 @@ $\kappa$   | 1.0      | Half-consumption saturation rate
 $\mu$      | 0.112509 | Death rate of the consumer
 
 ### Visualizing dynamics
-We can create a vector field of the deterministic skeleton by using package [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html).  First, we will load [phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) and its dependency, [deSolve](https://cran.r-project.org/web/packages/deSolve/index.html) ([phaseR](https://cran.r-project.org/web/packages/phaseR/index.html) makes use of `deSolve::ode`):
+We can create a vector field of the deterministic skeleton by using package [phaseR](https://CRAN.R-project.org/package=phaseR).  First, we will load [phaseR](https://CRAN.R-project.org/package=phaseR) and its dependency, [deSolve](https://CRAN.R-project.org/package=deSolve) ([phaseR](https://CRAN.R-project.org/package=phaseR) makes use of `deSolve::ode`):
 
 ```{r, message = F}
 library(package = "deSolve")
@@ -84,7 +84,7 @@ nullclines(model.ex1, xlim = xlims, ylim = ylims, parameters = model.parms, poin
 ### Identifying and classifying equilibria
 We can see from the field that trajectories may take many paths to different areas or points in phase space (i.e., there are multiple basins of attraction).  But more reliably, we can see that the nullclines cross several times, which means that at those points we have equilibria.  For the purposes of our example, we are interested in interior points (i.e., $x$ and $y$ have populations > 0).
 
-There are several ways to find solutions and classify equilibrium points.  Users are encouraged to familiarize themselves with [CRAN Task View: Differential Equations](https://cran.r-project.org/web/views/DifferentialEquations.html) for a summary of available packages.  Here, we use package [rootSolve](https://cran.r-project.org/web/packages/rootSolve/index.html) to find equilibria.  At each equilibrium point, we also classify the behavior about the point by finding the eigenvalues of the Jacobian matrix, known as linear or local stability analysis.
+There are several ways to find solutions and classify equilibrium points.  Users are encouraged to familiarize themselves with [CRAN Task View: Differential Equations](https://CRAN.R-project.org/view=DifferentialEquations) for a summary of available packages.  Here, we use package [rootSolve](https://CRAN.R-project.org/package=rootSolve) to find equilibria.  At each equilibrium point, we also classify the behavior about the point by finding the eigenvalues of the Jacobian matrix, known as linear or local stability analysis.
 
 #### Finding equilibria
 For simple models, equilibria can be found analytically.  But for most non-linear models, a solver must be used.  Because we have an idea where the equilibria are, we create an area to find steady-state equilibria using `rootSolve::stode`.  Because it's a small space, we'll first use a `for` loop over the x- and y-area we wish to sample, then we find unique values of (x, y) to give us a matrix of unique equilibria.
