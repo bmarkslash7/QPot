@@ -15,6 +15,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE)
+options(rgl.useNULL = TRUE)
 ```
 
 ```{r echo=FALSE}
